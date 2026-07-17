@@ -1,0 +1,43 @@
+CREATE DATABASE mx_track_manager;
+
+CREATE TABLE utenti (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE moto (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    utente_id INT UNSIGNED NOT NULL,
+    marca VARCHAR(255),
+    modello VARCHAR(255),
+    anno YEAR,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (utente_id) REFERENCES utenti(id) ON DELETE CASCADE
+);
+
+CREATE TABLE allenamenti (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    moto_id INT UNSIGNED NOT NULL,
+    data DATE NOT NULL,
+    circuito VARCHAR(100) NOT NULL,
+    meteo VARCHAR(50),
+    feeling TINYINT,
+    ore_svolte DECIMAL(4,2),
+    note TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (moto_id) REFERENCES moto(id) ON DELETE CASCADE
+);
+
+CREATE TABLE manutenzioni (
+    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    moto_id INT UNSIGNED NOT NULL,
+    tipo_intervento VARCHAR(150) NOT NULL,
+    ore_soglia DECIMAL(6,2),
+    ore_ultimo_intervento DECIMAL(6,2),
+    data_intervento DATE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (moto_id) REFERENCES moto(id) ON DELETE CASCADE
+);
