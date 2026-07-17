@@ -1,43 +1,43 @@
 CREATE DATABASE mx_track_manager;
 
-CREATE TABLE utenti (
+CREATE TABLE users (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE moto (
+CREATE TABLE bikes (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    utente_id INT UNSIGNED NOT NULL,
-    marca VARCHAR(255),
-    modello VARCHAR(255),
-    anno YEAR,
+    user_id INT UNSIGNED NOT NULL,
+    brand VARCHAR(255),
+    model VARCHAR(255),
+    year YEAR,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (utente_id) REFERENCES utenti(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-CREATE TABLE allenamenti (
+CREATE TABLE sessions (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    moto_id INT UNSIGNED NOT NULL,
-    data DATE NOT NULL,
-    circuito VARCHAR(100) NOT NULL,
-    meteo VARCHAR(50),
+    bike_id INT UNSIGNED NOT NULL,
+    date DATE NOT NULL,
+    track VARCHAR(100) NOT NULL,
+    weather VARCHAR(50),
     feeling TINYINT,
-    ore_svolte DECIMAL(4,2),
-    note TEXT,
+    hours_logged DECIMAL(4,2),
+    notes TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (moto_id) REFERENCES moto(id) ON DELETE CASCADE
+    FOREIGN KEY (bike_id) REFERENCES bikes(id) ON DELETE CASCADE
 );
 
-CREATE TABLE manutenzioni (
+CREATE TABLE maintenance (
     id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    moto_id INT UNSIGNED NOT NULL,
-    tipo_intervento VARCHAR(150) NOT NULL,
-    ore_soglia DECIMAL(6,2),
-    ore_ultimo_intervento DECIMAL(6,2),
-    data_intervento DATE,
+    bike_id INT UNSIGNED NOT NULL,
+    task_description VARCHAR(150) NOT NULL,
+    hour_threshold DECIMAL(6,2),
+    last_service_hours DECIMAL(6,2),
+    service_date DATE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (moto_id) REFERENCES moto(id) ON DELETE CASCADE
+    FOREIGN KEY (bike_id) REFERENCES bikes(id) ON DELETE CASCADE
 );
