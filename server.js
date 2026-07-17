@@ -1,5 +1,5 @@
 import express from "express";
-import registerRouter from "./routes/registerRouter.js";
+import authRouter from "./routes/authRouter.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Routes
-app.use('/register', registerRouter);
+app.use('/auth', authRouter);
 
 // Server initialization
 app.listen(PORT, () => {
