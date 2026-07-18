@@ -1,6 +1,6 @@
 import { createConnection } from "mysql2/promise";
 
-const connection = createConnection({
+const connection = await createConnection({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
