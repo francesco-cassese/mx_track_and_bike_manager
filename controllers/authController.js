@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import connection from '../config/db.js';
+import * as userRepository from '../repositories/userRepository.js';
 import { JWT_SECRET } from '../config/env.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendSuccess, sendError } from '../utils/apiResponse.js';
@@ -21,10 +21,8 @@ const register = asyncHandler(async (req, res) => {
         // Genero l'hash della password con cost factor 12 per bilanciare sicurezza e performance
         const passwordHash = await bcrypt.hash(password, 12);
 
-        const query = 'INSERT INTO users (name, email, password_hash) VALUES (?,?,?)';
-
-        // Eseguo la query con prepared statements per prevenire SQL Injection
-        const [result] = await connection.execute(query, [name, email, passwordHash]);
+        // Salvo il nuovo utente
+        const result = await userRepository.insert({ name, email, passwordHash });
 
         // Verifico che l'inserimento sia andato a buon fine (affectedRows indica il numero di righe inserite)
         if (result.affectedRows === 0) {
@@ -52,20 +50,13 @@ const register = asyncHandler(async (req, res) => {
 const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body
 
-    const query = `
-                SELECT *
-                FROM users
-                WHERE email = ?`;
-
-    // Recupero l'utente tramite email (prepared statement per prevenire SQL Injection)
-    const [result] = await connection.execute(query, [email]);
+    // Recupero l'utente tramite email
+    const user = await userRepository.findByEmail(email);
 
     // Non ho trovato l'utente: rispondo con un messaggio generico per non rivelare quali email sono registrate
-    if (result.length === 0) {
+    if (!user) {
         return sendError(res, 401, "Credenziali non valide");
     }
-
-    const user = result[0];
 
     // Confronto la password in chiaro con l'hash salvato nel database
     const match = await bcrypt.compare(password, user.password_hash);
