@@ -1,6 +1,7 @@
 import express from "express";
 import { destroy, index, show, store, totalHours, update } from "../controllers/bikeController.js";
 import sessionRouter from "./sessionRouter.js";
+import maintenanceRouter from "./maintenanceRouter.js";
 import { authenticateToken } from "../middlewares/auth.js";
 import { authorizeOwner } from "../middlewares/authorize.js";
 
@@ -18,6 +19,10 @@ router.get('/:id', authorizeOwner('bike'), show);
 // Sotto-risorsa: sessioni della moto. L'ownership è verificata qui,
 // una sola volta, prima di delegare le rotte al router dedicato.
 router.use('/:id/sessions', authorizeOwner('bike'), sessionRouter);
+
+// Sotto-risorsa: scadenze di manutenzione della moto. L'ownership è verificata qui,
+// una sola volta, prima di delegare le rotte al router dedicato.
+router.use('/:id/maintenance', authorizeOwner('bike'), maintenanceRouter);
 
 // Totale ore di utilizzo della moto, calcolato sommando le sessioni registrate
 router.get('/:id/total-hours', authorizeOwner('bike'), totalHours);
