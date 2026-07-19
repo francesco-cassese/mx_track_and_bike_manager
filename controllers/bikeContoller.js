@@ -31,4 +31,48 @@ const index = async (req, res) => {
     }
 }
 
-export { index }
+/**
+ * Recupero il dettaglio di una singola moto tramite id
+ */
+const show = async (req, res) => {
+
+    try {
+
+        const id = req.resourceId;
+
+        const query = `
+        SELECT *
+        FROM bikes
+        WHERE id = ?
+    `
+
+        // Eseguo la query per recuperare la bike richiesta
+        const [result] = await connection.execute(query, [id]);
+
+        // Non ho trovato nessuna moto con questo id: rispondo con 404
+        if (result.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Nessuna moto trovata'
+            })
+        }
+
+        res.status(200).json({
+            success: true,
+            data: result
+        })
+
+    } catch (error) {
+
+        // Registro l'errore lato server per debugging e rispondo in modo generico all'utente
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Errore interno del server"
+        });
+
+    }
+
+}
+
+export { index, show }
