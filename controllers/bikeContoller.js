@@ -1,18 +1,19 @@
 import connection from "../config/db.js";
 
 /**
- * Recupero tutte le moto salvate nel database.
+ * Recupero le moto dell'utente loggato
  */
 const index = async (req, res) => {
     try {
 
         const query = `
                 SELECT *
-                FROM bikes;
+                FROM bikes
+                WHERE user_id = ?;
         `
 
         // Eseguo la query per recuperare tutte le bike registrate.
-        const [result] = await connection.execute(query);
+        const [result] = await connection.execute(query, [req.user.id]);
 
         res.status(200).json({
             success: true,
