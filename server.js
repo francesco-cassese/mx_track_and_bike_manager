@@ -12,6 +12,16 @@ app.use(express.json());
 app.use('/auth', authRouter);
 app.use('/bike', bikeRouter);
 
+// Error-handler centralizzato: intercetta gli errori inoltrati da asyncHandler
+// ed evita di ripetere lo stesso blocco di log + risposta 500 in ogni controller.
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(500).json({
+        success: false,
+        message: "Errore interno del server"
+    });
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
