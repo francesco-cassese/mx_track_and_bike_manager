@@ -96,4 +96,15 @@ const remove = async (id) => {
     return result;
 };
 
-export { findAllByBikeId, findView, insert, update, remove };
+const getTotalHoursByBikeId = async (id) => {
+    const query = `
+        SELECT SUM(hours_logged) AS total_hours
+        FROM sessions
+        WHERE bike_id = ?
+    `
+
+    const [result] = await connection.execute(query, [id]);
+    return result[0].total_hours;
+}
+
+export { findAllByBikeId, findView, insert, update, remove, getTotalHoursByBikeId };
