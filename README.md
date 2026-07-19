@@ -39,9 +39,11 @@ Sviluppi previsti, in ordine di priorità:
 ├── controllers/       # Logica di business delle rotte
 ├── database/          # Schema SQL del database
 ├── middlewares/        # Middleware Express (auth, autorizzazione, validazione id)
-├── routes/             # Definizione degli endpoint
-├── server.js           # Entry point dell'applicazione
-└── .env.example         # Esempio di variabili d'ambiente richieste
+├── repositories/        # Query al database, isolate per risorsa
+├── routes/               # Definizione degli endpoint
+├── utils/                 # Helper condivisi (async handler, risposte API, parsing id)
+├── server.js                # Entry point dell'applicazione
+└── .env.example               # Esempio di variabili d'ambiente richieste
 ```
 
 ## Requisiti
