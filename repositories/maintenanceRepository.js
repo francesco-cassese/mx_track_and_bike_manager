@@ -2,7 +2,7 @@ import connection from '../config/db.js';
 
 
 /**
- * Recupero le scadenze di manutenzione registrate per una singola bike.
+ * Recupero le scadenze di manutenzione registrate per una singola moto.
  */
 const findAllByBikeId = async (bikeId) => {
     const query = `
@@ -11,7 +11,7 @@ const findAllByBikeId = async (bikeId) => {
             WHERE bike_id = ?;
     `
 
-    // Eseguo la query per recuperare tutte le bike registrate.
+    // Eseguo la query per recuperare tutte le moto registrate.
     const [rows] = await connection.execute(query, [bikeId]);
     return rows;
 };
@@ -31,7 +31,7 @@ const findView = async (id) => {
 };
 
 /**
- * Inserisco una nuova scadenza di manutenzione associata a una bike
+ * Inserisco una nuova scadenza di manutenzione associata a una moto
  */
 const insert = async ({ bikeId, taskDescription, hourThreshold, lastServiceHours, serviceDate }) => {
     const query = `
