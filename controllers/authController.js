@@ -5,13 +5,13 @@ import connection from '../config/db.js';
 const JWT_SECRET = process.env.JWT_SECRET;
 
 /**
- * Gestisce la registrazione di un nuovo utente.
- * Esegue l'hashing della password e salva l'utente nel database.
+ * Gestisco la registrazione di un nuovo utente: eseguo l'hashing
+ * della password e salvo l'utente nel database.
  */
 const register = async (req, res) => {
     const { name, email, password } = req.body;
 
-    // Validazione input: assicura che tutti i campi necessari siano presenti
+    // Valido l'input: mi assicuro che tutti i campi necessari siano presenti
     if (!name || !email || !password) {
         return res.status(400).json({
             success: false,
@@ -20,15 +20,15 @@ const register = async (req, res) => {
     }
 
     try {
-        // Generazione hash della password con cost factor 12 per bilanciare sicurezza e performance
+        // Genero l'hash della password con cost factor 12 per bilanciare sicurezza e performance
         const passwordHash = await bcrypt.hash(password, 12);
 
         const query = 'INSERT INTO users (name, email, password_hash) VALUES (?,?,?)';
 
-        // Esecuzione query utilizzando prepared statements per prevenire SQL Injection
+        // Eseguo la query con prepared statements per prevenire SQL Injection
         const [result] = await connection.execute(query, [name, email, passwordHash]);
 
-        // Verifica che l'inserimento sia andato a buon fine (affectedRows indica il numero di righe inserite)
+        // Verifico che l'inserimento sia andato a buon fine (affectedRows indica il numero di righe inserite)
         if (result.affectedRows === 0) {
             return res.status(500).json({
                 success: false,
@@ -36,14 +36,14 @@ const register = async (req, res) => {
             });
         }
 
-        // Risposta di successo (201 Created)
+        // Rispondo con successo (201 Created)
         res.status(201).json({
             success: true,
             message: "Utente creato con successo!"
         });
 
     } catch (error) {
-        // Gestione specifica per violazione di vincoli unici (es. email già esistente)
+        // Gestisco il caso specifico di violazione di vincoli unici (es. email già esistente)
         if (error.code === 'ER_DUP_ENTRY') {
             return res.status(409).json({
                 success: false,
@@ -51,7 +51,7 @@ const register = async (req, res) => {
             });
         }
 
-        // Logging dell'errore lato server per debugging e risposta generica all'utente
+        // Registro l'errore lato server per debugging e rispondo in modo generico all'utente
         console.error('Registration error:', error);
         res.status(500).json({
             success: false,
@@ -61,8 +61,8 @@ const register = async (req, res) => {
 };
 
 /**
- * Gestisce il login di un utente esistente.
- * Verifica le credenziali e restituisce un JWT in caso di successo.
+ * Gestisco il login di un utente esistente: verifico le credenziali
+ * e restituisco un JWT in caso di successo.
  */
 const login = async (req, res) => {
     const { email, password } = req.body
@@ -74,10 +74,10 @@ const login = async (req, res) => {
                     FROM users
                     WHERE email = ?`;
 
-        // Recupero utente tramite email (prepared statement per prevenire SQL Injection)
+        // Recupero l'utente tramite email (prepared statement per prevenire SQL Injection)
         const [result] = await connection.execute(query, [email]);
 
-        // Nessun utente trovato: messaggio generico per non rivelare quali email sono registrate
+        // Non ho trovato l'utente: rispondo con un messaggio generico per non rivelare quali email sono registrate
         if (result.length === 0) {
             res.status(401).json({
                 success: false,
@@ -88,7 +88,7 @@ const login = async (req, res) => {
 
         const user = result[0];
 
-        // Confronto tra password in chiaro e hash salvato nel database
+        // Confronto la password in chiaro con l'hash salvato nel database
         const match = await bcrypt.compare(password, user.password_hash);
 
         if (!match) {
@@ -99,7 +99,7 @@ const login = async (req, res) => {
             return;
         }
 
-        // Generazione JWT con scadenza di 1 ora per autenticare le richieste successive
+        // Genero il JWT con scadenza di 1 ora per autenticare le richieste successive
         const token = jwt.sign(
             { id: user.id, email: user.email },
             JWT_SECRET,
@@ -115,7 +115,7 @@ const login = async (req, res) => {
 
     } catch (error) {
 
-        // Logging dell'errore lato server per debugging e risposta generica all'utente
+        // Registro l'errore lato server per debugging e rispondo in modo generico all'utente
         console.error(error);
         res.status(500).json({
             success: false,

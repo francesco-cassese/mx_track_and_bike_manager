@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken';
 const JWT_SECRET = process.env.JWT_SECRET;
 
 /**
- * Middleware di autenticazione: verifica la presenza e validità del JWT
- * nell'header Authorization prima di consentire l'accesso alle rotte protette.
+ * Verifico la presenza e validità del JWT nell'header Authorization
+ * prima di consentire l'accesso alle rotte protette.
  */
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -19,7 +19,7 @@ const authenticateToken = (req, res, next) => {
 
     jwt.verify(token, JWT_SECRET, (err, decoded) => {
         if (err) {
-            // Distingue token scaduto da token non valido, utile per il frontend
+            // Distinguo il token scaduto dal token non valido, utile per il frontend
             if (err.name === 'TokenExpiredError') {
                 return res.status(401).json({
                     success: false,

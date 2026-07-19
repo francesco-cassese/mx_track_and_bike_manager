@@ -4,13 +4,13 @@ import authRouter from "./routes/authRouter.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
+// Configuro i middleware globali
 app.use(express.json());
 
-// Routes
+// Monto le routes
 app.use('/auth', authRouter);
 
-// Server initialization
+// Avvio il server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
