@@ -12,7 +12,7 @@ Backend REST per la gestione di moto da cross/enduro, sessioni in pista e manute
 |---|---|
 | Autenticazione utenti (registrazione, login, JWT) | ✅ Implementato |
 | Gestione moto (bikes) | ✅ Implementato |
-| Sessioni in pista (sessions) | 🚧 In sviluppo |
+| Sessioni in pista (sessions) | ✅ Implementato |
 | Manutenzioni programmate (maintenance) | 🚧 In sviluppo |
 | Middleware di autorizzazione sulle rotte protette | ✅ Implementato |
 
@@ -109,7 +109,18 @@ Tutte le rotte richiedono autenticazione (`Authorization: Bearer <token>`). Le r
 | `PUT` | `/bike/:id` | Aggiorna i dati di una moto (`brand`, `model`, `year`) |
 | `DELETE` | `/bike/:id` | Elimina una moto |
 
-Altre risorse (sessioni, manutenzioni) saranno esposte man mano che il relativo modulo verrà completato.
+### Sessioni in pista (`/bike/:id/sessions`)
+
+Tutte le rotte richiedono autenticazione e che la moto (`:id`) appartenga all'utente autenticato. Le rotte su una singola sessione (`/:id/sessions/:id`) verificano inoltre che la sessione appartenga all'utente autenticato.
+
+| Metodo | Endpoint | Descrizione |
+|---|---|---|
+| `GET` | `/bike/:id/sessions` | Elenca le sessioni registrate per la moto |
+| `POST` | `/bike/:id/sessions` | Registra una nuova sessione (`date`, `track`, `weather`, `feeling`, `hours_logged`, `notes`) |
+| `PUT` | `/bike/:id/sessions/:id` | Aggiorna i dati di una sessione |
+| `DELETE` | `/bike/:id/sessions/:id` | Elimina una sessione |
+
+Altre risorse (manutenzioni) saranno esposte man mano che il relativo modulo verrà completato.
 
 ## Licenza
 
