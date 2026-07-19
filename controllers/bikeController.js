@@ -1,4 +1,5 @@
 import * as bikeRepository from "../repositories/bikeRepository.js";
+import * as sessionRepository from "../repositories/sessionRepository.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendSuccess, sendError } from "../utils/apiResponse.js";
 
@@ -23,7 +24,9 @@ const show = asyncHandler(async (req, res) => {
         return sendError(res, 404, 'Nessuna moto trovata');
     }
 
-    sendSuccess(res, 200, { data: result });
+    const totalHours = await sessionRepository.getTotalHoursByBikeId(id);
+
+    sendSuccess(res, 200, { data: { ...result[0], totalHours: totalHours ?? 0 } });
 });
 
 /**
@@ -86,4 +89,14 @@ const destroy = asyncHandler(async (req, res) => {
     sendSuccess(res, 200, { message: 'Moto eliminata con successo' });
 });
 
-export { index, show, store, update, destroy }
+/**
+ * Recupero il totale di ore di utilizzo di una singola moto, sommando le sessioni registrate
+ */
+const totalHours = asyncHandler(async (req, res) => {
+    const id = req.resourceId;
+    const total = await sessionRepository.getTotalHoursByBikeId(id);
+
+    sendSuccess(res, 200, { data: { totalHours: total ?? 0 } });
+});
+
+export { index, show, store, update, destroy, totalHours }
