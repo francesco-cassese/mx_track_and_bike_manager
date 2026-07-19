@@ -6,10 +6,8 @@ import connection from "../config/db.js";
 const findAllByBikeId = async (bikeId) => {
     const query = `
         SELECT *
-        FROM sessions AS s
-            JOIN bikes AS b
-                ON s.bike_id = b.id
-        WHERE s.bike_id = ?
+        FROM sessions
+        WHERE bike_id = ?
     `
 
     // Eseguo la query per recuperare le sessioni della bike richiesta
@@ -62,4 +60,40 @@ const insert = async ({ bikeId, date, track, weather, feeling, hoursLogged, note
     return result;
 };
 
-export { findAllByBikeId, findView, insert };
+/**
+ * Aggiorno i dati di una singola sessione tramite id
+ */
+const update = async (id, { date, track, weather, feeling, hoursLogged, notes }) => {
+    const query = `
+    UPDATE sessions
+    SET date = ?,
+    track = ?,
+    weather = ?,
+    feeling = ?,
+    hours_logged = ?,
+    notes = ?
+    WHERE id = ?
+    `
+
+    // Eseguo la query per aggiornare la sessione richiesta
+    const [result] = await connection.execute(query, [date, track, weather, feeling, hoursLogged, notes, id]);
+    return result;
+
+}
+
+/**
+ * Elimino una singola sessione tramite id
+ */
+const remove = async (id) => {
+    const query = `
+    DELETE
+    FROM sessions
+    WHERE id = ?
+    `
+
+    // Eseguo la query per eliminare la sessione richiesta
+    const [result] = await connection.execute(query, [id]);
+    return result;
+};
+
+export { findAllByBikeId, findView, insert, update, remove };

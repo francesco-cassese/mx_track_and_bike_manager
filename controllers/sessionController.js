@@ -11,6 +11,7 @@ const index = asyncHandler(async (req, res) => {
     // Recupero le sessioni della bike richiesta
     const result = await sessionRepository.findAllByBikeId(bike_id);
 
+    // Non ho trovato nessuna sessione per questa bike: rispondo con 404
     if (result.length === 0) {
         return sendError(res, 404, `Nessuna sessione trovata`);
     }
@@ -36,6 +37,7 @@ const store = asyncHandler(async (req, res) => {
         notes
     });
 
+    // L'inserimento non è andato a buon fine: rispondo con 400
     if (result.affectedRows === 0) {
         return sendError(res, 400, 'Errore nella creazione della sessione di allenamento')
     }
@@ -49,4 +51,54 @@ const store = asyncHandler(async (req, res) => {
     });
 })
 
-export { index, store }
+/**
+ * Aggiorno i dati di una singola sessione tramite id (ownership già verificata da authorizeOwner).
+ */
+const update = asyncHandler(async (req, res) => {
+    const id = req.resourceId;
+    const { date, track, weather, feeling, hours_logged, notes } = req.body;
+
+    // Eseguo la query per aggiornare la sessione richiesta
+    const result = await sessionRepository.update(id, {
+        date,
+        track,
+        weather,
+        feeling,
+        hoursLogged: hours_logged,
+        notes
+    });
+
+    // Non ho trovato nessuna sessione con questo id: rispondo con 404
+    if (result.affectedRows === 0) {
+        return sendError(res, 404, 'Nessuna sessione trovata con questo id');
+    }
+
+    // Recupero la sessione aggiornata per restituirla nella risposta
+    const updateSessionView = await sessionRepository.findView(id)
+
+    sendSuccess(res, 200, {
+        message: `Le informazioni sulla sessione sono state aggiornate`,
+        data: updateSessionView
+    });
+
+})
+
+/**
+ * Elimino una singola sessione tramite id (ownership già verificata da authorizeOwner).
+ */
+const destroy = asyncHandler(async (req, res) => {
+    const id = req.resourceId;
+
+    // Il repository restituisce già l'OkPacket, non un array: non va destrutturato ulteriormente
+    const result = await sessionRepository.remove(id);
+
+    // Non ho trovato nessuna sessione con questo id: rispondo con 404
+    if (result.affectedRows === 0) {
+        return sendError(res, 404, 'Nessuna sessione trovata con questo id')
+    }
+
+    sendSuccess(res, 200, { message: 'Sessione eliminata con successo' })
+
+})
+
+export { index, store, update, destroy }
