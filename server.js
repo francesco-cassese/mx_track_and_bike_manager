@@ -1,16 +1,17 @@
 import express from "express";
 import authRouter from "./routes/authRouter.js";
+import bikeRouter from "./routes/bikeRouter.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configuro i middleware globali
+// Middleware globali
 app.use(express.json());
 
-// Monto le routes
+// Routes
 app.use('/auth', authRouter);
+app.use(`/bike`, bikeRouter);
 
-// Avvio il server
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
 });
