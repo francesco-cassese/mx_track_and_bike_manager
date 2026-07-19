@@ -1,5 +1,7 @@
 import connection from '../config/db.js';
 import { parseResourceId } from '../utils/parseResourceId.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
+import { sendError } from '../utils/apiResponse.js';
 
 // Definisco, per ogni tipo di risorsa, la query che mi permette di risalire allo user_id proprietario:
 // per le bikes lo user_id è diretto, per sessions/maintenance lo eredito dalla bike collegata.
@@ -21,57 +23,36 @@ const authorizeOwner = (resourceType) => {
         throw new Error(`authorizeOwner: tipo di risorsa sconosciuto "${resourceType}"`);
     }
 
-    return async (req, res, next) => {
+    return asyncHandler(async (req, res, next) => {
         // Mi accerto che a monte sia già passato per authenticateToken.
         if (!req.user) {
-            return res.status(401).json({
-                success: false,
-                message: "Utente non autenticato"
-            });
+            return sendError(res, 401, "Utente non autenticato");
         }
 
         const resourceId = parseResourceId(req.params.id);
 
         // Scarto subito id non validi, prima di interrogare il database.
         if (resourceId === null) {
-            return res.status(400).json({
-                success: false,
-                message: "Id risorsa non valido"
-            });
+            return sendError(res, 400, "Id risorsa non valido");
         }
 
-        try {
-            // Recupero il proprietario effettivo della risorsa richiesta.
-            const [rows] = await connection.execute(query, [resourceId]);
+        // Recupero il proprietario effettivo della risorsa richiesta.
+        const [rows] = await connection.execute(query, [resourceId]);
 
-            if (rows.length === 0) {
-                return res.status(404).json({
-                    success: false,
-                    message: "Risorsa non trovata"
-                });
-            }
-
-            // Confronto il proprietario trovato con l'utente autenticato nella richiesta.
-            if (rows[0].user_id !== req.user.id) {
-                return res.status(403).json({
-                    success: false,
-                    message: "Non hai i permessi per modificare questa risorsa"
-                });
-            }
-
-            // Espongo l'id già parsato al controller, evitando di riparsarlo a valle.
-            req.resourceId = resourceId;
-
-            next();
-        } catch (error) {
-            // Registro l'errore lato server e restituisco un messaggio generico al client.
-            console.error('Authorization error:', error);
-            res.status(500).json({
-                success: false,
-                message: "Errore interno del server"
-            });
+        if (rows.length === 0) {
+            return sendError(res, 404, "Risorsa non trovata");
         }
-    };
+
+        // Confronto il proprietario trovato con l'utente autenticato nella richiesta.
+        if (rows[0].user_id !== req.user.id) {
+            return sendError(res, 403, "Non hai i permessi per modificare questa risorsa");
+        }
+
+        // Espongo l'id già parsato al controller, evitando di riparsarlo a valle.
+        req.resourceId = resourceId;
+
+        next();
+    });
 };
 
 export { authorizeOwner };

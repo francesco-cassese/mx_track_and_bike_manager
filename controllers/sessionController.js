@@ -1,40 +1,29 @@
 import connection from "../config/db.js";
+import { asyncHandler } from "../utils/asyncHandler.js";
+import { sendSuccess, sendError } from "../utils/apiResponse.js";
 
-const index = async (req, res) => {
-    try {
-        const bike_id = req.resourceId;
+/**
+ * Recupero le sessioni registrate per una singola bike (ownership già verificata da authorizeOwner).
+ */
+const index = asyncHandler(async (req, res) => {
+    const bike_id = req.resourceId;
 
-        const query = `
-            SELECT *
-            FROM sessions AS s
-                JOIN bikes AS b
-                    ON s.bike_id = b.id
-            WHERE s.bike_id = ?
-        `
+    const query = `
+        SELECT *
+        FROM sessions AS s
+            JOIN bikes AS b
+                ON s.bike_id = b.id
+        WHERE s.bike_id = ?
+    `
 
-        const [result] = await connection.execute(query, [bike_id]);
+    // Eseguo la query per recuperare le sessioni della bike richiesta
+    const [result] = await connection.execute(query, [bike_id]);
 
-        if (result.length === 0) {
-            return res.status(404).json({
-                success: false,
-                message: `Nessuna sessione trovata`
-            })
-        }
-
-        res.status(200).json({
-            success: true,
-            data: result
-        })
-
-    } catch (error) {
-
-        // Registro l'errore lato server per debugging e rispondo in modo generico all'utente
-        console.error(error);
-        res.status(500).json({
-            success: false,
-            message: "Errore interno del server"
-        });
+    if (result.length === 0) {
+        return sendError(res, 404, `Nessuna sessione trovata`);
     }
-}
+
+    sendSuccess(res, 200, { data: result });
+});
 
 export { index }
