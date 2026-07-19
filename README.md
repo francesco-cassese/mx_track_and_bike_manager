@@ -11,10 +11,10 @@ Backend REST per la gestione di moto da cross/enduro, sessioni in pista e manute
 | Modulo | Stato |
 |---|---|
 | Autenticazione utenti (registrazione, login, JWT) | ✅ Implementato |
-| Gestione moto (bikes) | 🚧 In sviluppo |
+| Gestione moto (bikes) | ✅ Implementato |
 | Sessioni in pista (sessions) | 🚧 In sviluppo |
 | Manutenzioni programmate (maintenance) | 🚧 In sviluppo |
-| Middleware di autorizzazione sulle rotte protette | 🚧 In sviluppo |
+| Middleware di autorizzazione sulle rotte protette | ✅ Implementato |
 
 ## Stack tecnologico
 
@@ -30,7 +30,7 @@ Backend REST per la gestione di moto da cross/enduro, sessioni in pista e manute
 ├── config/           # Configurazione connessione al database
 ├── controllers/       # Logica di business delle rotte
 ├── database/          # Schema SQL del database
-├── middlewares/        # Middleware Express (in sviluppo)
+├── middlewares/        # Middleware Express (auth, autorizzazione, validazione id)
 ├── routes/             # Definizione degli endpoint
 ├── server.js           # Entry point dell'applicazione
 └── .env.example         # Esempio di variabili d'ambiente richieste
@@ -97,7 +97,19 @@ Backend REST per la gestione di moto da cross/enduro, sessioni in pista e manute
 | `POST` | `/auth/register` | Registra un nuovo utente (`name`, `email`, `password`) |
 | `POST` | `/auth/login` | Effettua il login e restituisce un JWT valido 1 ora |
 
-Altre risorse (moto, sessioni, manutenzioni) saranno esposte man mano che il relativo modulo verrà completato.
+### Moto (`/bike`)
+
+Tutte le rotte richiedono autenticazione (`Authorization: Bearer <token>`). Le rotte su una singola moto (`/:id`) verificano inoltre che la moto appartenga all'utente autenticato.
+
+| Metodo | Endpoint | Descrizione |
+|---|---|---|
+| `GET` | `/bike` | Elenca le moto dell'utente loggato |
+| `GET` | `/bike/:id` | Recupera il dettaglio di una moto |
+| `POST` | `/bike` | Crea una nuova moto (`brand`, `model`, `year`) |
+| `PUT` | `/bike/:id` | Aggiorna i dati di una moto (`brand`, `model`, `year`) |
+| `DELETE` | `/bike/:id` | Elimina una moto |
+
+Altre risorse (sessioni, manutenzioni) saranno esposte man mano che il relativo modulo verrà completato.
 
 ## Licenza
 
