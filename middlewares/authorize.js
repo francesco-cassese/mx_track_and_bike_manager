@@ -1,4 +1,5 @@
 import connection from '../config/db.js';
+import { parseResourceId } from '../utils/parseResourceId.js';
 
 // Definisco, per ogni tipo di risorsa, la query che mi permette di risalire allo user_id proprietario:
 // per le bikes lo user_id è diretto, per sessions/maintenance lo eredito dalla bike collegata.
@@ -29,10 +30,10 @@ const authorizeOwner = (resourceType) => {
             });
         }
 
-        const resourceId = parseInt(req.params.id, 10);
+        const resourceId = parseResourceId(req.params.id);
 
-        // Scarto subito id non numerici, prima di interrogare il database.
-        if (Number.isNaN(resourceId)) {
+        // Scarto subito id non validi, prima di interrogare il database.
+        if (resourceId === null) {
             return res.status(400).json({
                 success: false,
                 message: "Id risorsa non valido"
