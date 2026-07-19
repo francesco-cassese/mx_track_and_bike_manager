@@ -13,8 +13,16 @@ Backend REST per la gestione di moto da cross/enduro, sessioni in pista e manute
 | Autenticazione utenti (registrazione, login, JWT) | ✅ Implementato |
 | Gestione moto (bikes) | ✅ Implementato |
 | Sessioni in pista (sessions) | ✅ Implementato |
-| Manutenzioni programmate (maintenance) | 🚧 In sviluppo |
+| Manutenzioni programmate (maintenance) | ✅ Implementato |
 | Middleware di autorizzazione sulle rotte protette | ✅ Implementato |
+
+## Roadmap
+
+Sviluppi previsti, in ordine di priorità:
+
+- **Alert di manutenzione** — calcolo delle ore rimanenti prima della soglia configurata ed endpoint dedicato per recuperare lo stato (ok / in scadenza / scaduta) delle manutenzioni pianificate.
+- **Frontend (React)** — interfaccia per autenticazione, gestione garage, log allenamenti e manutenzioni, a consumo delle API REST già esposte dal backend.
+- **Validazione e gestione errori centralizzata** — validazione degli input su tutti gli endpoint backend, gestione uniforme degli errori via middleware Express, validazione lato frontend.
 
 ## Stack tecnologico
 
@@ -120,7 +128,16 @@ Tutte le rotte richiedono autenticazione e che la moto (`:id`) appartenga all'ut
 | `PUT` | `/bike/:id/sessions/:id` | Aggiorna i dati di una sessione |
 | `DELETE` | `/bike/:id/sessions/:id` | Elimina una sessione |
 
-Altre risorse (manutenzioni) saranno esposte man mano che il relativo modulo verrà completato.
+### Manutenzioni programmate (`/bike/:id/maintenance`)
+
+Tutte le rotte richiedono autenticazione e che la moto (`:id`) appartenga all'utente autenticato. Le rotte su una singola scadenza (`/:id/maintenance/:id`) verificano inoltre che la scadenza appartenga all'utente autenticato.
+
+| Metodo | Endpoint | Descrizione |
+|---|---|---|
+| `GET` | `/bike/:id/maintenance` | Elenca le scadenze di manutenzione della moto |
+| `POST` | `/bike/:id/maintenance` | Registra una nuova scadenza (`task_description`, `hour_threshold`, `last_service_hours`, `service_date`) |
+| `PUT` | `/bike/:id/maintenance/:id` | Aggiorna i dati di una scadenza |
+| `DELETE` | `/bike/:id/maintenance/:id` | Elimina una scadenza |
 
 ## Licenza
 
