@@ -1,6 +1,9 @@
 import connection from '../config/db.js';
 
 
+/**
+ * Recupero le scadenze di manutenzione registrate per una singola bike.
+ */
 const findAllByBikeId = async (bikeId) => {
     const query = `
             SELECT *
@@ -13,6 +16,9 @@ const findAllByBikeId = async (bikeId) => {
     return rows;
 };
 
+/**
+ * Recupero una scadenza di manutenzione tramite id.
+ */
 const findView = async (id) => {
     const query = `
          SELECT *
@@ -24,6 +30,9 @@ const findView = async (id) => {
     return rows[0];
 };
 
+/**
+ * Inserisco una nuova scadenza di manutenzione associata a una bike
+ */
 const insert = async ({ bikeId, taskDescription, hourThreshold, lastServiceHours, serviceDate }) => {
     const query = `
     INSERT INTO maintenance (
@@ -48,6 +57,9 @@ const insert = async ({ bikeId, taskDescription, hourThreshold, lastServiceHours
     return result;
 };
 
+/**
+ * Aggiorno i dati di una singola scadenza di manutenzione tramite id
+ */
 const update = async (id, { taskDescription, hourThreshold, lastServiceHours, serviceDate }) => {
     const query = `
     UPDATE maintenance
@@ -64,6 +76,9 @@ const update = async (id, { taskDescription, hourThreshold, lastServiceHours, se
 
 }
 
+/**
+ * Elimino una singola scadenza di manutenzione tramite id
+ */
 const remove = async (id) => {
     const query = `
     DELETE
