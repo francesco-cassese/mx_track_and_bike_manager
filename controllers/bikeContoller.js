@@ -128,4 +128,64 @@ const store = async (req, res) => {
     }
 }
 
-export { index, show, store }
+/**
+ * Aggiorno i dati di una singola moto tramite id
+ */
+const update = async (req, res) => {
+    try {
+
+        const id = req.resourceId;
+        const { brand, model, year } = req.body;
+
+        const query = `
+            UPDATE bikes
+            SET brand = ?,
+                model = ?,
+                year = ?
+            WHERE id = ?;
+        `
+
+        // Eseguo la query per aggiornare la bike richiesta
+        const [result] = await connection.execute(query, [
+            brand,
+            model,
+            year,
+            id
+        ])
+
+        // Non ho trovato nessuna moto con questo id: rispondo con 404
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Nessuna moto trovata con questo id'
+            })
+        }
+
+        const viewQuery = `
+         SELECT id, brand, model, year
+         FROM bikes
+         WHERE id = ?
+        `
+
+        // Recupero la bike aggiornata per restituirla nella risposta
+        const [updatedBikeView] = await connection.execute(viewQuery, [id]);
+
+        res.status(200).json({
+            success: true,
+            message: `Le informazioni sulla moto sono state aggiornate`,
+            data: updatedBikeView[0]
+        })
+
+    } catch (error) {
+
+        // Registro l'errore lato server per debugging e rispondo in modo generico all'utente
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Errore interno del server"
+        });
+    }
+
+}
+
+export { index, show, store, update }
