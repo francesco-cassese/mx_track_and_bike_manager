@@ -59,6 +59,9 @@ const authorizeOwner = (resourceType) => {
                 });
             }
 
+            // Espongo l'id già parsato al controller, evitando di riparsarlo a valle.
+            req.resourceId = resourceId;
+
             next();
         } catch (error) {
             // Registro l'errore lato server e restituisco un messaggio generico al client.
