@@ -1,12 +1,16 @@
-import { createConnection } from "mysql2/promise";
+import { createPool } from "mysql2/promise";
 
-// Apro la connessione una sola volta all'avvio, riutilizzata da tutti i controller.
-const connection = await createConnection({
+// Uso un pool invece di una singola connessione: gestisce le richieste concorrenti
+// e riconnette automaticamente le connessioni cadute (timeout, riavvio del DB, ecc.),
+// cosa che una connection singola non fa.
+const pool = createPool({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
+    database: process.env.DB_DATABASE,
+    waitForConnections: true,
+    connectionLimit: 10
 })
 
-export default connection;
+export default pool;
