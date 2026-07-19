@@ -188,4 +188,49 @@ const update = async (req, res) => {
 
 }
 
-export { index, show, store, update }
+/**
+ * Elimino una singola moto tramite id
+ */
+const destroy = async (req, res) => {
+    try {
+        const id = req.resourceId;
+
+        const query = `
+        DELETE
+        FROM bikes
+        WHERE id = ?
+        `
+
+        // Eseguo la query per eliminare la bike richiesta
+        const [result] = await connection.execute(query, [id]);
+
+        // Non ho trovato nessuna moto con questo id: rispondo con 404
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Nessuna moto trovata con questo id'
+            })
+        }
+
+        res.status(200).json({
+            success: true,
+            message: 'Moto eliminata con successo'
+        })
+
+    } catch (error) {
+
+        // Registro l'errore lato server per debugging e rispondo in modo generico all'utente
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Errore interno del server"
+        });
+    }
+
+
+}
+
+
+
+export { index, show, store, update, destroy }
+
