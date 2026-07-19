@@ -5,15 +5,17 @@ import bikeRouter from "./routes/bikeRouter.js";
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware globali
+// middlewares
 app.use(express.json());
 
-// Routes
+// routes
 app.use('/auth', authRouter);
 app.use('/bike', bikeRouter);
 
-// Error-handler centralizzato: intercetta gli errori inoltrati da asyncHandler
-// ed evita di ripetere lo stesso blocco di log + risposta 500 in ogni controller.
+/**
+ * Centralizzo la gestione degli errori: intercetto quelli inoltrati da asyncHandler
+ * ed evito di ripetere lo stesso blocco di log + risposta 500 in ogni controller.
+ */
 app.use((err, req, res, next) => {
     console.error(err);
     res.status(500).json({
