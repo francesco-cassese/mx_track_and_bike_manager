@@ -10,7 +10,7 @@ app.use(express.json());
 
 // Routes
 app.use('/auth', authRouter);
-app.use(`/bike`, bikeRouter);
+app.use('/bike', bikeRouter);
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
