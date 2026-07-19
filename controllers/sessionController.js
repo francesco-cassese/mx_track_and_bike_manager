@@ -11,11 +11,6 @@ const index = asyncHandler(async (req, res) => {
     // Recupero le sessioni della bike richiesta
     const result = await sessionRepository.findAllByBikeId(bike_id);
 
-    // Non ho trovato nessuna sessione per questa bike: rispondo con 404
-    if (result.length === 0) {
-        return sendError(res, 404, `Nessuna sessione trovata`);
-    }
-
     sendSuccess(res, 200, { data: result });
 });
 

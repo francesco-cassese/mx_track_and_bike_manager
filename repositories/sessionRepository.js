@@ -96,6 +96,9 @@ const remove = async (id) => {
     return result;
 };
 
+/**
+ * Sommo le ore registrate per una bike.
+ */
 const getTotalHoursByBikeId = async (id) => {
     const query = `
         SELECT SUM(hours_logged) AS total_hours
