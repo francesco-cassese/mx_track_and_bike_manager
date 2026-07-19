@@ -16,22 +16,7 @@ const findAllByUserId = async (userId) => {
 };
 
 /**
- * Recupero il dettaglio di una singola moto tramite id
- */
-const findById = async (id) => {
-    const query = `
-    SELECT *
-    FROM bikes
-    WHERE id = ?
-`
-
-    // Eseguo la query per recuperare la bike richiesta
-    const [rows] = await connection.execute(query, [id]);
-    return rows;
-};
-
-/**
- * Recupero la bike (colonne essenziali) tramite id, da riusare dopo create/update.
+ * Recupero la bike (colonne essenziali) tramite id.
  */
 const findView = async (id) => {
     const query = `
@@ -95,4 +80,4 @@ const remove = async (id) => {
     return result;
 };
 
-export { findAllByUserId, findById, findView, insert, update, remove };
+export { findAllByUserId, findView, insert, update, remove };

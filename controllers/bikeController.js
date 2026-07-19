@@ -17,16 +17,16 @@ const index = asyncHandler(async (req, res) => {
  */
 const show = asyncHandler(async (req, res) => {
     const id = req.resourceId;
-    const result = await bikeRepository.findById(id);
+    const bike = await bikeRepository.findView(id);
 
     // Non ho trovato nessuna moto con questo id: rispondo con 404
-    if (result.length === 0) {
+    if (!bike) {
         return sendError(res, 404, 'Nessuna moto trovata');
     }
 
     const totalHours = await sessionRepository.getTotalHoursByBikeId(id);
 
-    sendSuccess(res, 200, { data: { ...result[0], totalHours: totalHours ?? 0 } });
+    sendSuccess(res, 200, { data: { ...bike, totalHours: totalHours ?? 0 } });
 });
 
 /**
