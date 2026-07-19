@@ -1,22 +1,20 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import connection from '../config/db.js';
-
-const JWT_SECRET = process.env.JWT_SECRET;
+import { JWT_SECRET } from '../config/env.js';
+import { asyncHandler } from '../utils/asyncHandler.js';
+import { sendSuccess, sendError } from '../utils/apiResponse.js';
 
 /**
  * Gestisco la registrazione di un nuovo utente: eseguo l'hashing
  * della password e salvo l'utente nel database.
  */
-const register = async (req, res) => {
+const register = asyncHandler(async (req, res) => {
     const { name, email, password } = req.body;
 
     // Valido l'input: mi assicuro che tutti i campi necessari siano presenti
     if (!name || !email || !password) {
-        return res.status(400).json({
-            success: false,
-            message: 'Tutti i campi sono obbligatori'
-        });
+        return sendError(res, 400, 'Tutti i campi sono obbligatori');
     }
 
     try {
@@ -30,97 +28,60 @@ const register = async (req, res) => {
 
         // Verifico che l'inserimento sia andato a buon fine (affectedRows indica il numero di righe inserite)
         if (result.affectedRows === 0) {
-            return res.status(500).json({
-                success: false,
-                message: "Errore durante il salvataggio dell'utente"
-            });
+            return sendError(res, 500, "Errore durante il salvataggio dell'utente");
         }
 
         // Rispondo con successo (201 Created)
-        res.status(201).json({
-            success: true,
-            message: "Utente creato con successo!"
-        });
+        sendSuccess(res, 201, { message: "Utente creato con successo!" });
 
     } catch (error) {
         // Gestisco il caso specifico di violazione di vincoli unici (es. email già esistente)
         if (error.code === 'ER_DUP_ENTRY') {
-            return res.status(409).json({
-                success: false,
-                message: "Email già registrata"
-            });
+            return sendError(res, 409, "Email già registrata");
         }
 
-        // Registro l'errore lato server per debugging e rispondo in modo generico all'utente
-        console.error('Registration error:', error);
-        res.status(500).json({
-            success: false,
-            message: "Errore interno del server"
-        });
+        // Rilancio: gli errori non previsti finiscono nell'error-handler centralizzato
+        throw error;
     }
-};
+});
 
 /**
  * Gestisco il login di un utente esistente: verifico le credenziali
  * e restituisco un JWT in caso di successo.
  */
-const login = async (req, res) => {
+const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body
 
-    try {
+    const query = `
+                SELECT *
+                FROM users
+                WHERE email = ?`;
 
-        const query = `
-                    SELECT *
-                    FROM users
-                    WHERE email = ?`;
+    // Recupero l'utente tramite email (prepared statement per prevenire SQL Injection)
+    const [result] = await connection.execute(query, [email]);
 
-        // Recupero l'utente tramite email (prepared statement per prevenire SQL Injection)
-        const [result] = await connection.execute(query, [email]);
-
-        // Non ho trovato l'utente: rispondo con un messaggio generico per non rivelare quali email sono registrate
-        if (result.length === 0) {
-            return res.status(401).json({
-                success: false,
-                message: "Credenziali non valide"
-            });
-        }
-
-        const user = result[0];
-
-        // Confronto la password in chiaro con l'hash salvato nel database
-        const match = await bcrypt.compare(password, user.password_hash);
-
-        if (!match) {
-            return res.status(401).json({
-                success: false,
-                message: "Credenziali non valide"
-            });
-        }
-
-        // Genero il JWT con scadenza di 1 ora per autenticare le richieste successive
-        const token = jwt.sign(
-            { id: user.id, email: user.email },
-            JWT_SECRET,
-            { expiresIn: '1h' }
-        );
-
-        res.status(200).json({
-            success: true,
-            message: "Login effettuato!",
-            token: token
-        });
-
-
-    } catch (error) {
-
-        // Registro l'errore lato server per debugging e rispondo in modo generico all'utente
-        console.error(error);
-        res.status(500).json({
-            success: false,
-            message: "Errore interno del server"
-        });
+    // Non ho trovato l'utente: rispondo con un messaggio generico per non rivelare quali email sono registrate
+    if (result.length === 0) {
+        return sendError(res, 401, "Credenziali non valide");
     }
 
-}
+    const user = result[0];
+
+    // Confronto la password in chiaro con l'hash salvato nel database
+    const match = await bcrypt.compare(password, user.password_hash);
+
+    if (!match) {
+        return sendError(res, 401, "Credenziali non valide");
+    }
+
+    // Genero il JWT con scadenza di 1 ora per autenticare le richieste successive
+    const token = jwt.sign(
+        { id: user.id, email: user.email },
+        JWT_SECRET,
+        { expiresIn: '1h' }
+    );
+
+    sendSuccess(res, 200, { message: "Login effettuato!", token });
+});
 
 export { register, login };
