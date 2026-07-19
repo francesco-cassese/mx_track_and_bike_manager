@@ -75,4 +75,57 @@ const show = async (req, res) => {
 
 }
 
-export { index, show }
+/**
+ * Creo una nuova moto associata all'utente loggato
+ */
+const store = async (req, res) => {
+    try {
+
+        const user_id = req.user.id
+        const { brand, model, year } = req.body;
+
+        const query = `
+            INSERT INTO bikes (
+            user_id,
+            brand,
+            model,
+            year
+        )
+        VALUES (?,?,?,?);
+        `;
+
+        // Eseguo la query per inserire la nuova bike
+        const [result] = await connection.execute(query, [
+            user_id,
+            brand,
+            model,
+            year
+        ]);
+
+        const viewQuery = `
+         SELECT id, brand, model, year
+         FROM bikes
+         WHERE id = ?
+        `
+
+        // Recupero la bike appena creata per restituirla nella risposta
+        const [newBikeView] = await connection.execute(viewQuery, [result.insertId]);
+
+        return res.status(200).json({
+            success: true,
+            message: `Moto aggiunta con successo`,
+            data: newBikeView[0]
+        });
+
+    } catch (error) {
+
+        // Registro l'errore lato server per debugging e rispondo in modo generico all'utente
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message: "Errore interno del server"
+        });
+    }
+}
+
+export { index, show, store }
