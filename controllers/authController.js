@@ -79,11 +79,10 @@ const login = async (req, res) => {
 
         // Non ho trovato l'utente: rispondo con un messaggio generico per non rivelare quali email sono registrate
         if (result.length === 0) {
-            res.status(401).json({
+            return res.status(401).json({
                 success: false,
                 message: "Credenziali non valide"
-            })
-            return;
+            });
         }
 
         const user = result[0];
@@ -92,11 +91,10 @@ const login = async (req, res) => {
         const match = await bcrypt.compare(password, user.password_hash);
 
         if (!match) {
-            res.status(401).json({
+            return res.status(401).json({
                 success: false,
                 message: "Credenziali non valide"
-            })
-            return;
+            });
         }
 
         // Genero il JWT con scadenza di 1 ora per autenticare le richieste successive
