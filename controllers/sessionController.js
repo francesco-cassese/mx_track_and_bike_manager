@@ -1,4 +1,4 @@
-import connection from "../config/db.js";
+import * as sessionRepository from "../repositories/sessionRepository.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendSuccess, sendError } from "../utils/apiResponse.js";
 
@@ -8,16 +8,8 @@ import { sendSuccess, sendError } from "../utils/apiResponse.js";
 const index = asyncHandler(async (req, res) => {
     const bike_id = req.resourceId;
 
-    const query = `
-        SELECT *
-        FROM sessions AS s
-            JOIN bikes AS b
-                ON s.bike_id = b.id
-        WHERE s.bike_id = ?
-    `
-
-    // Eseguo la query per recuperare le sessioni della bike richiesta
-    const [result] = await connection.execute(query, [bike_id]);
+    // Recupero le sessioni della bike richiesta
+    const result = await sessionRepository.findAllByBikeId(bike_id);
 
     if (result.length === 0) {
         return sendError(res, 404, `Nessuna sessione trovata`);
@@ -26,4 +18,35 @@ const index = asyncHandler(async (req, res) => {
     sendSuccess(res, 200, { data: result });
 });
 
-export { index }
+/**
+ * Registro una nuova sessione di allenamento per una bike (ownership già verificata da authorizeOwner).
+ */
+const store = asyncHandler(async (req, res) => {
+    const bike_id = req.resourceId;
+    const { date, track, weather, feeling, hours_logged, notes } = req.body;
+
+    // Inserisco la nuova sessione
+    const result = await sessionRepository.insert({
+        bikeId: bike_id,
+        date,
+        track,
+        weather,
+        feeling,
+        hoursLogged: hours_logged,
+        notes
+    });
+
+    if (result.affectedRows === 0) {
+        return sendError(res, 400, 'Errore nella creazione della sessione di allenamento')
+    }
+
+    // Recupero la sessione appena creata per restituirla nella risposta
+    const newSession = await sessionRepository.findView(result.insertId);
+
+    sendSuccess(res, 200, {
+        message: `Sessione aggiunta con successo`,
+        data: newSession
+    });
+})
+
+export { index, store }
