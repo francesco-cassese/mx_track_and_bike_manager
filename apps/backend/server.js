@@ -1,11 +1,13 @@
 import express from "express";
 import authRouter from "./routes/authRouter.js";
 import bikeRouter from "./routes/bikeRouter.js";
+import cors from "cors";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // middlewares
+app.use(cors())
 app.use(express.json());
 
 // routes
