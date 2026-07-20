@@ -6,6 +6,11 @@ import { register } from "../services/authApi";
 import styles from "./RegisterPage.module.css";
 
 
+/**
+ * Pagina di registrazione: valida i campi lato client prima di chiamare
+ * l'API, poi gestisce distintamente i tre esiti possibili (successo,
+ * email duplicata, altri errori) coerentemente con quanto risponde il backend.
+ */
 function RegisterPage() {
     const navigate = useNavigate();
     const [name, setName] = useState("");
@@ -24,6 +29,8 @@ function RegisterPage() {
     const fieldRefs = { name: nameRef, email: emailRef, password: passwordRef, confirmPassword: confirmPasswordRef };
     const fieldOrder = ["name", "email", "password", "confirmPassword"];
 
+    // Sposto il focus sul primo campo invalido (in ordine di apparizione nel form),
+    // così l'utente da tastiera/screen reader arriva subito dove serve intervenire
     const focusFirstError = (errorsToCheck) => {
         const firstInvalidField = fieldOrder.find((field) => errorsToCheck[field]);
         fieldRefs[firstInvalidField]?.current?.focus();
