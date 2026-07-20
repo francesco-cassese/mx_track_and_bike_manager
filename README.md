@@ -26,14 +26,17 @@ Applicazione per la gestione di moto da cross/enduro, sessioni in pista e manute
 |---|---|
 | Scaffolding React + Vite, routing (`react-router-dom`) | ✅ Implementato |
 | Pagina di registrazione (form, validazione client, chiamata API, gestione errori, accessibilità) | ✅ Implementato |
-| Pagina di login | 🚧 Placeholder, non ancora implementata |
+| Route 404 di fallback | ✅ Implementato |
+| Storage del token e auto-attach alle richieste API, contesto di autenticazione (`AuthContext`/`useAuth`) | ✅ Implementato |
+| Chiamata API di login (`authApi.login`) | ✅ Implementato |
+| Pagina di login | 🚧 Placeholder, manca ancora il form (usa già `authApi.login` e `AuthContext` una volta completata) |
 | Gestione garage (moto), log sessioni, manutenzioni | ⬜ Da implementare |
 
 ## Roadmap
 
 Sviluppi previsti, in ordine di priorità:
 
-- **Login (frontend)** — form di login analogo alla registrazione, gestione del JWT ricevuto e persistenza della sessione lato client.
+- **Login (frontend)** — form di login analogo alla registrazione; API, storage del token e contesto di autenticazione sono già pronti, manca solo la UI della pagina.
 - **Frontend: garage, sessioni, manutenzioni** — interfaccia per gestione moto, log allenamenti e manutenzioni, a consumo delle API REST già esposte dal backend.
 - **Validazione e gestione errori centralizzata sul backend** — validazione di formato/robustezza degli input su tutti gli endpoint (oggi presente solo lato frontend per la registrazione), gestione uniforme degli errori via middleware Express.
 
@@ -72,8 +75,9 @@ Monorepo gestito con pnpm workspaces: backend in `apps/backend`, frontend in `ap
 │   └── frontend/
 │       └── src/
 │           ├── components/    # Componenti riusabili (es. FormField)
-│           ├── pages/         # Pagine/route (RegisterPage, LoginPage, ...)
-│           ├── services/      # Client HTTP verso il backend (apiFetch, authApi)
+│           ├── context/       # Contesto di autenticazione (AuthContext, useAuth)
+│           ├── pages/         # Pagine/route (RegisterPage, LoginPage, NotFoundPage, ...)
+│           ├── services/      # Client HTTP verso il backend (apiFetch, authApi, tokenStorage)
 │           ├── utils/         # Funzioni pure riusabili (es. validatori dei form)
 │           ├── App.jsx        # Definizione delle rotte
 │           └── main.jsx       # Entry point dell'applicazione
