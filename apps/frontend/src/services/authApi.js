@@ -1,16 +1,15 @@
-import { apiFetch } from "./api";
+import { postJson } from "./api";
 
-const register = async ({ name, email, password }) => {
+/**
+ * Registro un nuovo utente. Non salvo alcun token: la registrazione
+ * non autentica automaticamente, l'utente deve poi effettuare il login.
+ */
+const register = ({ name, email, password }) => postJson('/auth/register', { name, email, password });
 
-    const data = await apiFetch(`/auth/register`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password })
-    });
+/**
+ * Effettuo il login. Restituisco il token al chiamante invece di salvarlo
+ * direttamente: la persistenza è responsabilità di AuthContext (login()).
+ */
+const login = ({ email, password }) => postJson('/auth/login', { email, password });
 
-    return data;
-}
-
-export { register };
+export { register, login };
