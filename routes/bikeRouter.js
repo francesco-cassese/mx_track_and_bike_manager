@@ -1,5 +1,6 @@
 import express from "express";
 import { destroy, index, show, store, totalHours, update } from "../controllers/bikeController.js";
+import { alerts } from "../controllers/maintenanceController.js";
 import sessionRouter from "./sessionRouter.js";
 import maintenanceRouter from "./maintenanceRouter.js";
 import { authenticateToken } from "../middlewares/auth.js";
@@ -26,6 +27,9 @@ router.use('/:id/maintenance', authorizeOwner('bike'), maintenanceRouter);
 
 // Totale ore di utilizzo della moto, calcolato sommando le sessioni registrate
 router.get('/:id/total-hours', authorizeOwner('bike'), totalHours);
+
+// Manutenzioni scadute o in scadenza (entro 10 ore) per la moto
+router.get('/:id/alert', authorizeOwner('bike'), alerts);
 
 // Creazione di una nuova moto associata all'utente autenticato
 router.post('/', store)

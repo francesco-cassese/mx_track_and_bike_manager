@@ -1,6 +1,8 @@
 import * as maintenanceRepository from '../repositories/maintenanceRepository.js';
+import * as sessionRepository from '../repositories/sessionRepository.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendError, sendSuccess } from '../utils/apiResponse.js';
+import { calculateRemainingHours, getMaintenanceStatus } from '../utils/maintenance.js';
 
 /**
  * Recupero le scadenze di manutenzione registrate per una singola bike (ownership già verificata da authorizeOwner).
@@ -88,4 +90,27 @@ const destroy = asyncHandler(async (req, res) => {
     sendSuccess(res, 200, { message: 'Scadenza di manutenzione eliminata con successo' });
 });
 
-export { index, store, update, destroy };
+/**
+ * Recupero le scadenze di manutenzione scadute o in scadenza per una bike (ownership già verificata da authorizeOwner).
+ */
+const alerts = asyncHandler(async (req, res) => {
+    const bike_id = req.resourceId;
+
+    const [maintenances, totalHours] = await Promise.all([
+        maintenanceRepository.findAllByBikeId(bike_id),
+        sessionRepository.getTotalHoursByBikeId(bike_id)
+    ]);
+
+    // Escludo le manutenzioni senza soglia o ultimo intervento: non è possibile calcolarne lo stato
+    const alertList = maintenances
+        .filter((m) => m.hour_threshold !== null && m.last_service_hours !== null)
+        .map((m) => {
+            const remainingHours = calculateRemainingHours(m.hour_threshold, totalHours ?? 0, m.last_service_hours);
+            return { ...m, remaining_hours: remainingHours, status: getMaintenanceStatus(remainingHours) };
+        })
+        .filter((m) => m.status !== 'ok');
+
+    sendSuccess(res, 200, { data: alertList });
+});
+
+export { index, store, update, destroy, alerts };
