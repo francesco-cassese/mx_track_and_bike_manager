@@ -34,16 +34,22 @@ Sviluppi previsti, in ordine di priorità:
 
 ## Struttura del progetto
 
+Monorepo gestito con pnpm workspaces: il backend vive in `apps/backend`, pronto ad affiancare in futuro un `apps/frontend` (React).
+
 ```
-├── config/           # Configurazione connessione al database
-├── controllers/       # Logica di business delle rotte
-├── database/          # Schema SQL del database
-├── middlewares/        # Middleware Express (auth, autorizzazione, validazione id)
-├── repositories/        # Query al database, isolate per risorsa
-├── routes/               # Definizione degli endpoint
-├── utils/                 # Helper condivisi (async handler, risposte API, parsing id)
-├── server.js                # Entry point dell'applicazione
-└── .env.example               # Esempio di variabili d'ambiente richieste
+├── apps/
+│   └── backend/
+│       ├── config/           # Configurazione connessione al database
+│       ├── controllers/       # Logica di business delle rotte
+│       ├── database/          # Schema SQL del database
+│       ├── middlewares/        # Middleware Express (auth, autorizzazione, validazione id)
+│       ├── repositories/        # Query al database, isolate per risorsa
+│       ├── routes/               # Definizione degli endpoint
+│       ├── utils/                 # Helper condivisi (async handler, risposte API, parsing id)
+│       ├── server.js                # Entry point dell'applicazione
+│       └── .env.example               # Esempio di variabili d'ambiente richieste
+├── package.json        # Root del workspace (script di orchestrazione)
+└── pnpm-workspace.yaml  # Definizione dei package del workspace
 ```
 
 ## Requisiti
@@ -54,16 +60,16 @@ Sviluppi previsti, in ordine di priorità:
 
 ## Installazione
 
-1. Clona il repository e installa le dipendenze:
+1. Clona il repository e installa le dipendenze (dalla root del workspace):
 
    ```bash
    pnpm install
    ```
 
-2. Crea il file `.env` a partire dall'esempio fornito:
+2. Crea il file `.env` del backend a partire dall'esempio fornito:
 
    ```bash
-   cp .env.example .env
+   cp apps/backend/.env.example apps/backend/.env
    ```
 
    Poi valorizza le variabili richieste (vedi tabella sotto).
@@ -71,20 +77,22 @@ Sviluppi previsti, in ordine di priorità:
 3. Crea il database ed esegui lo schema SQL:
 
    ```bash
-   mysql -u root -p < database/schema.sql
+   mysql -u root -p < apps/backend/database/schema.sql
    ```
 
-4. Avvia il server:
+4. Avvia il server (dalla root):
 
    ```bash
-   pnpm start
+   pnpm start:backend
    ```
 
    Oppure in modalità sviluppo con auto-reload:
 
    ```bash
-   pnpm watch
+   pnpm watch:backend
    ```
+
+   In alternativa, dalla cartella `apps/backend`, sono disponibili gli script locali `pnpm start` / `pnpm watch`.
 
 ## Variabili d'ambiente
 

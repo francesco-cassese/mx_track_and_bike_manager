@@ -1,11 +1,11 @@
 {
-  "name": "mx_track_&_bike_manager",
+  "name": "mx-track-bike-manager",
   "version": "1.0.0",
+  "private": true,
   "description": "",
-  "main": "server.js",
   "scripts": {
-    "start": "node --env-file=.env server.js",
-    "watch": "node --watch --env-file=.env server.js"
+    "start:backend": "pnpm --filter backend start",
+    "watch:backend": "pnpm --filter backend watch"
   },
   "keywords": [],
   "author": "",
@@ -16,12 +16,5 @@
       "version": "^11.7.0",
       "onFail": "download"
     }
-  },
-  "type": "module",
-  "dependencies": {
-    "bcrypt": "^6.0.0",
-    "express": "^5.2.1",
-    "jsonwebtoken": "^9.0.3",
-    "mysql2": "^3.23.0"
   }
 }
