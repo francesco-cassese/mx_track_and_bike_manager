@@ -1,3 +1,5 @@
+import { getToken } from "./tokenStorage";
+
 const BASE_URL = 'http://localhost:3000';
 
 /**
@@ -7,8 +9,16 @@ const BASE_URL = 'http://localhost:3000';
  * solo status HTTP.
  */
 const apiFetch = async (endpoint, options = {}) => {
+    const token = getToken();
 
-    const response = await fetch(`${BASE_URL}${endpoint}`, options);
+    // Allego il token, se presente, senza obbligare ogni chiamante a
+    // preoccuparsene: le richieste su rotte pubbliche (es. login) semplicemente non ne hanno
+    const headers = {
+        ...options.headers,
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+    };
+
+    const response = await fetch(`${BASE_URL}${endpoint}`, { ...options, headers });
 
     const result = await response.json();
 
@@ -26,4 +36,14 @@ const apiFetch = async (endpoint, options = {}) => {
 
 }
 
-export { apiFetch }
+/**
+ * Scorciatoia per le POST con body JSON: evita di ripetere headers e
+ * JSON.stringify in ogni chiamante (es. i vari metodi di authApi).
+ */
+const postJson = (endpoint, body) => apiFetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+});
+
+export { apiFetch, postJson }
