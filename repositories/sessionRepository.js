@@ -101,7 +101,7 @@ const remove = async (id) => {
  */
 const getTotalHoursByBikeId = async (id) => {
     const query = `
-        SELECT SUM(hours_logged) AS total_hours
+        SELECT COALESCE(SUM(hours_logged), 0) AS total_hours
         FROM sessions
         WHERE bike_id = ?
     `
