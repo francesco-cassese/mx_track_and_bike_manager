@@ -4,8 +4,9 @@
   "private": true,
   "description": "",
   "scripts": {
-    "start:backend": "pnpm --filter backend start",
-    "watch:backend": "pnpm --filter backend watch"
+    "start": "pnpm --filter backend start",
+    "watch": "pnpm --filter backend watch",
+    "dev": "pnpm --filter frontend dev"
   },
   "keywords": [],
   "author": "",

@@ -83,13 +83,13 @@ Monorepo gestito con pnpm workspaces: il backend vive in `apps/backend`, pronto 
 4. Avvia il server (dalla root):
 
    ```bash
-   pnpm start:backend
+   pnpm start
    ```
 
    Oppure in modalità sviluppo con auto-reload:
 
    ```bash
-   pnpm watch:backend
+   pnpm watch
    ```
 
    In alternativa, dalla cartella `apps/backend`, sono disponibili gli script locali `pnpm start` / `pnpm watch`.
