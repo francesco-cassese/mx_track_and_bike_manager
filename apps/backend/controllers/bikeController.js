@@ -1,5 +1,5 @@
-import * as bikeRepository from "../repositories/bikeRepository.js";
-import * as sessionRepository from "../repositories/sessionRepository.js";
+import { findAllByUserId, findView, insert, update as updateBike, remove } from "../repositories/bikeRepository.js";
+import { getTotalHoursByBikeId } from "../repositories/sessionRepository.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendSuccess, sendError } from "../utils/apiResponse.js";
 
@@ -7,7 +7,7 @@ import { sendSuccess, sendError } from "../utils/apiResponse.js";
  * Recupero le moto dell'utente loggato
  */
 const index = asyncHandler(async (req, res) => {
-    const result = await bikeRepository.findAllByUserId(req.user.id);
+    const result = await findAllByUserId(req.user.id);
 
     sendSuccess(res, 200, { data: result });
 });
@@ -17,14 +17,14 @@ const index = asyncHandler(async (req, res) => {
  */
 const show = asyncHandler(async (req, res) => {
     const id = req.resourceId;
-    const bike = await bikeRepository.findView(id);
+    const bike = await findView(id);
 
     // Non ho trovato nessuna moto con questo id: rispondo con 404
     if (!bike) {
         return sendError(res, 404, 'Nessuna moto trovata');
     }
 
-    const totalHours = await sessionRepository.getTotalHoursByBikeId(id);
+    const totalHours = await getTotalHoursByBikeId(id);
 
     sendSuccess(res, 200, { data: { ...bike, totalHours: totalHours ?? 0 } });
 });
@@ -37,10 +37,10 @@ const store = asyncHandler(async (req, res) => {
     const { brand, model, year } = req.body;
 
     // Eseguo la query per inserire la nuova bike
-    const result = await bikeRepository.insert({ userId: user_id, brand, model, year });
+    const result = await insert({ userId: user_id, brand, model, year });
 
     // Recupero la bike appena creata per restituirla nella risposta
-    const newBikeView = await bikeRepository.findView(result.insertId);
+    const newBikeView = await findView(result.insertId);
 
     sendSuccess(res, 200, {
         message: `Moto aggiunta con successo`,
@@ -56,7 +56,7 @@ const update = asyncHandler(async (req, res) => {
     const { brand, model, year } = req.body;
 
     // Eseguo la query per aggiornare la bike richiesta
-    const result = await bikeRepository.update(id, { brand, model, year });
+    const result = await updateBike(id, { brand, model, year });
 
     // Non ho trovato nessuna moto con questo id: rispondo con 404
     if (result.affectedRows === 0) {
@@ -64,7 +64,7 @@ const update = asyncHandler(async (req, res) => {
     }
 
     // Recupero la bike aggiornata per restituirla nella risposta
-    const updatedBikeView = await bikeRepository.findView(id);
+    const updatedBikeView = await findView(id);
 
     sendSuccess(res, 200, {
         message: `Le informazioni sulla moto sono state aggiornate`,
@@ -79,7 +79,7 @@ const destroy = asyncHandler(async (req, res) => {
     const id = req.resourceId;
 
     // Eseguo la query per eliminare la bike richiesta
-    const result = await bikeRepository.remove(id);
+    const result = await remove(id);
 
     // Non ho trovato nessuna moto con questo id: rispondo con 404
     if (result.affectedRows === 0) {
@@ -94,7 +94,7 @@ const destroy = asyncHandler(async (req, res) => {
  */
 const totalHours = asyncHandler(async (req, res) => {
     const id = req.resourceId;
-    const total = await sessionRepository.getTotalHoursByBikeId(id);
+    const total = await getTotalHoursByBikeId(id);
 
     sendSuccess(res, 200, { data: { totalHours: total ?? 0 } });
 });

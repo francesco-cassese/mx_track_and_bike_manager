@@ -1,4 +1,4 @@
-import * as sessionRepository from "../repositories/sessionRepository.js";
+import { findAllByBikeId, insert, findView, update as updateSession, remove } from "../repositories/sessionRepository.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendSuccess, sendError } from "../utils/apiResponse.js";
 
@@ -9,7 +9,7 @@ const index = asyncHandler(async (req, res) => {
     const bike_id = req.resourceId;
 
     // Recupero le sessioni della bike richiesta
-    const result = await sessionRepository.findAllByBikeId(bike_id);
+    const result = await findAllByBikeId(bike_id);
 
     sendSuccess(res, 200, { data: result });
 });
@@ -22,7 +22,7 @@ const store = asyncHandler(async (req, res) => {
     const { date, track, weather, feeling, hours_logged, notes } = req.body;
 
     // Inserisco la nuova sessione
-    const result = await sessionRepository.insert({
+    const result = await insert({
         bikeId: bike_id,
         date,
         track,
@@ -38,7 +38,7 @@ const store = asyncHandler(async (req, res) => {
     }
 
     // Recupero la sessione appena creata per restituirla nella risposta
-    const newSession = await sessionRepository.findView(result.insertId);
+    const newSession = await findView(result.insertId);
 
     sendSuccess(res, 200, {
         message: `Sessione aggiunta con successo`,
@@ -54,7 +54,7 @@ const update = asyncHandler(async (req, res) => {
     const { date, track, weather, feeling, hours_logged, notes } = req.body;
 
     // Eseguo la query per aggiornare la sessione richiesta
-    const result = await sessionRepository.update(id, {
+    const result = await updateSession(id, {
         date,
         track,
         weather,
@@ -69,7 +69,7 @@ const update = asyncHandler(async (req, res) => {
     }
 
     // Recupero la sessione aggiornata per restituirla nella risposta
-    const updateSessionView = await sessionRepository.findView(id)
+    const updateSessionView = await findView(id)
 
     sendSuccess(res, 200, {
         message: `Le informazioni sulla sessione sono state aggiornate`,
@@ -85,7 +85,7 @@ const destroy = asyncHandler(async (req, res) => {
     const id = req.resourceId;
 
     // Il repository restituisce già l'OkPacket, non un array: non va destrutturato ulteriormente
-    const result = await sessionRepository.remove(id);
+    const result = await remove(id);
 
     // Non ho trovato nessuna sessione con questo id: rispondo con 404
     if (result.affectedRows === 0) {

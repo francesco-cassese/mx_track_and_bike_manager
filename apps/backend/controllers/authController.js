@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import * as userRepository from '../repositories/userRepository.js';
+import { insert, findByEmail } from '../repositories/userRepository.js';
 import { JWT_SECRET } from '../config/env.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendSuccess, sendError } from '../utils/apiResponse.js';
@@ -22,7 +22,7 @@ const register = asyncHandler(async (req, res) => {
         const passwordHash = await bcrypt.hash(password, 12);
 
         // Salvo il nuovo utente
-        const result = await userRepository.insert({ name, email, passwordHash });
+        const result = await insert({ name, email, passwordHash });
 
         // Verifico che l'inserimento sia andato a buon fine (affectedRows indica il numero di righe inserite)
         if (result.affectedRows === 0) {
@@ -51,7 +51,7 @@ const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body
 
     // Recupero l'utente tramite email
-    const user = await userRepository.findByEmail(email);
+    const user = await findByEmail(email);
 
     // Non ho trovato l'utente: rispondo con un messaggio generico per non rivelare quali email sono registrate
     if (!user) {

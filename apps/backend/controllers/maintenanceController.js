@@ -1,5 +1,5 @@
-import * as maintenanceRepository from '../repositories/maintenanceRepository.js';
-import * as sessionRepository from '../repositories/sessionRepository.js';
+import { findAllByBikeId, findView, insert, update as updateMaintenance, remove } from '../repositories/maintenanceRepository.js';
+import { getTotalHoursByBikeId } from '../repositories/sessionRepository.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendError, sendSuccess } from '../utils/apiResponse.js';
 import { calculateRemainingHours, getMaintenanceStatus } from '../utils/maintenance.js';
@@ -10,7 +10,7 @@ import { calculateRemainingHours, getMaintenanceStatus } from '../utils/maintena
 const index = asyncHandler(async (req, res) => {
     const bike_id = req.resourceId;
 
-    const result = await maintenanceRepository.findAllByBikeId(bike_id);
+    const result = await findAllByBikeId(bike_id);
 
     sendSuccess(res, 200, { data: result });
 });
@@ -23,7 +23,7 @@ const store = asyncHandler(async (req, res) => {
     const { task_description, hour_threshold, last_service_hours, service_date } = req.body;
 
     // Inserisco la nuova scadenza di manutenzione
-    const result = await maintenanceRepository.insert({
+    const result = await insert({
         bikeId: bike_id,
         taskDescription: task_description,
         hourThreshold: hour_threshold,
@@ -37,7 +37,7 @@ const store = asyncHandler(async (req, res) => {
     }
 
     // Recupero la scadenza appena creata per restituirla nella risposta
-    const newMaintenance = await maintenanceRepository.findView(result.insertId);
+    const newMaintenance = await findView(result.insertId);
 
     sendSuccess(res, 200, {
         message: `Scadenza di manutenzione aggiunta con successo`,
@@ -53,7 +53,7 @@ const update = asyncHandler(async (req, res) => {
     const { task_description, hour_threshold, last_service_hours, service_date } = req.body;
 
     // Eseguo la query per aggiornare la scadenza richiesta
-    const result = await maintenanceRepository.update(id, {
+    const result = await updateMaintenance(id, {
         taskDescription: task_description,
         hourThreshold: hour_threshold,
         lastServiceHours: last_service_hours,
@@ -66,7 +66,7 @@ const update = asyncHandler(async (req, res) => {
     }
 
     // Recupero la scadenza aggiornata per restituirla nella risposta
-    const updatedMaintenanceView = await maintenanceRepository.findView(id);
+    const updatedMaintenanceView = await findView(id);
 
     sendSuccess(res, 200, {
         message: `Le informazioni sulla scadenza di manutenzione sono state aggiornate`,
@@ -80,7 +80,7 @@ const update = asyncHandler(async (req, res) => {
 const destroy = asyncHandler(async (req, res) => {
     const id = req.resourceId;
 
-    const result = await maintenanceRepository.remove(id);
+    const result = await remove(id);
 
     // Non ho trovato nessuna scadenza con questo id: rispondo con 404
     if (result.affectedRows === 0) {
@@ -97,8 +97,8 @@ const alerts = asyncHandler(async (req, res) => {
     const bike_id = req.resourceId;
 
     const [maintenances, totalHours] = await Promise.all([
-        maintenanceRepository.findAllByBikeId(bike_id),
-        sessionRepository.getTotalHoursByBikeId(bike_id)
+        findAllByBikeId(bike_id),
+        getTotalHoursByBikeId(bike_id)
     ]);
 
     // Escludo le manutenzioni senza soglia o ultimo intervento: non è possibile calcolarne lo stato
