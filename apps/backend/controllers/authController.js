@@ -30,7 +30,7 @@ const register = asyncHandler(async (req, res) => {
         }
 
         // Rispondo con successo (201 Created)
-        sendSuccess(res, 201, { message: "Utente creato con successo!" });
+        sendSuccess(res, 201, { data: { message: "Utente creato con successo!" } });
 
     } catch (error) {
         // Gestisco il caso specifico di violazione di vincoli unici (es. email già esistente)
@@ -72,7 +72,7 @@ const login = asyncHandler(async (req, res) => {
         { expiresIn: '1h' }
     );
 
-    sendSuccess(res, 200, { message: "Login effettuato!", token });
+    sendSuccess(res, 200, { data: { message: "Login effettuato!", token } });
 });
 
 export { register, login };
