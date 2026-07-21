@@ -32,17 +32,18 @@ function HomePage() {
     useEffect(() => {
         let isMounted = true;
 
-        getBikes()
-            .then((data) => Promise.all(data.map(enrichBike)))
-            .then((enrichedBikes) => {
+        async function loadBikes() {
+            try {
+                const data = await getBikes();
+                const enrichedBikes = await Promise.all(data.map(enrichBike));
                 if (isMounted) setBikes(enrichedBikes);
-            })
-            .catch((err) => {
+            } catch (err) {
                 if (isMounted) setError(getRequestErrorMessage(err));
-            })
-            .finally(() => {
+            } finally {
                 if (isMounted) setIsLoading(false);
-            });
+            }
+        }
+        loadBikes();
 
         // Evito di aggiornare lo stato se il componente viene smontato prima
         // che la richiesta risponda (es. logout durante il fetch)
