@@ -29,16 +29,18 @@ Applicazione per la gestione di moto da cross/enduro, sessioni in pista e manute
 | Route 404 di fallback | ✅ Implementato |
 | Storage del token e auto-attach alle richieste API, contesto di autenticazione (`AuthContext`/`useAuth`) | ✅ Implementato |
 | Chiamata API di login (`authApi.login`) | ✅ Implementato |
-| Pagina di login | 🚧 Placeholder, manca ancora il form (usa già `authApi.login` e `AuthContext` una volta completata) |
-| Gestione garage (moto), log sessioni, manutenzioni | ⬜ Da implementare |
+| Pagina di login | ✅ Implementato |
+| Rotte protette (`ProtectedRoute`), redirect al login se non autenticati | ✅ Implementato |
+| Dashboard moto (`HomePage`): elenco moto con ore totali e alert manutenzione | ✅ Implementato |
+| Gestione garage (creazione, dettaglio, modifica, eliminazione moto) | ✅ Implementato |
+| Log sessioni, manutenzioni (UI) | ⬜ Da implementare |
 
 ## Roadmap
 
 Sviluppi previsti, in ordine di priorità:
 
-- **Login (frontend)** — form di login analogo alla registrazione; API, storage del token e contesto di autenticazione sono già pronti, manca solo la UI della pagina.
-- **Frontend: garage, sessioni, manutenzioni** — interfaccia per gestione moto, log allenamenti e manutenzioni, a consumo delle API REST già esposte dal backend.
-- **Validazione e gestione errori centralizzata sul backend** — validazione di formato/robustezza degli input su tutti gli endpoint (oggi presente solo lato frontend per la registrazione), gestione uniforme degli errori via middleware Express.
+- **Frontend: log sessioni e manutenzioni** — interfaccia per registrare sessioni in pista e scadenze di manutenzione, a consumo delle API REST già esposte dal backend.
+- **Validazione e gestione errori centralizzata sul backend** — validazione di formato/robustezza degli input su tutti gli endpoint (oggi presente solo lato frontend), gestione uniforme degli errori via middleware Express.
 
 ## Stack tecnologico
 
@@ -74,10 +76,11 @@ Monorepo gestito con pnpm workspaces: backend in `apps/backend`, frontend in `ap
 │   │   └── .env.example       # Esempio di variabili d'ambiente richieste
 │   └── frontend/
 │       └── src/
-│           ├── components/    # Componenti riusabili (es. FormField)
-│           ├── context/       # Contesto di autenticazione (AuthContext, useAuth)
-│           ├── pages/         # Pagine/route (RegisterPage, LoginPage, NotFoundPage, ...)
-│           ├── services/      # Client HTTP verso il backend (apiFetch, authApi, tokenStorage)
+│           ├── components/    # Componenti riusabili (FormField, BikeCard, BikeList, BikeForm, ProtectedRoute)
+│           ├── context/       # Contesto di autenticazione (AuthContext)
+│           ├── hooks/         # Hook riusabili (useAuth, useFocusFirstError)
+│           ├── pages/         # Pagine/route (RegisterPage, LoginPage, HomePage, AddBikePage, BikeDetailPage, EditBikePage, NotFoundPage)
+│           ├── services/      # Client HTTP verso il backend (apiFetch, authApi, bikeApi, tokenStorage)
 │           ├── utils/         # Funzioni pure riusabili (es. validatori dei form)
 │           ├── App.jsx        # Definizione delle rotte
 │           └── main.jsx       # Entry point dell'applicazione
