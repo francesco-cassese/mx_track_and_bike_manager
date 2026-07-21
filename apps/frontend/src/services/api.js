@@ -46,6 +46,25 @@ const postJson = (endpoint, body) => apiFetch(endpoint, {
     body: JSON.stringify(body),
 });
 
+/**
+ * Scorciatoia per le GET: nessun body da inviare, basta delegare ad apiFetch.
+ */
+const getJson = (endpoint) => apiFetch(endpoint);
+
+/**
+ * Scorciatoia per le PUT con body JSON, stesso motivo di postJson.
+ */
+const putJson = (endpoint, body) => apiFetch(endpoint, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+});
+
+/**
+ * Scorciatoia per le DELETE: nessun body da inviare, basta delegare ad apiFetch.
+ */
+const deleteRequest = (endpoint) => apiFetch(endpoint, { method: 'DELETE' });
+
 const OFFLINE_ERROR_MESSAGE = "Impossibile contattare il server. Controlla la connessione.";
 
 /**
@@ -55,4 +74,4 @@ const OFFLINE_ERROR_MESSAGE = "Impossibile contattare il server. Controlla la co
  */
 const getRequestErrorMessage = (error) => (error.status ? error.message : OFFLINE_ERROR_MESSAGE);
 
-export { apiFetch, postJson, getRequestErrorMessage }
+export { apiFetch, postJson, getJson, putJson, deleteRequest, getRequestErrorMessage }

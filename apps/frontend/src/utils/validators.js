@@ -64,4 +64,33 @@ const validateLoginForm = ({ email, password }) => {
     return errors;
 };
 
-export { validateRegisterForm, validateLoginForm };
+const MIN_BIKE_YEAR = 1900;
+
+/**
+ * Valido i campi del form di creazione/modifica moto. Il backend accetta
+ * marca/modello nulli e qualunque anno (colonna YEAR di MySQL), quindi qui
+ * applico i vincoli "di buon senso" che l'utente si aspetta da un form.
+ */
+const validateBikeForm = ({ brand, model, year }) => {
+    const errors = {};
+
+    if (!brand?.trim()) {
+        errors.brand = "La marca è obbligatoria";
+    }
+
+    if (!model?.trim()) {
+        errors.model = "Il modello è obbligatorio";
+    }
+
+    const currentYear = new Date().getFullYear();
+    const yearNumber = Number(year);
+    if (!year) {
+        errors.year = "L'anno è obbligatorio";
+    } else if (!Number.isInteger(yearNumber) || yearNumber < MIN_BIKE_YEAR || yearNumber > currentYear + 1) {
+        errors.year = `Inserisci un anno tra ${MIN_BIKE_YEAR} e ${currentYear + 1}`;
+    }
+
+    return errors;
+};
+
+export { validateRegisterForm, validateLoginForm, validateBikeForm };
