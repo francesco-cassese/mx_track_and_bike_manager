@@ -5,16 +5,18 @@ import styles from "./FormField.module.css";
  * L'`aria-describedby` collega il campo al messaggio d'errore solo quando
  * esiste, così gli screen reader non annunciano un riferimento vuoto.
  */
-function FormField({ label, id, type = "text", value, onChange, error, ref }) {
+function FormField({ label, id, type = "text", value, onChange, error, autoComplete, ref }) {
     return (
         <div className={`${styles.inputGroup}${error ? ` ${styles.hasError}` : ""}`}>
             <label htmlFor={id}>{label}</label>
             <input
                 ref={ref}
                 id={id}
+                name={id}
                 type={type}
                 value={value}
                 onChange={onChange}
+                autoComplete={autoComplete}
                 aria-describedby={error ? `${id}-error` : undefined}
             />
 
