@@ -1,0 +1,87 @@
+.page {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    box-sizing: border-box;
+}
+
+.backLink {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    color: #2563eb;
+    font-size: 0.875rem;
+    text-decoration: none;
+}
+
+.backLink:hover {
+    text-decoration: underline;
+}
+
+.errorBanner {
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin: 0 0 1rem;
+}
+
+.details {
+    margin: 1rem 0 1.5rem;
+}
+
+.details dt {
+    color: #6b7280;
+    font-size: 0.8125rem;
+}
+
+.details dd {
+    margin: 0 0 0.75rem;
+    font-size: 1.125rem;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.editButton {
+    padding: 0.625rem 1.25rem;
+    border-radius: 6px;
+    background-color: #2563eb;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.deleteButton {
+    padding: 0.625rem 1.25rem;
+    border: 1px solid #dc2626;
+    border-radius: 6px;
+    background: #fff;
+    color: #dc2626;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.deleteButton:hover {
+    background: #fee2e2;
+}
+
+.deleteButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.confirmDelete {
+    padding: 1rem;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    background: #fef2f2;
+}
+
+.confirmDelete p {
+    margin: 0 0 0.75rem;
+    font-size: 0.875rem;
+    color: #7f1d1d;
+}
