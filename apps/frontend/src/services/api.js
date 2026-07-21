@@ -1,6 +1,6 @@
 import { getToken } from "./tokenStorage";
 
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:3000';
 
 /**
  * Eseguo una richiesta verso l'API e normalizzo la risposta.
