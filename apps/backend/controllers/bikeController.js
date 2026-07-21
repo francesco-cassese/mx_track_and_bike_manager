@@ -33,11 +33,11 @@ const show = asyncHandler(async (req, res) => {
  * Creo una nuova moto associata all'utente loggato
  */
 const store = asyncHandler(async (req, res) => {
-    const user_id = req.user.id
+    const userId = req.user.id
     const { brand, model, year } = req.body;
 
     // Eseguo la query per inserire la nuova bike
-    const result = await insert({ userId: user_id, brand, model, year });
+    const result = await insert({ userId, brand, model, year });
 
     // Recupero la bike appena creata per restituirla nella risposta
     const newBikeView = await findView(result.insertId);

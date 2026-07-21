@@ -8,9 +8,9 @@ import { calculateRemainingHours, getMaintenanceStatus } from '../utils/maintena
  * Recupero le scadenze di manutenzione registrate per una singola bike (ownership già verificata da authorizeOwner).
  */
 const index = asyncHandler(async (req, res) => {
-    const bike_id = req.resourceId;
+    const bikeId = req.resourceId;
 
-    const result = await findAllByBikeId(bike_id);
+    const result = await findAllByBikeId(bikeId);
 
     sendSuccess(res, 200, { data: result });
 });
@@ -19,12 +19,12 @@ const index = asyncHandler(async (req, res) => {
  * Registro una nuova scadenza di manutenzione per una bike (ownership già verificata da authorizeOwner).
  */
 const store = asyncHandler(async (req, res) => {
-    const bike_id = req.resourceId;
+    const bikeId = req.resourceId;
     const { task_description, hour_threshold, last_service_hours, service_date } = req.body;
 
     // Inserisco la nuova scadenza di manutenzione
     const result = await insert({
-        bikeId: bike_id,
+        bikeId,
         taskDescription: task_description,
         hourThreshold: hour_threshold,
         lastServiceHours: last_service_hours,
@@ -94,11 +94,11 @@ const destroy = asyncHandler(async (req, res) => {
  * Recupero le scadenze di manutenzione scadute o in scadenza per una bike (ownership già verificata da authorizeOwner).
  */
 const alerts = asyncHandler(async (req, res) => {
-    const bike_id = req.resourceId;
+    const bikeId = req.resourceId;
 
     const [maintenances, totalHours] = await Promise.all([
-        findAllByBikeId(bike_id),
-        getTotalHoursByBikeId(bike_id)
+        findAllByBikeId(bikeId),
+        getTotalHoursByBikeId(bikeId)
     ]);
 
     // Escludo le manutenzioni senza soglia o ultimo intervento: non è possibile calcolarne lo stato
