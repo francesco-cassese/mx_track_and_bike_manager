@@ -33,7 +33,8 @@ Applicazione per la gestione di moto da cross/enduro, sessioni in pista e manute
 | Rotte protette (`ProtectedRoute`), redirect al login se non autenticati | ✅ Implementato |
 | Dashboard moto (`HomePage`): elenco moto con ore totali e alert manutenzione | ✅ Implementato |
 | Gestione garage (creazione, dettaglio, modifica, eliminazione moto) | ✅ Implementato |
-| Log sessioni, manutenzioni (UI) | ⬜ Da implementare |
+| Client API sessioni e manutenzioni (`sessionApi`, `maintenanceApi`) | ✅ Implementato |
+| Log sessioni, manutenzioni (pagine/componenti UI) | ⬜ Da implementare |
 
 ## Roadmap
 
@@ -80,7 +81,7 @@ Monorepo gestito con pnpm workspaces: backend in `apps/backend`, frontend in `ap
 │           ├── context/       # Contesto di autenticazione (AuthContext)
 │           ├── hooks/         # Hook riusabili (useAuth, useFocusFirstError)
 │           ├── pages/         # Pagine/route (RegisterPage, LoginPage, HomePage, AddBikePage, BikeDetailPage, EditBikePage, NotFoundPage)
-│           ├── services/      # Client HTTP verso il backend (apiFetch, authApi, bikeApi, tokenStorage)
+│           ├── services/      # Client HTTP verso il backend (apiFetch, authApi, bikeApi, sessionApi, maintenanceApi, tokenStorage)
 │           ├── utils/         # Funzioni pure riusabili (es. validatori dei form)
 │           ├── App.jsx        # Definizione delle rotte
 │           └── main.jsx       # Entry point dell'applicazione
@@ -136,9 +137,11 @@ Monorepo gestito con pnpm workspaces: backend in `apps/backend`, frontend in `ap
    pnpm dev
    ```
 
-   Il frontend gira su Vite (`http://localhost:5173` di default) e si aspetta il backend raggiungibile su `http://localhost:3000` (URL hardcoded in `apps/frontend/src/services/api.js`, non ancora configurabile via variabile d'ambiente).
+   Il frontend gira su Vite (`http://localhost:5173` di default) e si aspetta il backend raggiungibile su `http://localhost:3000` di default. Per usare un URL diverso, crea `apps/frontend/.env` a partire da `apps/frontend/.env.example` e valorizza `VITE_API_URL`.
 
 ## Variabili d'ambiente
+
+**Backend** (`apps/backend/.env`, da `apps/backend/.env.example`)
 
 | Variabile | Descrizione |
 |---|---|
@@ -149,6 +152,12 @@ Monorepo gestito con pnpm workspaces: backend in `apps/backend`, frontend in `ap
 | `DB_PASSWORD` | Password del database |
 | `DB_DATABASE` | Nome del database |
 | `JWT_SECRET` | Chiave segreta per firmare/verificare i JWT (generarne una nuova per ogni ambiente) |
+
+**Frontend** (`apps/frontend/.env`, da `apps/frontend/.env.example`)
+
+| Variabile | Descrizione |
+|---|---|
+| `VITE_API_URL` | URL base del backend REST (default `http://localhost:3000` se non impostata) |
 
 ## API disponibili
 
