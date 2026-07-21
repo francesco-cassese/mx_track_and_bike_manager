@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { AuthContext } from "./AuthContext.jsx";
+import { AuthContext } from "../context/AuthContext.jsx";
 
 /**
  * Espongo lo stato di autenticazione ai componenti. Separato da AuthContext.jsx
