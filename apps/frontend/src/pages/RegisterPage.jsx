@@ -1,8 +1,10 @@
-import { useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import FormField from "../components/FormField";
 import { validateRegisterForm } from "../utils/validators";
 import { register } from "../services/authApi";
+import { getRequestErrorMessage } from "../services/api";
+import { useFocusFirstError } from "../hooks/useFocusFirstError";
 import styles from "./RegisterPage.module.css";
 
 
@@ -27,14 +29,12 @@ function RegisterPage() {
     const passwordRef = useRef(null);
     const confirmPasswordRef = useRef(null);
     const fieldRefs = { name: nameRef, email: emailRef, password: passwordRef, confirmPassword: confirmPasswordRef };
-    const fieldOrder = ["name", "email", "password", "confirmPassword"];
+    const { focusFirstError } = useFocusFirstError(fieldRefs, ["name", "email", "password", "confirmPassword"]);
+    const redirectTimeoutRef = useRef(null);
 
-    // Sposto il focus sul primo campo invalido (in ordine di apparizione nel form),
-    // così l'utente da tastiera/screen reader arriva subito dove serve intervenire
-    const focusFirstError = (errorsToCheck) => {
-        const firstInvalidField = fieldOrder.find((field) => errorsToCheck[field]);
-        fieldRefs[firstInvalidField]?.current?.focus();
-    };
+    // Se la pagina viene smontata prima dello scadere del redirect (es. l'utente
+    // naviga via manualmente), evito che il timeout scatti comunque a componente smontato
+    useEffect(() => () => clearTimeout(redirectTimeoutRef.current), []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -53,17 +53,13 @@ function RegisterPage() {
         try {
             await register({ name, email, password });
             setSuccessMessage("Registrazione completata! Reindirizzamento al login...");
-            setTimeout(() => navigate("/login"), 1500);
+            redirectTimeoutRef.current = setTimeout(() => navigate("/login"), 1500);
         } catch (error) {
             if (error.status === 409) {
                 setErrors((prev) => ({ ...prev, email: error.message }));
                 emailRef.current?.focus();
-            } else if (error.status) {
-                // Errore risposto dal backend (es. 400 imprevisto, 500): uso il suo messaggio
-                setServerError(error.message);
             } else {
-                // fetch ha fallito prima di ricevere una risposta (es. rete offline): niente status
-                setServerError("Impossibile contattare il server. Controlla la connessione.");
+                setServerError(getRequestErrorMessage(error));
             }
             setIsSubmitting(false);
         }
@@ -87,6 +83,7 @@ function RegisterPage() {
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         error={errors.name}
+                        autoComplete="name"
                     />
                     <FormField
                         ref={emailRef}
@@ -96,6 +93,7 @@ function RegisterPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         error={errors.email}
+                        autoComplete="email"
                     />
                     <FormField
                         ref={passwordRef}
@@ -105,6 +103,7 @@ function RegisterPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         error={errors.password}
+                        autoComplete="new-password"
                     />
                     <FormField
                         ref={confirmPasswordRef}
@@ -114,10 +113,12 @@ function RegisterPage() {
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         error={errors.confirmPassword}
+                        autoComplete="new-password"
                     />
                     <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
                         {isSubmitting ? "Registrazione in corso..." : "Registrati"}
                     </button>
+                    <Link to="/login">Hai già un account? Accedi</Link>
                 </form>
             </div>
         </div>
