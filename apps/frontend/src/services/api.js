@@ -46,4 +46,13 @@ const postJson = (endpoint, body) => apiFetch(endpoint, {
     body: JSON.stringify(body),
 });
 
-export { apiFetch, postJson }
+const OFFLINE_ERROR_MESSAGE = "Impossibile contattare il server. Controlla la connessione.";
+
+/**
+ * Ricava il messaggio da mostrare per un errore lanciato da apiFetch:
+ * se ha uno status il messaggio arriva dal backend, altrimenti la richiesta
+ * non ha nemmeno raggiunto il server (es. rete offline).
+ */
+const getRequestErrorMessage = (error) => (error.status ? error.message : OFFLINE_ERROR_MESSAGE);
+
+export { apiFetch, postJson, getRequestErrorMessage }

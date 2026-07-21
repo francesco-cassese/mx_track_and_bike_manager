@@ -2,6 +2,20 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_PASSWORD_LENGTH = 8;
 
 /**
+ * Valida il formato email, condivisa tra login e registrazione.
+ * Ritorna il messaggio d'errore, o null se l'email è valida.
+ */
+const validateEmail = (email) => {
+    if (!email?.trim()) {
+        return "L'email è obbligatoria";
+    }
+    if (!EMAIL_REGEX.test(email.trim())) {
+        return "Formato email non valido";
+    }
+    return null;
+};
+
+/**
  * Valido i campi del form di registrazione lato client.
  * Il backend valida solo la presenza dei campi: qui aggiungo controlli
  * di formato/robustezza che il server non applica, oltre alla conferma
@@ -14,10 +28,9 @@ const validateRegisterForm = ({ name, email, password, confirmPassword }) => {
         errors.name = "Il nome è obbligatorio";
     }
 
-    if (!email?.trim()) {
-        errors.email = "L'email è obbligatoria";
-    } else if (!EMAIL_REGEX.test(email.trim())) {
-        errors.email = "Formato email non valido";
+    const emailError = validateEmail(email);
+    if (emailError) {
+        errors.email = emailError;
     }
 
     if (!password) {
@@ -35,4 +48,20 @@ const validateRegisterForm = ({ name, email, password, confirmPassword }) => {
     return errors;
 };
 
-export { validateRegisterForm, MIN_PASSWORD_LENGTH };
+const validateLoginForm = ({ email, password }) => {
+
+    const errors = {}
+
+    const emailError = validateEmail(email);
+    if (emailError) {
+        errors.email = emailError;
+    }
+
+    if (!password) {
+        errors.password = "La password è obbligatoria"
+    }
+
+    return errors;
+};
+
+export { validateRegisterForm, validateLoginForm };
