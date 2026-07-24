@@ -1,44 +1,85 @@
 .card {
-    display: block;
-    background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: 1.5rem;
     box-sizing: border-box;
-    color: inherit;
+    color: var(--text-primary);
     text-decoration: none;
+    transition: all var(--transition-normal);
+    border: 1px solid var(--border-color);
+    position: relative;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background-color: var(--color-primary);
+    transform: scaleY(0);
+    transition: transform var(--transition-normal);
+    transform-origin: bottom;
 }
 
 .card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-lg);
+    background: var(--bg-surface-elevated);
+    border-color: var(--color-primary);
+    transform: translateY(-4px);
+}
+
+.card:hover::before {
+    transform: scaleY(1);
+}
+
+.icon {
+    color: var(--color-primary);
+    margin-bottom: 0.75rem;
+    transition: transform var(--transition-normal);
+}
+
+.card:hover .icon {
+    transform: scale(1.08) translateX(2px);
 }
 
 .card h2 {
-    margin: 0 0 0.25rem;
-    font-size: 1.125rem;
-    color: #111827;
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+    color: var(--text-primary);
 }
 
 .card p {
     margin: 0;
-    color: #6b7280;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
 }
 
 .badge {
     display: inline-block;
-    margin-top: 0.5rem;
-    padding: 0.125rem 0.5rem;
-    border-radius: 999px;
+    margin-top: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    align-self: flex-start;
 }
 
 .overdue {
-    background: #fee2e2;
-    color: #dc2626;
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
 }
 
 .due {
-    background: #ffedd5;
-    color: #ea580c;
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--color-warning);
+    border: 1px solid var(--color-warning);
 }

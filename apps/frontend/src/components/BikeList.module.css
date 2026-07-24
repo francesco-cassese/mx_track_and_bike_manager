@@ -1,15 +1,46 @@
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
     list-style: none;
     margin: 0;
     padding: 0;
 }
 
+.grid > li {
+    animation: fadeInUp var(--transition-normal) ease-out both;
+}
+
+.grid > li:nth-child(2) {
+    animation-delay: 0.05s;
+}
+
+.grid > li:nth-child(3) {
+    animation-delay: 0.1s;
+}
+
+.grid > li:nth-child(n+4) {
+    animation-delay: 0.15s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .emptyState {
-    color: #6b7280;
-    font-size: 0.875rem;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
     text-align: center;
-    padding: 2rem 0;
+    padding: 4rem 2rem;
+    background: var(--bg-surface);
+    border-radius: var(--radius-md);
+    border: 2px dashed var(--border-color);
+    font-weight: 500;
 }
