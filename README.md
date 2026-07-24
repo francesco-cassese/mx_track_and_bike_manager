@@ -34,13 +34,16 @@ Applicazione per la gestione di moto da cross/enduro, sessioni in pista e manute
 | Dashboard moto (`HomePage`): elenco moto con ore totali e alert manutenzione | ✅ Implementato |
 | Gestione garage (creazione, dettaglio, modifica, eliminazione moto) | ✅ Implementato |
 | Client API sessioni e manutenzioni (`sessionApi`, `maintenanceApi`) | ✅ Implementato |
-| Log sessioni, manutenzioni (pagine/componenti UI) | ⬜ Da implementare |
+| Log sessioni in pista: form di inserimento, storico per moto, modifica ed eliminazione | ✅ Implementato |
+| Interfaccia manutenzioni programmate (pagine/componenti UI) | ⬜ Da implementare |
+| Landing page pubblica con CTA verso login/registrazione | ✅ Implementato |
+| Tema grafico dark motocross (CSS custom properties) e transizioni di pagina animate | ✅ Implementato |
 
 ## Roadmap
 
 Sviluppi previsti, in ordine di priorità:
 
-- **Frontend: log sessioni e manutenzioni** — interfaccia per registrare sessioni in pista e scadenze di manutenzione, a consumo delle API REST già esposte dal backend.
+- **Frontend: interfaccia manutenzioni programmate** — form e storico per registrare le scadenze di manutenzione, a consumo delle API REST già esposte dal backend.
 - **Validazione e gestione errori centralizzata sul backend** — validazione di formato/robustezza degli input su tutti gli endpoint (oggi presente solo lato frontend), gestione uniforme degli errori via middleware Express.
 
 ## Stack tecnologico
@@ -55,7 +58,8 @@ Sviluppi previsti, in ordine di priorità:
 - **Libreria UI:** React 19
 - **Build tool:** Vite
 - **Routing:** `react-router-dom`
-- **Styling:** CSS Modules
+- **Styling:** CSS Modules (tema dark motocross basato su CSS custom properties)
+- **Animazioni:** `framer-motion` (transizioni tra le pagine)
 
 **Package manager:** pnpm (monorepo con workspaces)
 
@@ -76,11 +80,12 @@ Monorepo gestito con pnpm workspaces: backend in `apps/backend`, frontend in `ap
 │   │   ├── server.js          # Entry point dell'applicazione
 │   │   └── .env.example       # Esempio di variabili d'ambiente richieste
 │   └── frontend/
+│       ├── public/            # Asset statici (immagini di sfondo, favicon)
 │       └── src/
-│           ├── components/    # Componenti riusabili (FormField, BikeCard, BikeList, BikeForm, ProtectedRoute)
+│           ├── components/    # Componenti riusabili (FormField, BikeCard, BikeList, BikeForm, SessionForm, ProtectedRoute, RootRoute, PageTransition)
 │           ├── context/       # Contesto di autenticazione (AuthContext)
 │           ├── hooks/         # Hook riusabili (useAuth, useFocusFirstError)
-│           ├── pages/         # Pagine/route (RegisterPage, LoginPage, HomePage, AddBikePage, BikeDetailPage, EditBikePage, NotFoundPage)
+│           ├── pages/         # Pagine/route (LandingPage, RegisterPage, LoginPage, HomePage, AddBikePage, BikeDetailPage, EditBikePage, AddSessionPage, EditSessionPage, NotFoundPage)
 │           ├── services/      # Client HTTP verso il backend (apiFetch, authApi, bikeApi, sessionApi, maintenanceApi, tokenStorage)
 │           ├── utils/         # Funzioni pure riusabili (es. validatori dei form)
 │           ├── App.jsx        # Definizione delle rotte
