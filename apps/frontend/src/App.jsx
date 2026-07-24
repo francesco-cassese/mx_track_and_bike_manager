@@ -5,6 +5,8 @@ import HomePage from "./pages/HomePage";
 import AddBikePage from "./pages/AddBikePage";
 import BikeDetailPage from "./pages/BikeDetailPage";
 import EditBikePage from "./pages/EditBikePage";
+import AddSessionPage from "./pages/AddSessionPage";
+import EditSessionPage from "./pages/EditSessionPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -23,6 +25,8 @@ function App() {
         <Route path="/bikes/new" element={<ProtectedRoute><AddBikePage /></ProtectedRoute>} />
         <Route path="/bikes/:id" element={<ProtectedRoute><BikeDetailPage /></ProtectedRoute>} />
         <Route path="/bikes/:id/edit" element={<ProtectedRoute><EditBikePage /></ProtectedRoute>} />
+        <Route path="/bikes/:id/sessions/new" element={<ProtectedRoute><AddSessionPage /></ProtectedRoute>} />
+        <Route path="/bikes/:id/sessions/:sessionId/edit" element={<ProtectedRoute><EditSessionPage /></ProtectedRoute>} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

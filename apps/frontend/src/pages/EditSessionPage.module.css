@@ -1,0 +1,17 @@
+.page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    box-sizing: border-box;
+}
+
+.page h1 {
+    margin: 0 0 1.5rem;
+    font-size: 1.5rem;
+}
+
+.errorBanner {
+    color: #dc2626;
+    font-size: 0.875rem;
+    margin: 0 0 1rem;
+}
