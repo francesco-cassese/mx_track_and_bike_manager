@@ -152,10 +152,30 @@ function BikeDetailPage() {
                             {sessions.map((session) => (
                                 <li key={session.id} className={styles.sessionItem}>
                                     <div className={styles.sessionInfo}>
-                                        <strong>{session.track}</strong>
-                                        <span>{formatSessionDate(session.date)}</span>
-                                        {session.hours_logged != null && <span>{session.hours_logged} h</span>}
-                                        {session.feeling != null && <span>Sensazioni: {session.feeling}/5</span>}
+                                        <strong className={styles.sessionTrack}>
+                                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                <path d="M12 21s-7-6.5-7-11.5A7 7 0 0 1 19 9.5C19 14.5 12 21 12 21Z" />
+                                                <circle cx="12" cy="9.5" r="2.5" />
+                                            </svg>
+                                            {session.track}
+                                        </strong>
+                                        <span className={styles.sessionMeta}>
+                                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                <rect x="3" y="4" width="18" height="18" rx="2" />
+                                                <path d="M16 2v4M8 2v4M3 10h18" />
+                                            </svg>
+                                            {formatSessionDate(session.date)}
+                                        </span>
+                                        {session.hours_logged != null && (
+                                            <span className={styles.sessionMeta}>
+                                                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                    <circle cx="12" cy="12" r="9" />
+                                                    <path d="M12 7v5l3 3" />
+                                                </svg>
+                                                {session.hours_logged} h
+                                            </span>
+                                        )}
+                                        {session.feeling != null && <span className={styles.sessionMeta}>Sensazioni: {session.feeling}/5</span>}
                                     </div>
                                     {confirmingDeleteSessionId !== session.id && (
                                         <div className={styles.actions}>
