@@ -1,13 +1,17 @@
 .inputGroup {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    margin-bottom: 1rem;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .inputGroup label {
-    font-size: 0.875rem;
+    font-size: 0.95rem;
     font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: var(--font-heading);
 }
 
 .inputWrapper {
@@ -17,21 +21,25 @@
 
 .inputGroup input {
     width: 100%;
-    padding: 0.625rem 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
     font-size: 1rem;
     box-sizing: border-box;
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
 }
 
 .inputWrapper input {
-    padding-right: 2.5rem;
+    padding-right: 3rem;
 }
 
 .inputGroup input:focus {
     outline: none;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-glow);
+    background-color: var(--bg-surface-elevated);
 }
 
 .togglePasswordButton {
@@ -44,31 +52,33 @@
     justify-content: center;
     border: none;
     background: none;
-    padding: 0.25rem;
-    color: #6b7280;
+    padding: 0.5rem;
+    color: var(--text-muted);
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: var(--radius-sm);
+    transition: color var(--transition-fast);
 }
 
 .togglePasswordButton:hover {
-    color: #374151;
+    color: var(--color-primary);
 }
 
 .togglePasswordButton:focus-visible {
-    outline: 2px solid #2563eb;
+    outline: 2px solid var(--color-primary);
     outline-offset: 1px;
 }
 
 .hasError input {
-    border-color: #dc2626;
+    border-color: var(--color-danger);
 }
 
 .hasError input:focus {
-    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
 }
 
 .errorText {
-    color: #dc2626;
-    font-size: 0.8125rem;
+    color: var(--color-danger);
+    font-size: 0.85rem;
     margin: 0;
+    font-weight: 500;
 }

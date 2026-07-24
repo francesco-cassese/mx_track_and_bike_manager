@@ -1,61 +1,88 @@
 .form {
-    max-width: 400px;
+    max-width: 100%;
 }
 
 .errorBanner {
-    color: #dc2626;
+    color: var(--text-on-primary);
+    background-color: var(--color-danger);
     font-size: 0.875rem;
-    margin: 0 0 1rem;
+    margin: 0 0 1.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
 }
 
 .inputGroup {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
-    margin-bottom: 1rem;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
 }
 
 .inputGroup label {
-    font-size: 0.875rem;
+    font-size: 0.95rem;
     font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: var(--font-heading);
 }
 
 .inputGroup textarea {
     width: 100%;
-    padding: 0.625rem 0.75rem;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
     font-size: 1rem;
     font-family: inherit;
     resize: vertical;
     box-sizing: border-box;
+    background-color: var(--bg-input);
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+    min-height: 120px;
 }
 
 .inputGroup textarea:focus {
     outline: none;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px var(--color-primary-glow);
+    background-color: var(--bg-surface-elevated);
 }
 
 .actions {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin-top: 0.5rem;
+    margin-top: 1.5rem;
 }
 
 .submitButton {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 6px;
-    background-color: #2563eb;
-    color: #fff;
-    font-size: 1rem;
+    padding: 0.8rem 1.5rem;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-primary);
+    color: var(--text-on-primary);
+    font-size: 1.1rem;
+    font-family: var(--font-heading);
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.submitButton:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-1px);
 }
 
 .submitButton:disabled {
-    background-color: #93c5fd;
+    background-color: var(--bg-surface-elevated);
+    border-color: var(--border-color);
+    color: var(--text-muted);
     cursor: not-allowed;
+    box-shadow: none;
 }
