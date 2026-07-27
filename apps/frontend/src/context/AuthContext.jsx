@@ -10,8 +10,8 @@ const AuthContext = createContext(null);
 function AuthProvider({ children }) {
     const [token, setToken] = useState(() => getToken());
 
-    const login = useCallback((newToken) => {
-        persistToken(newToken);
+    const login = useCallback((newToken, remember = true) => {
+        persistToken(newToken, remember);
         setToken(newToken);
     }, []);
 
