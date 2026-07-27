@@ -35,7 +35,7 @@ Applicazione per la gestione di moto da cross/enduro, sessioni in pista e manute
 | Gestione garage (creazione, dettaglio, modifica, eliminazione moto) | ✅ Implementato |
 | Client API sessioni e manutenzioni (`sessionApi`, `maintenanceApi`) | ✅ Implementato |
 | Log sessioni in pista: form di inserimento, storico per moto, modifica ed eliminazione | ✅ Implementato |
-| Interfaccia manutenzioni programmate (pagine/componenti UI) | ⬜ Da implementare |
+| Interfaccia manutenzioni programmate: form di creazione, storico con badge di stato (ok/in scadenza/scaduta), modifica ed eliminazione | ✅ Implementato |
 | Landing page pubblica con CTA verso login/registrazione | ✅ Implementato |
 | Tema grafico dark motocross (CSS custom properties) e transizioni di pagina animate | ✅ Implementato |
 
@@ -47,14 +47,15 @@ Applicazione per la gestione di moto da cross/enduro, sessioni in pista e manute
 | ![Landing page](docs/screenshots/landing.png) | ![Login](docs/screenshots/login.png) |
 | **Dashboard** | **Dettaglio moto** |
 | ![Dashboard](docs/screenshots/dashboard.png) | ![Dettaglio moto](docs/screenshots/bike-detail.png) |
-| **Aggiungi moto** | **404** |
-| ![Aggiungi moto](docs/screenshots/add-bike.png) | ![Pagina 404](docs/screenshots/not-found.png) |
+| **Aggiungi moto** | **Aggiungi manutenzione** |
+| ![Aggiungi moto](docs/screenshots/add-bike.png) | ![Aggiungi manutenzione](docs/screenshots/add-maintenance.png) |
+| **404** | |
+| ![Pagina 404](docs/screenshots/not-found.png) | |
 
 ## Roadmap
 
 Sviluppi previsti, in ordine di priorità:
 
-- **Frontend: interfaccia manutenzioni programmate** — form e storico per registrare le scadenze di manutenzione, a consumo delle API REST già esposte dal backend.
 - **Validazione e gestione errori centralizzata sul backend** — validazione di formato/robustezza degli input su tutti gli endpoint (oggi presente solo lato frontend), gestione uniforme degli errori via middleware Express.
 
 ## Stack tecnologico
@@ -93,12 +94,12 @@ Monorepo gestito con pnpm workspaces: backend in `apps/backend`, frontend in `ap
 │   └── frontend/
 │       ├── public/            # Asset statici (immagini di sfondo, favicon)
 │       └── src/
-│           ├── components/    # Componenti riusabili (FormField, BikeCard, BikeList, BikeForm, SessionForm, ProtectedRoute, RootRoute, PageTransition)
+│           ├── components/    # Componenti riusabili (FormField, BikeCard, BikeList, BikeForm, SessionForm, MaintenanceForm, ProtectedRoute, RootRoute, PageTransition)
 │           ├── context/       # Contesto di autenticazione (AuthContext)
 │           ├── hooks/         # Hook riusabili (useAuth, useFocusFirstError)
-│           ├── pages/         # Pagine/route (LandingPage, RegisterPage, LoginPage, HomePage, AddBikePage, BikeDetailPage, EditBikePage, AddSessionPage, EditSessionPage, NotFoundPage)
+│           ├── pages/         # Pagine/route (LandingPage, RegisterPage, LoginPage, HomePage, AddBikePage, BikeDetailPage, EditBikePage, AddSessionPage, EditSessionPage, AddMaintenancePage, EditMaintenancePage, NotFoundPage)
 │           ├── services/      # Client HTTP verso il backend (apiFetch, authApi, bikeApi, sessionApi, maintenanceApi, tokenStorage)
-│           ├── utils/         # Funzioni pure riusabili (es. validatori dei form)
+│           ├── utils/         # Funzioni pure riusabili (validatori dei form, calcolo stato manutenzione)
 │           ├── App.jsx        # Definizione delle rotte
 │           └── main.jsx       # Entry point dell'applicazione
 ├── package.json        # Root del workspace (script di orchestrazione)
