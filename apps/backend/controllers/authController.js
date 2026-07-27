@@ -29,8 +29,15 @@ const register = asyncHandler(async (req, res) => {
             return sendError(res, 500, "Errore durante il salvataggio dell'utente");
         }
 
+        // Genero subito un JWT così l'utente risulta autenticato senza dover rifare il login
+        const token = jwt.sign(
+            { id: result.insertId, email },
+            JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
         // Rispondo con successo (201 Created)
-        sendSuccess(res, 201, { data: { message: "Utente creato con successo!" } });
+        sendSuccess(res, 201, { data: { message: "Utente creato con successo!", token } });
 
     } catch (error) {
         // Gestisco il caso specifico di violazione di vincoli unici (es. email già esistente)
