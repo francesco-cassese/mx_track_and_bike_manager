@@ -136,4 +136,38 @@ const validateSessionForm = ({ date, track, hoursLogged, feeling }) => {
 
 
 
-export { validateRegisterForm, validateLoginForm, validateBikeForm, validateSessionForm };
+const MAX_TASK_DESCRIPTION_LENGTH = 150;
+
+/**
+ * Valido i campi del form di creazione/modifica scadenza di manutenzione.
+ * Il backend richiede solo task_description non nullo e accetta qualunque
+ * valore per gli altri campi, quindi qui aggiungo i vincoli "di buon senso"
+ * (VARCHAR(150) della colonna, numeri non negativi) che l'utente si aspetta.
+ */
+const validateMaintenanceForm = ({ taskDescription, hourThreshold, lastServiceHours }) => {
+    const errors = {};
+
+    if (!taskDescription?.trim()) {
+        errors.taskDescription = "La descrizione dell'intervento è obbligatoria";
+    } else if (taskDescription.trim().length > MAX_TASK_DESCRIPTION_LENGTH) {
+        errors.taskDescription = `La descrizione non può superare ${MAX_TASK_DESCRIPTION_LENGTH} caratteri`;
+    }
+
+    if (hourThreshold !== "" && hourThreshold !== undefined && hourThreshold !== null) {
+        const hourThresholdNumber = Number(hourThreshold);
+        if (Number.isNaN(hourThresholdNumber) || hourThresholdNumber < 0) {
+            errors.hourThreshold = "Inserisci un numero di ore valido";
+        }
+    }
+
+    if (lastServiceHours !== "" && lastServiceHours !== undefined && lastServiceHours !== null) {
+        const lastServiceHoursNumber = Number(lastServiceHours);
+        if (Number.isNaN(lastServiceHoursNumber) || lastServiceHoursNumber < 0) {
+            errors.lastServiceHours = "Inserisci un numero di ore valido";
+        }
+    }
+
+    return errors;
+};
+
+export { validateRegisterForm, validateLoginForm, validateBikeForm, validateSessionForm, validateMaintenanceForm };
