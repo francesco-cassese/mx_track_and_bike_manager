@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import SessionForm from "../components/SessionForm";
-import { getSessions, updateSession } from "../services/sessionApi";
+import { getSession, updateSession } from "../services/sessionApi";
 import { getRequestErrorMessage } from "../services/api";
 import styles from "./EditSessionPage.module.css";
 
@@ -13,9 +13,9 @@ import styles from "./EditSessionPage.module.css";
 const toDateInputValue = (rawDate) => String(rawDate).slice(0, 10);
 
 /**
- * Pagina di modifica sessione (allenamento): l'API non espone un GET
- * singolo per sessione, quindi recupero la lista della moto e filtro per
- * id, poi delego a onSubmit la vera PUT e la navigazione al successo.
+ * Pagina di modifica sessione (allenamento): recupero direttamente la
+ * sessione singola tramite id, poi delego a onSubmit la vera PUT e la
+ * navigazione al successo.
  */
 function EditSessionPage() {
     const { id, sessionId } = useParams();
@@ -27,16 +27,9 @@ function EditSessionPage() {
     useEffect(() => {
         let isMounted = true;
 
-        getSessions(id)
+        getSession(id, sessionId)
             .then((data) => {
-                if (!isMounted) return;
-
-                const found = data.find((item) => String(item.id) === sessionId);
-                if (!found) {
-                    setError("Allenamento non trovato");
-                    return;
-                }
-                setSession(found);
+                if (isMounted) setSession(data);
             })
             .catch((err) => {
                 if (isMounted) setError(getRequestErrorMessage(err));

@@ -16,6 +16,21 @@ const index = asyncHandler(async (req, res) => {
 });
 
 /**
+ * Recupero il dettaglio di una singola sessione tramite id (ownership già verificata da authorizeOwner).
+ */
+const show = asyncHandler(async (req, res) => {
+    const id = req.resourceId;
+    const session = await findView(id);
+
+    // Non ho trovato nessuna sessione con questo id: rispondo con 404
+    if (!session) {
+        return sendError(res, 404, 'Nessuna sessione trovata con questo id');
+    }
+
+    sendSuccess(res, 200, { data: session });
+});
+
+/**
  * Registro una nuova sessione di allenamento per una bike (ownership già verificata da authorizeOwner).
  */
 const store = asyncHandler(async (req, res) => {
@@ -107,4 +122,4 @@ const destroy = asyncHandler(async (req, res) => {
 
 })
 
-export { index, store, update, destroy }
+export { index, show, store, update, destroy }

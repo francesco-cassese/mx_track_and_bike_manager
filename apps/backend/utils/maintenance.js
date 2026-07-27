@@ -16,4 +16,20 @@ const getMaintenanceStatus = (remainingHours) => {
     return 'ok';
 };
 
-export { calculateRemainingHours, getMaintenanceStatus, WARNING_THRESHOLD_HOURS };
+/**
+ * Calcolo gli alert di manutenzione (scadute o in scadenza) per una bike,
+ * dati i suoi interventi registrati e il totale ore. Riusata sia dall'endpoint
+ * dedicato /bike/:id/alert sia da GET /bike per arricchire ogni moto in
+ * un'unica risposta, evitando N richieste separate dal frontend.
+ */
+const buildAlerts = (maintenances, totalHours) => {
+    return maintenances
+        .filter((m) => m.hour_threshold !== null && m.last_service_hours !== null)
+        .map((m) => {
+            const remainingHours = calculateRemainingHours(m.hour_threshold, totalHours ?? 0, m.last_service_hours);
+            return { ...m, remaining_hours: remainingHours, status: getMaintenanceStatus(remainingHours) };
+        })
+        .filter((m) => m.status !== 'ok');
+};
+
+export { calculateRemainingHours, getMaintenanceStatus, buildAlerts, WARNING_THRESHOLD_HOURS };

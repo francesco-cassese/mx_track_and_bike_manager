@@ -6,6 +6,11 @@ import { getJson, postJson, putJson, deleteRequest } from "./api";
 const getMaintenances = (bikeId) => getJson(`/bike/${bikeId}/maintenance`);
 
 /**
+ * Recupero il dettaglio di una singola scadenza di manutenzione.
+ */
+const getMaintenance = (bikeId, maintenanceId) => getJson(`/bike/${bikeId}/maintenance/${maintenanceId}`);
+
+/**
  * Registro una nuova scadenza di manutenzione per una moto.
  */
 const createMaintenance = (bikeId, { taskDescription, hourThreshold, lastServiceHours, serviceDate }) =>
@@ -32,4 +37,4 @@ const updateMaintenance = (bikeId, maintenanceId, { taskDescription, hourThresho
  */
 const deleteMaintenance = (bikeId, maintenanceId) => deleteRequest(`/bike/${bikeId}/maintenance/${maintenanceId}`);
 
-export { getMaintenances, createMaintenance, updateMaintenance, deleteMaintenance };
+export { getMaintenances, getMaintenance, createMaintenance, updateMaintenance, deleteMaintenance };

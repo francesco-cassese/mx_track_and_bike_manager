@@ -1,16 +1,33 @@
 import { findAllByUserId, findView, insert, update as updateBike, remove } from "../repositories/bikeRepository.js";
 import { getTotalHoursByBikeId } from "../repositories/sessionRepository.js";
+import { findAllByBikeId as findMaintenancesByBikeId } from "../repositories/maintenanceRepository.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendSuccess, sendError } from "../utils/apiResponse.js";
 import { validateBikeInput } from "../utils/validation.js";
+import { buildAlerts } from "../utils/maintenance.js";
 
 /**
- * Recupero le moto dell'utente loggato
+ * Arricchisco una bike con ore totali e alert di manutenzione, in un'unica
+ * chiamata lato server invece di lasciare che il frontend faccia 2 richieste
+ * aggiuntive per moto (pattern N+1 che aveva HomePage in precedenza).
+ */
+const enrichBike = async (bike) => {
+    const [totalHours, maintenances] = await Promise.all([
+        getTotalHoursByBikeId(bike.id),
+        findMaintenancesByBikeId(bike.id)
+    ]);
+
+    return { ...bike, totalHours: totalHours ?? 0, alerts: buildAlerts(maintenances, totalHours) };
+};
+
+/**
+ * Recupero le moto dell'utente loggato, già arricchite con ore totali e alert
  */
 const index = asyncHandler(async (req, res) => {
-    const result = await findAllByUserId(req.user.id);
+    const bikes = await findAllByUserId(req.user.id);
+    const enrichedBikes = await Promise.all(bikes.map(enrichBike));
 
-    sendSuccess(res, 200, { data: result });
+    sendSuccess(res, 200, { data: enrichedBikes });
 });
 
 /**

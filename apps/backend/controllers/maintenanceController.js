@@ -2,7 +2,7 @@ import { findAllByBikeId, findView, insert, update as updateMaintenance, remove 
 import { getTotalHoursByBikeId } from '../repositories/sessionRepository.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendError, sendSuccess } from '../utils/apiResponse.js';
-import { calculateRemainingHours, getMaintenanceStatus } from '../utils/maintenance.js';
+import { buildAlerts } from '../utils/maintenance.js';
 import { validateMaintenanceInput } from '../utils/validation.js';
 
 /**
@@ -14,6 +14,21 @@ const index = asyncHandler(async (req, res) => {
     const result = await findAllByBikeId(bikeId);
 
     sendSuccess(res, 200, { data: result });
+});
+
+/**
+ * Recupero il dettaglio di una singola scadenza di manutenzione tramite id (ownership già verificata da authorizeOwner).
+ */
+const show = asyncHandler(async (req, res) => {
+    const id = req.resourceId;
+    const maintenance = await findView(id);
+
+    // Non ho trovato nessuna scadenza con questo id: rispondo con 404
+    if (!maintenance) {
+        return sendError(res, 404, 'Nessuna scadenza di manutenzione trovata con questo id');
+    }
+
+    sendSuccess(res, 200, { data: maintenance });
 });
 
 /**
@@ -112,16 +127,9 @@ const alerts = asyncHandler(async (req, res) => {
         getTotalHoursByBikeId(bikeId)
     ]);
 
-    // Escludo le manutenzioni senza soglia o ultimo intervento: non è possibile calcolarne lo stato
-    const alertList = maintenances
-        .filter((m) => m.hour_threshold !== null && m.last_service_hours !== null)
-        .map((m) => {
-            const remainingHours = calculateRemainingHours(m.hour_threshold, totalHours ?? 0, m.last_service_hours);
-            return { ...m, remaining_hours: remainingHours, status: getMaintenanceStatus(remainingHours) };
-        })
-        .filter((m) => m.status !== 'ok');
+    const alertList = buildAlerts(maintenances, totalHours);
 
     sendSuccess(res, 200, { data: alertList });
 });
 
-export { index, store, update, destroy, alerts };
+export { index, show, store, update, destroy, alerts };

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import MaintenanceForm from "../components/MaintenanceForm";
-import { getMaintenances, updateMaintenance } from "../services/maintenanceApi";
+import { getMaintenance, updateMaintenance } from "../services/maintenanceApi";
 import { getRequestErrorMessage } from "../services/api";
 import styles from "./EditMaintenancePage.module.css";
 
@@ -13,9 +13,9 @@ import styles from "./EditMaintenancePage.module.css";
 const toDateInputValue = (rawDate) => (rawDate ? String(rawDate).slice(0, 10) : "");
 
 /**
- * Pagina di modifica scadenza di manutenzione: l'API non espone un GET
- * singolo per manutenzione, quindi recupero la lista della moto e filtro
- * per id, poi delego a onSubmit la vera PUT e la navigazione al successo.
+ * Pagina di modifica scadenza di manutenzione: recupero direttamente la
+ * scadenza singola tramite id, poi delego a onSubmit la vera PUT e la
+ * navigazione al successo.
  */
 function EditMaintenancePage() {
     const { id, maintenanceId } = useParams();
@@ -27,16 +27,9 @@ function EditMaintenancePage() {
     useEffect(() => {
         let isMounted = true;
 
-        getMaintenances(id)
+        getMaintenance(id, maintenanceId)
             .then((data) => {
-                if (!isMounted) return;
-
-                const found = data.find((item) => String(item.id) === maintenanceId);
-                if (!found) {
-                    setError("Scadenza di manutenzione non trovata");
-                    return;
-                }
-                setMaintenance(found);
+                if (isMounted) setMaintenance(data);
             })
             .catch((err) => {
                 if (isMounted) setError(getRequestErrorMessage(err));

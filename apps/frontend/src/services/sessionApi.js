@@ -6,6 +6,11 @@ import { getJson, postJson, putJson, deleteRequest } from "./api";
 const getSessions = (bikeId) => getJson(`/bike/${bikeId}/sessions`);
 
 /**
+ * Recupero il dettaglio di una singola sessione.
+ */
+const getSession = (bikeId, sessionId) => getJson(`/bike/${bikeId}/sessions/${sessionId}`);
+
+/**
  * Registro una nuova sessione per una moto.
  */
 const createSession = (bikeId, { date, track, weather, feeling, hoursLogged, notes }) =>
@@ -22,4 +27,4 @@ const updateSession = (bikeId, sessionId, { date, track, weather, feeling, hours
  */
 const deleteSession = (bikeId, sessionId) => deleteRequest(`/bike/${bikeId}/sessions/${sessionId}`);
 
-export { getSessions, createSession, updateSession, deleteSession };
+export { getSessions, getSession, createSession, updateSession, deleteSession };

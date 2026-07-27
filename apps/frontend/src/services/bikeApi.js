@@ -11,16 +11,6 @@ const getBikes = () => getJson('/bike');
 const getBike = (id) => getJson(`/bike/${id}`);
 
 /**
- * Recupero il totale di ore di utilizzo di una singola moto.
- */
-const getBikeTotalHours = (id) => getJson(`/bike/${id}/total-hours`);
-
-/**
- * Recupero le manutenzioni scadute o in scadenza per una singola moto.
- */
-const getBikeAlerts = (id) => getJson(`/bike/${id}/alert`);
-
-/**
  * Creo una nuova moto per l'utente loggato.
  */
 const createBike = ({ brand, model, year }) => postJson('/bike', { brand, model, year });
@@ -35,4 +25,4 @@ const updateBike = (id, { brand, model, year }) => putJson(`/bike/${id}`, { bran
  */
 const deleteBike = (id) => deleteRequest(`/bike/${id}`);
 
-export { getBikes, getBike, getBikeTotalHours, getBikeAlerts, createBike, updateBike, deleteBike };
+export { getBikes, getBike, createBike, updateBike, deleteBike };
