@@ -54,10 +54,10 @@ function EditSessionPage() {
     };
 
     return (
-        <div className={styles.page}>
-            <h1>Modifica allenamento</h1>
+        <div className={`${styles.page} px-4 mx-auto`}>
+            <h1 className="pb-3">Modifica allenamento</h1>
             <div aria-live="polite">
-                {error && <p className={styles.errorBanner}>{error}</p>}
+                {error && <p className={`${styles.errorBanner} mb-4 px-3`}>{error}</p>}
             </div>
             {isLoading && <p>Caricamento allenamento in corso...</p>}
             {!isLoading && !error && session && (

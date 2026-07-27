@@ -16,7 +16,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1.5rem;
     padding: 1.25rem 2rem;
     background: rgba(15, 15, 15, 0.95);
     border-bottom: 1px solid var(--border-color);
@@ -202,8 +201,6 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 1rem;
-    margin-top: 0.5rem;
 }
 
 .primaryButton,
@@ -342,7 +339,6 @@
 
 .featuresContainer {
     max-width: 1200px;
-    margin: 0 auto;
 }
 
 .sectionTitle {
@@ -395,9 +391,7 @@
 
 .featureIcon {
     font-size: 3rem;
-    margin-bottom: 1.5rem;
     display: inline-block;
-    padding: 1rem;
     background: rgba(226, 0, 26, 0.15);
     border-radius: var(--radius-full);
 }
@@ -406,7 +400,6 @@
     font-family: var(--font-heading);
     font-size: 1.8rem;
     color: var(--text-primary);
-    margin: 0 0 1rem;
     text-transform: uppercase;
 }
 
@@ -422,7 +415,8 @@
 .footer {
     background: var(--bg-surface);
     border-top: 1px solid var(--border-color);
-    padding: 2rem 1.5rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
     text-align: center;
     color: var(--text-muted);
     font-size: 0.9rem;

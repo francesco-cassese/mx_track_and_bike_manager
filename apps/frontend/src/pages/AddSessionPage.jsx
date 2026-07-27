@@ -18,8 +18,8 @@ function AddSessionPage() {
     };
 
     return (
-        <div className={styles.page}>
-            <h1>Aggiungi allenamento</h1>
+        <div className={`${styles.page} px-4 mx-auto`}>
+            <h1 className="pb-3">Aggiungi allenamento</h1>
             <SessionForm
                 initialValues={{ date: "", track: "", weather: "", feeling: "", hoursLogged: "", notes: "" }}
                 onSubmit={handleSubmit}

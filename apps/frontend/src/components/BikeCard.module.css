@@ -6,7 +6,6 @@
     background: var(--bg-surface);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-sm);
-    padding: 1.5rem;
     box-sizing: border-box;
     color: var(--text-primary);
     text-decoration: none;
@@ -55,7 +54,6 @@
 /* Testo
    ========================================================================== */
 .card h2 {
-    margin: 0 0 0.5rem;
     font-size: 1.5rem;
     color: var(--text-primary);
 }
@@ -70,8 +68,8 @@
    ========================================================================== */
 .badge {
     display: inline-block;
-    margin-top: 1rem;
-    padding: 0.25rem 0.75rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
     border-radius: var(--radius-full);
     font-size: 0.75rem;
     font-weight: 700;

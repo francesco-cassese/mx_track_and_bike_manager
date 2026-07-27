@@ -62,9 +62,9 @@ function SessionForm({ initialValues, onSubmit, submitLabel, cancelHref }) {
     };
 
     return (
-        <form onSubmit={handleSubmit} noValidate className={styles.form}>
+        <form onSubmit={handleSubmit} noValidate className={`${styles.form} mw-100`}>
             <div aria-live="polite">
-                {serverError && <p className={styles.errorBanner}>{serverError}</p>}
+                {serverError && <p className={`${styles.errorBanner} mb-4 px-3`}>{serverError}</p>}
             </div>
             <FormField
                 ref={dateRef}
@@ -114,18 +114,19 @@ function SessionForm({ initialValues, onSubmit, submitLabel, cancelHref }) {
                 error={errors.hoursLogged}
                 autoComplete="off"
             />
-            <div className={styles.inputGroup}>
+            <div className={`${styles.inputGroup} gap-2 mb-4`}>
                 <label htmlFor="notes">Note</label>
                 <textarea
                     id="notes"
                     name="notes"
+                    className="px-3 w-100"
                     value={notes}
                     onChange={(e) => setNotes(e.target.value)}
                     rows={4}
                 />
             </div>
-            <div className={styles.actions}>
-                <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+            <div className={`${styles.actions} gap-3 mt-4`}>
+                <button type="submit" className={`${styles.submitButton} px-4`} disabled={isSubmitting}>
                     {isSubmitting ? "Salvataggio in corso..." : submitLabel}
                 </button>
                 {cancelHref && <Link to={cancelHref}>Annulla</Link>}

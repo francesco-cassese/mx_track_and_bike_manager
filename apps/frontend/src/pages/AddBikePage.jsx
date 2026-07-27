@@ -16,8 +16,8 @@ function AddBikePage() {
     };
 
     return (
-        <div className={styles.page}>
-            <h1>Aggiungi moto</h1>
+        <div className={`${styles.page} px-4 mx-auto`}>
+            <h1 className="pb-3">Aggiungi moto</h1>
             <BikeForm
                 initialValues={{ brand: "", model: "", year: "" }}
                 onSubmit={handleSubmit}

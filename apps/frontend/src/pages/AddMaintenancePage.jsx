@@ -18,8 +18,8 @@ function AddMaintenancePage() {
     };
 
     return (
-        <div className={styles.page}>
-            <h1>Aggiungi manutenzione</h1>
+        <div className={`${styles.page} px-4 mx-auto`}>
+            <h1 className="pb-3">Aggiungi manutenzione</h1>
             <MaintenanceForm
                 initialValues={{ taskDescription: "", hourThreshold: "", lastServiceHours: "", serviceDate: "" }}
                 onSubmit={handleSubmit}

@@ -86,7 +86,6 @@
     display: block;
     height: 56px;
     width: auto;
-    margin: 0 auto 1rem;
 }
 
 .authCard h1 {
@@ -104,8 +103,8 @@
     color: var(--text-on-primary);
     background-color: var(--color-danger);
     font-size: 0.875rem;
-    margin: 0 0 1.5rem;
-    padding: 0.75rem 1rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
     border-radius: var(--radius-sm);
     font-weight: 500;
 }
@@ -114,8 +113,8 @@
     color: var(--text-on-primary);
     background-color: var(--color-success);
     font-size: 0.875rem;
-    margin: 0 0 1.5rem;
-    padding: 0.75rem 1rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
     border-radius: var(--radius-sm);
     font-weight: 500;
 }
@@ -136,7 +135,6 @@
     letter-spacing: 0.05em;
     cursor: pointer;
     transition: all var(--transition-fast);
-    margin-top: 1rem;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
@@ -158,7 +156,6 @@
    ========================================================================== */
 .switchLink {
     display: block;
-    margin-top: 24px;
     text-align: center;
     font-size: 0.9rem;
     color: var(--text-secondary);

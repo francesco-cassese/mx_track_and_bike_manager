@@ -152,10 +152,10 @@ function BikeDetailPage() {
     };
 
     return (
-        <div className={styles.page}>
+        <div className={`${styles.page} px-4 mx-auto`}>
             <Link to="/" className={styles.backLink}>&larr; Torna alla dashboard</Link>
             <div aria-live="polite">
-                {error && <p className={styles.errorBanner}>{error}</p>}
+                {error && <p className={`${styles.errorBanner} mb-4 px-3`}>{error}</p>}
             </div>
             {isLoading && <p>Caricamento moto in corso...</p>}
             {!isLoading && !error && bike && (
@@ -163,24 +163,24 @@ function BikeDetailPage() {
                     <h1>{bike.brand} {bike.model}</h1>
                     <dl className={styles.details}>
                         <dt>Anno</dt>
-                        <dd>{bike.year}</dd>
+                        <dd className="mt-1 mb-4">{bike.year}</dd>
                         <dt>Ore totali</dt>
-                        <dd>{bike.totalHours}</dd>
+                        <dd className="mt-1 mb-4">{bike.totalHours}</dd>
                     </dl>
                     <div aria-live="polite">
-                        {deleteError && <p className={styles.errorBanner}>{deleteError}</p>}
+                        {deleteError && <p className={`${styles.errorBanner} mb-4 px-3`}>{deleteError}</p>}
                     </div>
                     {!isConfirmingDelete && (
-                        <div className={styles.actions}>
-                            <Link to={`/bikes/${bike.id}/edit`} className={styles.editButton}>Modifica</Link>
-                            <button type="button" className={styles.deleteButton} onClick={() => setIsConfirmingDelete(true)}>Elimina</button>
+                        <div className={`${styles.actions} gap-3`}>
+                            <Link to={`/bikes/${bike.id}/edit`} className={`${styles.editButton} px-4`}>Modifica</Link>
+                            <button type="button" className={`${styles.deleteButton} px-4`} onClick={() => setIsConfirmingDelete(true)}>Elimina</button>
                         </div>
                     )}
                     {isConfirmingDelete && (
-                        <div className={styles.confirmDelete}>
-                            <p>Eliminare questa moto? L'azione non è reversibile.</p>
-                            <div className={styles.actions}>
-                                <button type="button" className={styles.deleteButton} onClick={handleConfirmDelete} disabled={isDeleting}>
+                        <div className={`${styles.confirmDelete} mt-4 p-4`}>
+                            <p className="mb-3">Eliminare questa moto? L'azione non è reversibile.</p>
+                            <div className={`${styles.actions} gap-3`}>
+                                <button type="button" className={`${styles.deleteButton} px-4`} onClick={handleConfirmDelete} disabled={isDeleting}>
                                     {isDeleting ? "Eliminazione in corso..." : "Conferma eliminazione"}
                                 </button>
                                 <button type="button" onClick={() => setIsConfirmingDelete(false)} disabled={isDeleting}>Annulla</button>
@@ -188,23 +188,23 @@ function BikeDetailPage() {
                         </div>
                     )}
 
-                    <div className={styles.sessionsHeader}>
+                    <div className={`${styles.sessionsHeader} gap-3 mt-5 mb-4 pb-3`}>
                         <h2>Allenamenti</h2>
-                        <Link to={`/bikes/${bike.id}/sessions/new`} className={styles.editButton}>Aggiungi allenamento</Link>
+                        <Link to={`/bikes/${bike.id}/sessions/new`} className={`${styles.editButton} px-4`}>Aggiungi allenamento</Link>
                     </div>
                     <div aria-live="polite">
-                        {sessionsError && <p className={styles.errorBanner}>{sessionsError}</p>}
-                        {sessionDeleteError && <p className={styles.errorBanner}>{sessionDeleteError}</p>}
+                        {sessionsError && <p className={`${styles.errorBanner} mb-4 px-3`}>{sessionsError}</p>}
+                        {sessionDeleteError && <p className={`${styles.errorBanner} mb-4 px-3`}>{sessionDeleteError}</p>}
                     </div>
                     {isSessionsLoading && <p>Caricamento allenamenti in corso...</p>}
                     {!isSessionsLoading && !sessionsError && sessions.length === 0 && (
                         <p>Nessun allenamento registrato per questa moto.</p>
                     )}
                     {!isSessionsLoading && !sessionsError && sessions.length > 0 && (
-                        <ul className={styles.sessionsList}>
+                        <ul className={`${styles.sessionsList} gap-3`}>
                             {sessions.map((session) => (
-                                <li key={session.id} className={styles.sessionItem}>
-                                    <div className={styles.sessionInfo}>
+                                <li key={session.id} className={`${styles.sessionItem} gap-3 p-4`}>
+                                    <div className={`${styles.sessionInfo} gap-1`}>
                                         <strong className={styles.sessionTrack}>
                                             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                                 <path d="M12 21s-7-6.5-7-11.5A7 7 0 0 1 19 9.5C19 14.5 12 21 12 21Z" />
@@ -231,18 +231,18 @@ function BikeDetailPage() {
                                         {session.feeling != null && <span className={styles.sessionMeta}>Sensazioni: {session.feeling}/5</span>}
                                     </div>
                                     {confirmingDeleteSessionId !== session.id && (
-                                        <div className={styles.actions}>
-                                            <Link to={`/bikes/${bike.id}/sessions/${session.id}/edit`} className={styles.editButton}>Modifica</Link>
-                                            <button type="button" className={styles.deleteButton} onClick={() => setConfirmingDeleteSessionId(session.id)}>Elimina</button>
+                                        <div className={`${styles.actions} gap-3`}>
+                                            <Link to={`/bikes/${bike.id}/sessions/${session.id}/edit`} className={`${styles.editButton} px-4`}>Modifica</Link>
+                                            <button type="button" className={`${styles.deleteButton} px-4`} onClick={() => setConfirmingDeleteSessionId(session.id)}>Elimina</button>
                                         </div>
                                     )}
                                     {confirmingDeleteSessionId === session.id && (
-                                        <div className={styles.confirmDelete}>
-                                            <p>Eliminare questo allenamento? L'azione non è reversibile.</p>
-                                            <div className={styles.actions}>
+                                        <div className={`${styles.confirmDelete} mt-4 p-4`}>
+                                            <p className="mb-3">Eliminare questo allenamento? L'azione non è reversibile.</p>
+                                            <div className={`${styles.actions} gap-3`}>
                                                 <button
                                                     type="button"
-                                                    className={styles.deleteButton}
+                                                    className={`${styles.deleteButton} px-4`}
                                                     onClick={() => handleConfirmDeleteSession(session.id)}
                                                     disabled={deletingSessionId === session.id}
                                                 >
@@ -263,27 +263,27 @@ function BikeDetailPage() {
                         </ul>
                     )}
 
-                    <div className={styles.sessionsHeader}>
+                    <div className={`${styles.sessionsHeader} gap-3 mt-5 mb-4 pb-3`}>
                         <h2>Manutenzioni</h2>
-                        <Link to={`/bikes/${bike.id}/maintenance/new`} className={styles.editButton}>Aggiungi manutenzione</Link>
+                        <Link to={`/bikes/${bike.id}/maintenance/new`} className={`${styles.editButton} px-4`}>Aggiungi manutenzione</Link>
                     </div>
                     <div aria-live="polite">
-                        {maintenancesError && <p className={styles.errorBanner}>{maintenancesError}</p>}
-                        {maintenanceDeleteError && <p className={styles.errorBanner}>{maintenanceDeleteError}</p>}
+                        {maintenancesError && <p className={`${styles.errorBanner} mb-4 px-3`}>{maintenancesError}</p>}
+                        {maintenanceDeleteError && <p className={`${styles.errorBanner} mb-4 px-3`}>{maintenanceDeleteError}</p>}
                     </div>
                     {isMaintenancesLoading && <p>Caricamento manutenzioni in corso...</p>}
                     {!isMaintenancesLoading && !maintenancesError && maintenances.length === 0 && (
                         <p>Nessuna scadenza di manutenzione registrata per questa moto.</p>
                     )}
                     {!isMaintenancesLoading && !maintenancesError && maintenances.length > 0 && (
-                        <ul className={styles.sessionsList}>
+                        <ul className={`${styles.sessionsList} gap-3`}>
                             {maintenances.map((maintenance) => {
                                 const status = getMaintenanceStatus(maintenance.hour_threshold, bike.totalHours, maintenance.last_service_hours);
                                 const formattedDate = formatMaintenanceDate(maintenance.service_date);
 
                                 return (
-                                    <li key={maintenance.id} className={styles.sessionItem}>
-                                        <div className={styles.sessionInfo}>
+                                    <li key={maintenance.id} className={`${styles.sessionItem} gap-3 p-4`}>
+                                        <div className={`${styles.sessionInfo} gap-1`}>
                                             <strong className={styles.sessionTrack}>
                                                 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                                                     <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z" />
@@ -308,23 +308,23 @@ function BikeDetailPage() {
                                                     Ogni {maintenance.hour_threshold} h
                                                 </span>
                                             )}
-                                            <span className={`${styles.statusBadge} ${status ? styles[status] : styles.unknown}`}>
+                                            <span className={`${styles.statusBadge} ${status ? styles[status] : styles.unknown} py-1`}>
                                                 {status ? MAINTENANCE_STATUS_LABELS[status] : "N/D"}
                                             </span>
                                         </div>
                                         {confirmingDeleteMaintenanceId !== maintenance.id && (
-                                            <div className={styles.actions}>
-                                                <Link to={`/bikes/${bike.id}/maintenance/${maintenance.id}/edit`} className={styles.editButton}>Modifica</Link>
-                                                <button type="button" className={styles.deleteButton} onClick={() => setConfirmingDeleteMaintenanceId(maintenance.id)}>Elimina</button>
+                                            <div className={`${styles.actions} gap-3`}>
+                                                <Link to={`/bikes/${bike.id}/maintenance/${maintenance.id}/edit`} className={`${styles.editButton} px-4`}>Modifica</Link>
+                                                <button type="button" className={`${styles.deleteButton} px-4`} onClick={() => setConfirmingDeleteMaintenanceId(maintenance.id)}>Elimina</button>
                                             </div>
                                         )}
                                         {confirmingDeleteMaintenanceId === maintenance.id && (
-                                            <div className={styles.confirmDelete}>
-                                                <p>Eliminare questa scadenza di manutenzione? L'azione non è reversibile.</p>
-                                                <div className={styles.actions}>
+                                            <div className={`${styles.confirmDelete} mt-4 p-4`}>
+                                                <p className="mb-3">Eliminare questa scadenza di manutenzione? L'azione non è reversibile.</p>
+                                                <div className={`${styles.actions} gap-3`}>
                                                     <button
                                                         type="button"
-                                                        className={styles.deleteButton}
+                                                        className={`${styles.deleteButton} px-4`}
                                                         onClick={() => handleConfirmDeleteMaintenance(maintenance.id)}
                                                         disabled={deletingMaintenanceId === maintenance.id}
                                                     >

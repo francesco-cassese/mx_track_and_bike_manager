@@ -73,10 +73,10 @@ function LoginPage() {
             </nav>
             <div className={styles.authContent}>
                 <div className={styles.authCard}>
-                    <img src="/logo.png" alt="MX Garage" className={styles.logo} />
+                    <img src="/logo.png" alt="MX Garage" className={`${styles.logo} mx-auto mb-3`} />
                     <h1>Accedi</h1>
                     <div aria-live="polite">
-                        {serverError && <p className={styles.errorBanner}>{serverError}</p>}
+                        {serverError && <p className={`${styles.errorBanner} mb-4 px-3`}>{serverError}</p>}
                     </div>
                     <form onSubmit={handleSubmit} noValidate>
                         <FormField
@@ -101,7 +101,7 @@ function LoginPage() {
                             autoComplete="current-password"
                             icon={passwordIcon}
                         />
-                        <label className={styles.rememberLabel}>
+                        <label className={`${styles.rememberLabel} gap-2 mb-3`}>
                             <input
                                 type="checkbox"
                                 checked={rememberMe}
@@ -109,10 +109,10 @@ function LoginPage() {
                             />
                             Ricordami
                         </label>
-                        <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+                        <button type="submit" className={`${styles.submitButton} mt-3`} disabled={isSubmitting}>
                             {isSubmitting ? "Accesso in corso..." : "Accedi"}
                         </button>
-                        <Link to="/register" className={styles.switchLink}>Non hai un account? Registrati</Link>
+                        <Link to="/register" className={`${styles.switchLink} mt-4`}>Non hai un account? Registrati</Link>
                     </form>
                 </div>
             </div>

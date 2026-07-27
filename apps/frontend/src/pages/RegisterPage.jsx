@@ -98,13 +98,13 @@ function RegisterPage() {
             </nav>
             <div className={styles.authContent}>
                 <div className={styles.authCard}>
-                    <img src="/logo.png" alt="MX Garage" className={styles.logo} />
+                    <img src="/logo.png" alt="MX Garage" className={`${styles.logo} mx-auto mb-3`} />
                     <h1>Registrati</h1>
                     <div aria-live="polite">
-                        {successMessage && <p className={styles.successText}>{successMessage}</p>}
+                        {successMessage && <p className={`${styles.successText} mb-4 px-3`}>{successMessage}</p>}
                     </div>
                     <div aria-live="polite">
-                        {serverError && <p className={styles.errorBanner}>{serverError}</p>}
+                        {serverError && <p className={`${styles.errorBanner} mb-4 px-3`}>{serverError}</p>}
                     </div>
                     <form onSubmit={handleSubmit} noValidate>
                         <FormField
@@ -150,10 +150,10 @@ function RegisterPage() {
                             autoComplete="new-password"
                             icon={passwordIcon}
                         />
-                        <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
+                        <button type="submit" className={`${styles.submitButton} mt-3`} disabled={isSubmitting}>
                             {isSubmitting ? "Registrazione in corso..." : "Registrati"}
                         </button>
-                        <Link to="/login" className={styles.switchLink}>Hai già un account? Accedi</Link>
+                        <Link to="/login" className={`${styles.switchLink} mt-4`}>Hai già un account? Accedi</Link>
                     </form>
                 </div>
             </div>

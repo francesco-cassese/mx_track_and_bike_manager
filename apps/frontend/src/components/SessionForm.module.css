@@ -1,17 +1,11 @@
-/* Contenitore form
-   ========================================================================== */
-.form {
-    max-width: 100%;
-}
-
 /* Banner errori
    ========================================================================== */
 .errorBanner {
     color: var(--text-on-primary);
     background-color: var(--color-danger);
     font-size: 0.875rem;
-    margin: 0 0 1.5rem;
-    padding: 0.75rem 1rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
     border-radius: var(--radius-sm);
     font-weight: 500;
 }
@@ -21,8 +15,6 @@
 .inputGroup {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
 }
 
 .inputGroup label {
@@ -35,8 +27,8 @@
 }
 
 .inputGroup textarea {
-    width: 100%;
-    padding: 0.8rem 1rem;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-sm);
     font-size: 1rem;

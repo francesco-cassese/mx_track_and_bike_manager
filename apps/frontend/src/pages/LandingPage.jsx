@@ -54,7 +54,7 @@ function LandingPage() {
     return (
         <div className={styles.landingPage}>
             {/* Navbar */}
-            <nav className={styles.navbar}>
+            <nav className={`${styles.navbar} gap-4`}>
                 <div className={styles.navBrand}>
                     <img src="/logo.png" alt="MX Garage" className={styles.navLogo} />
                 </div>
@@ -88,7 +88,7 @@ function LandingPage() {
                     <div className={styles.heroContent}>
                         <h1 className={styles.title}>MX GARAGE</h1>
                         <p className={styles.tagline}>Il tuo box digitale</p>
-                        <div className={styles.actions}>
+                        <div className={`${styles.actions} gap-3 mt-2`}>
                             <Link to="/register" className={styles.primaryButton}>INIZIA ORA</Link>
                             <Link to="/login" className={styles.secondaryButton}>ACCEDI</Link>
                         </div>
@@ -111,25 +111,25 @@ function LandingPage() {
 
             {/* Features Section */}
             <section id="features" className={styles.featuresSection}>
-                <div className={styles.featuresContainer}>
+                <div className={`${styles.featuresContainer} mx-auto`}>
                     <h2 className={styles.sectionTitle}>Tutto sotto controllo</h2>
                     <div className={styles.featuresGrid}>
 
                         <div className={styles.featureCard}>
-                            <div className={styles.featureIcon}>🏍️</div>
-                            <h3>Gestione Moto</h3>
+                            <div className={`${styles.featureIcon} mb-4 p-3`}>🏍️</div>
+                            <h3 className="mb-3">Gestione Moto</h3>
                             <p>Aggiungi le tue moto da cross. Monitora l'usura e tieni sempre sotto controllo lo stato del tuo parco moto.</p>
                         </div>
 
                         <div className={styles.featureCard}>
-                            <div className={styles.featureIcon}>⏱️</div>
-                            <h3>Sessioni in Pista</h3>
+                            <div className={`${styles.featureIcon} mb-4 p-3`}>⏱️</div>
+                            <h3 className="mb-3">Sessioni in Pista</h3>
                             <p>Registra ogni allenamento o gara. Tieni traccia delle ore del motore per una manutenzione millimetrica.</p>
                         </div>
 
                         <div className={styles.featureCard}>
-                            <div className={styles.featureIcon}>🔧</div>
-                            <h3>Manutenzione</h3>
+                            <div className={`${styles.featureIcon} mb-4 p-3`}>🔧</div>
+                            <h3 className="mb-3">Manutenzione</h3>
                             <p>Non rischiare rotture. Ricevi alert automatici quando è ora di cambiare olio, pistone o rifare le sospensioni.</p>
                         </div>
 
@@ -138,7 +138,7 @@ function LandingPage() {
             </section>
 
             {/* Footer */}
-            <footer className={styles.footer}>
+            <footer className={`${styles.footer} px-4`}>
                 <p>&copy; {new Date().getFullYear()} MX Garage. All rights reserved.</p>
             </footer>
         </div>

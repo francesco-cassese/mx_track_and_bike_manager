@@ -52,18 +52,18 @@ function HomePage() {
 
     return (
         <div className={styles.page}>
-            <div className={styles.header}>
+            <div className={`${styles.header} gap-3 pb-3`}>
                 <h1>Dashboard</h1>
-                <div className={styles.headerActions}>
+                <div className={`${styles.headerActions} gap-3`}>
                     <Link to="/bikes/new" className={styles.addButton}>Aggiungi moto</Link>
                     <button type="button" className={styles.logoutButton} onClick={logout}>Esci</button>
                 </div>
             </div>
             <div aria-live="polite">
-                {error && <p className={styles.errorBanner}>{error}</p>}
+                {error && <p className={`${styles.errorBanner} mb-4 px-3`}>{error}</p>}
             </div>
             {isLoading && (
-                <div className={styles.loadingState}>
+                <div className={`${styles.loadingState} py-5`}>
                     <span className={styles.spinner} aria-hidden="true" />
                     <span>Caricamento moto in corso...</span>
                 </div>

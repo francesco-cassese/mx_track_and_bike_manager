@@ -13,7 +13,7 @@ function FormField({ label, id, type = "text", value, onChange, error, autoCompl
     const inputType = isPasswordField && isPasswordVisible ? "text" : type;
 
     return (
-        <div className={`${styles.inputGroup}${error ? ` ${styles.hasError}` : ""}`}>
+        <div className={`${styles.inputGroup} gap-2 mb-4${error ? ` ${styles.hasError}` : ""}`}>
             <label htmlFor={id}>{label}</label>
             <div className={`${styles.inputWrapper}${icon ? ` ${styles.hasIcon}` : ""}`}>
                 {icon && <span className={styles.inputIcon} aria-hidden="true">{icon}</span>}
@@ -21,6 +21,7 @@ function FormField({ label, id, type = "text", value, onChange, error, autoCompl
                     ref={ref}
                     id={id}
                     name={id}
+                    className="w-100 pe-5"
                     type={inputType}
                     value={value}
                     onChange={onChange}
@@ -30,7 +31,7 @@ function FormField({ label, id, type = "text", value, onChange, error, autoCompl
                 {isPasswordField && (
                     <button
                         type="button"
-                        className={styles.togglePasswordButton}
+                        className={`${styles.togglePasswordButton} p-2`}
                         onClick={() => setIsPasswordVisible((visible) => !visible)}
                         aria-label={isPasswordVisible ? "Nascondi password" : "Mostra password"}
                         aria-pressed={isPasswordVisible}

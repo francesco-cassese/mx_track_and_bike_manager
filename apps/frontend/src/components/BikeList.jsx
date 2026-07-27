@@ -11,7 +11,7 @@ function BikeList({ bikes }) {
     }
 
     return (
-        <ul className={styles.grid}>
+        <ul className={`${styles.grid} gap-4`}>
             {bikes.map((bike) => (
                 <li key={bike.id}>
                     <BikeCard bike={bike} />

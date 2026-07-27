@@ -39,10 +39,10 @@ function EditBikePage() {
     };
 
     return (
-        <div className={styles.page}>
-            <h1>Modifica moto</h1>
+        <div className={`${styles.page} px-4 mx-auto`}>
+            <h1 className="pb-3">Modifica moto</h1>
             <div aria-live="polite">
-                {error && <p className={styles.errorBanner}>{error}</p>}
+                {error && <p className={`${styles.errorBanner} mb-4 px-3`}>{error}</p>}
             </div>
             {isLoading && <p>Caricamento moto in corso...</p>}
             {!isLoading && !error && bike && (
