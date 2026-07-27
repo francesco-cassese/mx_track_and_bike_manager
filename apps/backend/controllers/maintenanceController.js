@@ -3,6 +3,7 @@ import { getTotalHoursByBikeId } from '../repositories/sessionRepository.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendError, sendSuccess } from '../utils/apiResponse.js';
 import { calculateRemainingHours, getMaintenanceStatus } from '../utils/maintenance.js';
+import { validateMaintenanceInput } from '../utils/validation.js';
 
 /**
  * Recupero le scadenze di manutenzione registrate per una singola bike (ownership già verificata da authorizeOwner).
@@ -21,6 +22,11 @@ const index = asyncHandler(async (req, res) => {
 const store = asyncHandler(async (req, res) => {
     const bikeId = req.resourceId;
     const { task_description, hour_threshold, last_service_hours, service_date } = req.body;
+
+    const validationError = validateMaintenanceInput({ task_description, hour_threshold, last_service_hours });
+    if (validationError) {
+        return sendError(res, 400, validationError);
+    }
 
     // Inserisco la nuova scadenza di manutenzione
     const result = await insert({
@@ -51,6 +57,11 @@ const store = asyncHandler(async (req, res) => {
 const update = asyncHandler(async (req, res) => {
     const id = req.resourceId;
     const { task_description, hour_threshold, last_service_hours, service_date } = req.body;
+
+    const validationError = validateMaintenanceInput({ task_description, hour_threshold, last_service_hours });
+    if (validationError) {
+        return sendError(res, 400, validationError);
+    }
 
     // Eseguo la query per aggiornare la scadenza richiesta
     const result = await updateMaintenance(id, {

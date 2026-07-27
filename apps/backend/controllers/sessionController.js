@@ -1,6 +1,7 @@
 import { findAllByBikeId, insert, findView, update as updateSession, remove } from "../repositories/sessionRepository.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendSuccess, sendError } from "../utils/apiResponse.js";
+import { validateSessionInput } from "../utils/validation.js";
 
 /**
  * Recupero le sessioni registrate per una singola bike (ownership già verificata da authorizeOwner).
@@ -20,6 +21,11 @@ const index = asyncHandler(async (req, res) => {
 const store = asyncHandler(async (req, res) => {
     const bikeId = req.resourceId;
     const { date, track, weather, feeling, hours_logged, notes } = req.body;
+
+    const validationError = validateSessionInput({ date, track, hours_logged, feeling });
+    if (validationError) {
+        return sendError(res, 400, validationError);
+    }
 
     // Inserisco la nuova sessione
     const result = await insert({
@@ -52,6 +58,11 @@ const store = asyncHandler(async (req, res) => {
 const update = asyncHandler(async (req, res) => {
     const id = req.resourceId;
     const { date, track, weather, feeling, hours_logged, notes } = req.body;
+
+    const validationError = validateSessionInput({ date, track, hours_logged, feeling });
+    if (validationError) {
+        return sendError(res, 400, validationError);
+    }
 
     // Eseguo la query per aggiornare la sessione richiesta
     const result = await updateSession(id, {

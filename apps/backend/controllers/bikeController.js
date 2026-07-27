@@ -2,6 +2,7 @@ import { findAllByUserId, findView, insert, update as updateBike, remove } from 
 import { getTotalHoursByBikeId } from "../repositories/sessionRepository.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { sendSuccess, sendError } from "../utils/apiResponse.js";
+import { validateBikeInput } from "../utils/validation.js";
 
 /**
  * Recupero le moto dell'utente loggato
@@ -36,6 +37,11 @@ const store = asyncHandler(async (req, res) => {
     const userId = req.user.id
     const { brand, model, year } = req.body;
 
+    const validationError = validateBikeInput({ brand, model, year });
+    if (validationError) {
+        return sendError(res, 400, validationError);
+    }
+
     // Eseguo la query per inserire la nuova bike
     const result = await insert({ userId, brand, model, year });
 
@@ -54,6 +60,11 @@ const store = asyncHandler(async (req, res) => {
 const update = asyncHandler(async (req, res) => {
     const id = req.resourceId;
     const { brand, model, year } = req.body;
+
+    const validationError = validateBikeInput({ brand, model, year });
+    if (validationError) {
+        return sendError(res, 400, validationError);
+    }
 
     // Eseguo la query per aggiornare la bike richiesta
     const result = await updateBike(id, { brand, model, year });

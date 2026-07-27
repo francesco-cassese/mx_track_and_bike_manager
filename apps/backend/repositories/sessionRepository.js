@@ -32,7 +32,7 @@ const findView = async (id) => {
 /**
  * Inserisco una nuova sessione di allenamento associata a una bike
  */
-const insert = async ({ bikeId, date, track, weather, feeling, hoursLogged, notes }) => {
+const insert = async ({ bikeId, date, track, weather = null, feeling = null, hoursLogged = null, notes = null }) => {
     const query = `
     INSERT INTO sessions (
     bike_id,
@@ -46,7 +46,7 @@ const insert = async ({ bikeId, date, track, weather, feeling, hoursLogged, note
     VALUES (?,?,?,?,?,?,?)
     `
 
-    // Eseguo la query per inserire la nuova sessione
+    // Inserisco la nuova sessione
     const [result] = await connection.execute(query, [
         bikeId,
         date,
@@ -63,7 +63,7 @@ const insert = async ({ bikeId, date, track, weather, feeling, hoursLogged, note
 /**
  * Aggiorno i dati di una singola sessione tramite id
  */
-const update = async (id, { date, track, weather, feeling, hoursLogged, notes }) => {
+const update = async (id, { date, track, weather = null, feeling = null, hoursLogged = null, notes = null }) => {
     const query = `
     UPDATE sessions
     SET date = ?,
@@ -75,7 +75,7 @@ const update = async (id, { date, track, weather, feeling, hoursLogged, notes })
     WHERE id = ?
     `
 
-    // Eseguo la query per aggiornare la sessione richiesta
+    // Aggiorno la sessione richiesta
     const [result] = await connection.execute(query, [date, track, weather, feeling, hoursLogged, notes, id]);
     return result;
 

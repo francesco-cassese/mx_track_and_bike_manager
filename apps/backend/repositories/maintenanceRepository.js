@@ -33,7 +33,7 @@ const findView = async (id) => {
 /**
  * Inserisco una nuova scadenza di manutenzione associata a una moto
  */
-const insert = async ({ bikeId, taskDescription, hourThreshold, lastServiceHours, serviceDate }) => {
+const insert = async ({ bikeId, taskDescription, hourThreshold = null, lastServiceHours = null, serviceDate = null }) => {
     const query = `
     INSERT INTO maintenance (
     bike_id,
@@ -45,7 +45,7 @@ const insert = async ({ bikeId, taskDescription, hourThreshold, lastServiceHours
     VALUES (?,?,?,?,?)
     `
 
-    // Eseguo la query per inserire la nuova scadenza di manutenzione
+    // Inserisco la nuova scadenza di manutenzione
     const [result] = await connection.execute(query, [
         bikeId,
         taskDescription,
@@ -60,7 +60,7 @@ const insert = async ({ bikeId, taskDescription, hourThreshold, lastServiceHours
 /**
  * Aggiorno i dati di una singola scadenza di manutenzione tramite id
  */
-const update = async (id, { taskDescription, hourThreshold, lastServiceHours, serviceDate }) => {
+const update = async (id, { taskDescription, hourThreshold = null, lastServiceHours = null, serviceDate = null }) => {
     const query = `
     UPDATE maintenance
     SET task_description = ?,
@@ -70,7 +70,7 @@ const update = async (id, { taskDescription, hourThreshold, lastServiceHours, se
     WHERE id = ?
     `
 
-    // Eseguo la query per aggiornare la sessione richiesta
+    // Aggiorno la scadenza richiesta
     const [result] = await connection.execute(query, [taskDescription, hourThreshold, lastServiceHours, serviceDate, id]);
     return result;
 

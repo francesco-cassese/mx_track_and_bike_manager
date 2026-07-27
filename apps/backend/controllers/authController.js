@@ -4,7 +4,7 @@ import { insert, findByEmail } from '../repositories/userRepository.js';
 import { JWT_SECRET } from '../config/env.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendSuccess, sendError } from '../utils/apiResponse.js';
-import { isValidEmail, normalizeEmail } from '../utils/validation.js';
+import { isValidEmail, normalizeEmail, validateLoginInput } from '../utils/validation.js';
 
 /**
  * Gestisco la registrazione di un nuovo utente: eseguo l'hashing
@@ -63,8 +63,14 @@ const register = asyncHandler(async (req, res) => {
 const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body
 
+    // Valido l'input prima di interrogare il database
+    const validationError = validateLoginInput({ email, password });
+    if (validationError) {
+        return sendError(res, 400, validationError);
+    }
+
     // Recupero l'utente tramite email (normalizzata, coerente con il salvataggio in registrazione)
-    const user = await findByEmail(email ? normalizeEmail(email) : email);
+    const user = await findByEmail(normalizeEmail(email));
 
     // Non ho trovato l'utente: rispondo con un messaggio generico per non rivelare quali email sono registrate
     if (!user) {
