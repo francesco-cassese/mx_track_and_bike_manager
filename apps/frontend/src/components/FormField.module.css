@@ -37,6 +37,24 @@
     padding-right: 3rem;
 }
 
+/* Icona a sinistra dell'input
+   ========================================================================== */
+.hasIcon input {
+    padding-left: 2.75rem;
+}
+
+.inputIcon {
+    position: absolute;
+    top: 50%;
+    left: 0.9rem;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    pointer-events: none;
+}
+
 .inputGroup input:focus {
     outline: none;
     border-color: var(--color-primary);

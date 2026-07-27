@@ -4,36 +4,57 @@
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1.25rem;
-    padding: 1.5rem;
-    box-sizing: border-box;
     background-image: linear-gradient(rgba(18, 18, 18, 0.3), rgba(18, 18, 18, 0.8)), url('/bg-auth.jpg');
     background-size: cover;
     background-position: center top;
     background-attachment: fixed;
 }
 
-/* Link di ritorno alla landing page
+/* Navbar
    ========================================================================== */
-.backLink {
-    display: inline-flex;
+.navbar {
+    display: flex;
     align-items: center;
-    gap: 0.4rem;
-    color: var(--text-primary);
-    font-size: 0.95rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    text-decoration: none;
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
-    transition: all var(--transition-fast);
+    justify-content: space-between;
+    padding: 1.25rem 2rem;
+    background-color: black;
 }
 
-.backLink:hover {
+.navBrand {
+    display: flex;
+    align-items: center;
+}
+
+.navLogo {
+    height: 42px;
+    width: auto;
+    display: block;
+}
+
+.navHomeLink {
+    color: var(--text-primary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-decoration: none;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    transition: color var(--transition-fast);
+}
+
+.navHomeLink:hover {
     color: var(--color-primary);
-    transform: translateX(-4px);
+}
+
+/* Contenuto centrale
+   ========================================================================== */
+.authContent {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    box-sizing: border-box;
 }
 
 /* Card autenticazione
@@ -61,6 +82,13 @@
     background-color: var(--color-primary);
 }
 
+.logo {
+    display: block;
+    height: 56px;
+    width: auto;
+    margin: 0 auto 1rem;
+}
+
 .authCard h1 {
     margin: 0 0 2rem;
     font-size: 2rem;
@@ -70,11 +98,21 @@
     letter-spacing: 0.05em;
 }
 
-/* Banner errori
+/* Banner errori / successo
    ========================================================================== */
 .errorBanner {
     color: var(--text-on-primary);
     background-color: var(--color-danger);
+    font-size: 0.875rem;
+    margin: 0 0 1.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+}
+
+.successText {
+    color: var(--text-on-primary);
+    background-color: var(--color-success);
     font-size: 0.875rem;
     margin: 0 0 1.5rem;
     padding: 0.75rem 1rem;
@@ -99,7 +137,7 @@
     cursor: pointer;
     transition: all var(--transition-fast);
     margin-top: 1rem;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .submitButton:hover:not(:disabled) {
@@ -130,18 +168,24 @@
    ========================================================================== */
 @media (max-width: 480px) {
     .authPage {
-        padding: 0;
-        gap: 0;
-        align-items: flex-start;
         background: var(--bg-base);
     }
 
-    .backLink {
-        margin: 1rem 0 -0.5rem 1.25rem;
+    .navbar {
+        padding: 1rem 1.25rem;
+    }
+
+    .navLogo {
+        height: 32px;
+    }
+
+    .authContent {
+        padding: 0;
+        align-items: stretch;
     }
 
     .authCard {
-        min-height: 100vh;
+        flex: 1;
         border-radius: 0;
         border: none;
         border-top: 4px solid var(--color-primary);

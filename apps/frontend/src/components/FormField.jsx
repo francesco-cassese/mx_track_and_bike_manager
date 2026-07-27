@@ -7,7 +7,7 @@ import styles from "./FormField.module.css";
  * esiste, così gli screen reader non annunciano un riferimento vuoto.
  * Per i campi password mostra un pulsante che ne alterna la visibilità.
  */
-function FormField({ label, id, type = "text", value, onChange, error, autoComplete, ref }) {
+function FormField({ label, id, type = "text", value, onChange, error, autoComplete, icon, ref }) {
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
     const isPasswordField = type === "password";
     const inputType = isPasswordField && isPasswordVisible ? "text" : type;
@@ -15,7 +15,8 @@ function FormField({ label, id, type = "text", value, onChange, error, autoCompl
     return (
         <div className={`${styles.inputGroup}${error ? ` ${styles.hasError}` : ""}`}>
             <label htmlFor={id}>{label}</label>
-            <div className={styles.inputWrapper}>
+            <div className={`${styles.inputWrapper}${icon ? ` ${styles.hasIcon}` : ""}`}>
+                {icon && <span className={styles.inputIcon} aria-hidden="true">{icon}</span>}
                 <input
                     ref={ref}
                     id={id}
