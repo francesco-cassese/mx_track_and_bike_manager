@@ -4,6 +4,7 @@ import { insert, findByEmail } from '../repositories/userRepository.js';
 import { JWT_SECRET } from '../config/env.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { sendSuccess, sendError } from '../utils/apiResponse.js';
+import { isValidEmail, normalizeEmail } from '../utils/validation.js';
 
 /**
  * Gestisco la registrazione di un nuovo utente: eseguo l'hashing
@@ -17,12 +18,17 @@ const register = asyncHandler(async (req, res) => {
         return sendError(res, 400, 'Tutti i campi sono obbligatori');
     }
 
+    const normalizedEmail = normalizeEmail(email);
+    if (!isValidEmail(normalizedEmail)) {
+        return sendError(res, 400, 'Formato email non valido');
+    }
+
     try {
         // Genero l'hash della password con cost factor 12 per bilanciare sicurezza e performance
         const passwordHash = await bcrypt.hash(password, 12);
 
         // Salvo il nuovo utente
-        const result = await insert({ name, email, passwordHash });
+        const result = await insert({ name, email: normalizedEmail, passwordHash });
 
         // Verifico che l'inserimento sia andato a buon fine (affectedRows indica il numero di righe inserite)
         if (result.affectedRows === 0) {
@@ -31,7 +37,7 @@ const register = asyncHandler(async (req, res) => {
 
         // Genero subito un JWT così l'utente risulta autenticato senza dover rifare il login
         const token = jwt.sign(
-            { id: result.insertId, email },
+            { id: result.insertId, email: normalizedEmail },
             JWT_SECRET,
             { expiresIn: '1h' }
         );
@@ -57,8 +63,8 @@ const register = asyncHandler(async (req, res) => {
 const login = asyncHandler(async (req, res) => {
     const { email, password } = req.body
 
-    // Recupero l'utente tramite email
-    const user = await findByEmail(email);
+    // Recupero l'utente tramite email (normalizzata, coerente con il salvataggio in registrazione)
+    const user = await findByEmail(email ? normalizeEmail(email) : email);
 
     // Non ho trovato l'utente: rispondo con un messaggio generico per non rivelare quali email sono registrate
     if (!user) {
