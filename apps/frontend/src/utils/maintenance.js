@@ -1,3 +1,6 @@
+// ATTENZIONE: duplicata in apps/backend/utils/maintenance.js (stesso nome/valore).
+// Se cambi questa soglia aggiornala anche lì, altrimenti gli stati mostrati
+// qui e gli alert calcolati lato server finiscono per disallinearsi.
 const WARNING_THRESHOLD_HOURS = 10;
 
 /**

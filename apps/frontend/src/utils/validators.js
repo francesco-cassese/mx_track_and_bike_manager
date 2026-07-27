@@ -1,3 +1,5 @@
+// ATTENZIONE: duplicata in apps/backend/utils/validation.js (stesso nome/valore).
+// Se cambi questa regex aggiornala anche lì per non disallineare le validazioni.
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_PASSWORD_LENGTH = 8;
 
@@ -64,6 +66,7 @@ const validateLoginForm = ({ email, password }) => {
     return errors;
 };
 
+// ATTENZIONE: duplicata in apps/backend/utils/validation.js (stesso nome/valore).
 const MIN_BIKE_YEAR = 1901;
 
 /**
@@ -94,6 +97,8 @@ const validateBikeForm = ({ brand, model, year }) => {
     return errors;
 };
 
+// ATTENZIONE: MAX_TRACK_LENGTH, MIN_FEELING e MAX_FEELING sono duplicate in
+// apps/backend/utils/validation.js (stessi nomi/valori) — tienile allineate.
 const MAX_TRACK_LENGTH = 100;
 const MIN_FEELING = 1;
 const MAX_FEELING = 5;
@@ -136,6 +141,7 @@ const validateSessionForm = ({ date, track, hoursLogged, feeling }) => {
 
 
 
+// ATTENZIONE: duplicata in apps/backend/utils/validation.js (stesso nome/valore).
 const MAX_TASK_DESCRIPTION_LENGTH = 150;
 
 /**

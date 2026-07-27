@@ -1,3 +1,5 @@
+// Stessa soglia duplicata in apps/frontend/src/utils/maintenance.js: se la
+// cambi qui, aggiornala anche lì per non disallineare gli stati mostrati.
 const WARNING_THRESHOLD_HOURS = 10;
 
 /**

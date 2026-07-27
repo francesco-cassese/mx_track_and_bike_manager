@@ -1,3 +1,7 @@
+// ATTENZIONE: queste costanti sono duplicate in apps/frontend/src/utils/validators.js
+// (stessi nomi/valori). Il monorepo non ha un package condiviso tra le due app,
+// quindi se cambi uno di questi valori qui aggiornalo anche lì, altrimenti
+// frontend e backend finiscono per validare con limiti diversi.
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_BIKE_YEAR = 1901;
 const MAX_TRACK_LENGTH = 100;
