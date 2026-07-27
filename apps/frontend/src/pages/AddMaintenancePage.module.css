@@ -1,0 +1,16 @@
+/* Layout pagina
+   ========================================================================== */
+.page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem;
+    box-sizing: border-box;
+}
+
+.page h1 {
+    margin: 0 0 2rem;
+    font-size: 2.5rem;
+    color: var(--color-primary);
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 1rem;
+}

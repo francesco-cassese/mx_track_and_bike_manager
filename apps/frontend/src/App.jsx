@@ -7,6 +7,8 @@ import BikeDetailPage from "./pages/BikeDetailPage";
 import EditBikePage from "./pages/EditBikePage";
 import AddSessionPage from "./pages/AddSessionPage";
 import EditSessionPage from "./pages/EditSessionPage";
+import AddMaintenancePage from "./pages/AddMaintenancePage";
+import EditMaintenancePage from "./pages/EditMaintenancePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import RootRoute from "./components/RootRoute";
@@ -32,6 +34,8 @@ function App() {
         <Route path="/bikes/:id/edit" element={<ProtectedRoute><PageTransition><EditBikePage /></PageTransition></ProtectedRoute>} />
         <Route path="/bikes/:id/sessions/new" element={<ProtectedRoute><PageTransition><AddSessionPage /></PageTransition></ProtectedRoute>} />
         <Route path="/bikes/:id/sessions/:sessionId/edit" element={<ProtectedRoute><PageTransition><EditSessionPage /></PageTransition></ProtectedRoute>} />
+        <Route path="/bikes/:id/maintenance/new" element={<ProtectedRoute><PageTransition><AddMaintenancePage /></PageTransition></ProtectedRoute>} />
+        <Route path="/bikes/:id/maintenance/:maintenanceId/edit" element={<ProtectedRoute><PageTransition><EditMaintenancePage /></PageTransition></ProtectedRoute>} />
         <Route path="*" element={<PageTransition><NotFoundPage /></PageTransition>} />
       </Routes>
     </AnimatePresence>

@@ -1,0 +1,58 @@
+/* Contenitore form
+   ========================================================================== */
+.form {
+    max-width: 100%;
+}
+
+/* Banner errori
+   ========================================================================== */
+.errorBanner {
+    color: var(--text-on-primary);
+    background-color: var(--color-danger);
+    font-size: 0.875rem;
+    margin: 0 0 1.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+}
+
+/* Azioni
+   ========================================================================== */
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+/* Pulsante di invio
+   ========================================================================== */
+.submitButton {
+    padding: 0.8rem 1.5rem;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-primary);
+    color: var(--text-on-primary);
+    font-size: 1.1rem;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+.submitButton:hover:not(:disabled) {
+    background-color: var(--color-primary-hover);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-1px);
+}
+
+.submitButton:disabled {
+    background-color: var(--bg-surface-elevated);
+    border-color: var(--border-color);
+    color: var(--text-muted);
+    cursor: not-allowed;
+    box-shadow: none;
+}
