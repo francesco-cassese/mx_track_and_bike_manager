@@ -1,8 +1,8 @@
 import { postJson } from "./api";
 
 /**
- * Registro un nuovo utente. Non salvo alcun token: la registrazione
- * non autentica automaticamente, l'utente deve poi effettuare il login.
+ * Registro un nuovo utente. Il backend restituisce già un token: la
+ * registrazione autentica automaticamente, senza richiedere un login separato.
  */
 const register = ({ name, email, password }) => postJson('/auth/register', { name, email, password });
 

@@ -4,6 +4,7 @@ import FormField from "../components/FormField";
 import { validateRegisterForm } from "../utils/validators";
 import { register } from "../services/authApi";
 import { getRequestErrorMessage } from "../services/api";
+import { useAuth } from "../hooks/useAuth";
 import { useFocusFirstError } from "../hooks/useFocusFirstError";
 import styles from "./RegisterPage.module.css";
 
@@ -15,6 +16,7 @@ import styles from "./RegisterPage.module.css";
  */
 function RegisterPage() {
     const navigate = useNavigate();
+    const { login: authLogin } = useAuth();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -51,9 +53,10 @@ function RegisterPage() {
         setServerError("");
 
         try {
-            await register({ name, email, password });
-            setSuccessMessage("Registrazione completata! Reindirizzamento al login...");
-            redirectTimeoutRef.current = setTimeout(() => navigate("/login"), 1500);
+            const { token } = await register({ name, email, password });
+            authLogin(token);
+            setSuccessMessage("Registrazione completata! Reindirizzamento...");
+            redirectTimeoutRef.current = setTimeout(() => navigate("/"), 1500);
         } catch (error) {
             if (error.status === 409) {
                 setErrors((prev) => ({ ...prev, email: error.message }));
