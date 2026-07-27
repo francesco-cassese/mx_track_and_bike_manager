@@ -39,6 +39,17 @@ Applicazione per la gestione di moto da cross/enduro, sessioni in pista e manute
 | Landing page pubblica con CTA verso login/registrazione | ✅ Implementato |
 | Tema grafico dark motocross (CSS custom properties) e transizioni di pagina animate | ✅ Implementato |
 
+## Screenshot
+
+| | |
+|---|---|
+| **Landing page** | **Login** |
+| ![Landing page](docs/screenshots/landing.png) | ![Login](docs/screenshots/login.png) |
+| **Dashboard** | **Dettaglio moto** |
+| ![Dashboard](docs/screenshots/dashboard.png) | ![Dettaglio moto](docs/screenshots/bike-detail.png) |
+| **Aggiungi moto** | **404** |
+| ![Aggiungi moto](docs/screenshots/add-bike.png) | ![Pagina 404](docs/screenshots/not-found.png) |
+
 ## Roadmap
 
 Sviluppi previsti, in ordine di priorità:
