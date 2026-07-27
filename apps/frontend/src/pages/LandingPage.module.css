@@ -1,3 +1,5 @@
+/* Layout pagina
+   ========================================================================== */
 .landingPage {
     min-height: 100vh;
     display: flex;
@@ -5,68 +7,216 @@
     background-color: var(--bg-base);
 }
 
-/* --- HERO SECTION --- */
+/* Navbar
+   ========================================================================== */
+.navbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding: 1.25rem 2rem;
+    background: rgba(15, 15, 15, 0.95);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.navBrand {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.navLogo {
+    height: 42px;
+    width: auto;
+    display: block;
+}
+
+.navLinks {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.separator {
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 0.95rem;
+    font-weight: 300;
+    user-select: none;
+}
+
+.navLinks a {
+    color: var(--text-secondary);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.navLinks a:hover {
+    color: var(--text-primary);
+}
+
+.navActions {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.signInButton {
+    padding: 0.55rem 1.5rem;
+    border-radius: var(--radius-full);
+    border: 1px solid var(--text-primary);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: all var(--transition-fast);
+}
+
+.signInButton:hover {
+    background: var(--text-primary);
+    color: var(--bg-base);
+}
+
+.iconButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 0;
+    transition: color var(--transition-fast);
+}
+
+.iconButton:hover {
+    color: var(--text-primary);
+}
+
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-full);
+    background: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    flex-shrink: 0;
+}
+
+.icon {
+    width: 18px;
+    height: 18px;
+}
+
+/* Sezione hero
+   ========================================================================== */
 .heroSection {
     position: relative;
-    min-height: 100vh;
+    height: calc(100dvh - 20px);
+    max-height: calc(100dvh - 20px);
     display: flex;
-    align-items: flex-end;
-    justify-content: flex-start;
-    text-align: left;
-    padding: 4rem 3rem;
-    box-sizing: border-box;
-    /* Lighter gradient overlay so the bright image is more visible, but text remains readable */
-    background-image: linear-gradient(to bottom, rgba(10, 10, 10, 0.05) 0%, rgba(18, 18, 18, 0.8) 100%), url('/bg-auth.jpg');
+    flex-direction: column;
+    background-color: var(--bg-base);
+    overflow: hidden;
+}
+
+.heroImage {
+    position: relative;
+    width: 100%;
+    flex: 0 0 57%;
+    min-height: 250px;
+    background-image: linear-gradient(to bottom, rgba(18, 18, 18, 0) 75%, var(--bg-base) 100%), url('/bg-auth.jpg');
     background-size: cover;
-    background-position: center top; /* Spostato più in alto per inquadrare perfettamente il pilota */
-    background-attachment: fixed;
+    background-position: center 25%;
+}
+
+.heroBottom {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1rem 2rem 7.5rem;
+    background-color: var(--bg-base);
+    overflow: hidden;
 }
 
 .heroContent {
     max-width: 700px;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 1.5rem;
+    align-items: center;
+    gap: 0.75rem;
     animation: fadeIn 1s ease-out;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .title {
-    font-size: clamp(3.5rem, 10vw, 7rem);
-    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: clamp(1.8rem, 5.5vw, 3.4rem);
+    font-weight: 800;
+    color: #ffffff;
     text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
     margin: 0;
-    line-height: 1;
+    line-height: 1.1;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
 }
 
 .tagline {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-    line-height: 1.6;
+    font-family: var(--font-body);
+    color: rgba(255, 255, 255, 0.85);
+    font-size: clamp(0.9rem, 1.9vw, 1.3rem);
+    font-weight: 400;
+    line-height: 1.4;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     margin: 0;
-    max-width: 600px;
 }
 
 .actions {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
 }
 
-.primaryButton, .secondaryButton {
-    padding: 1rem 2rem;
-    border-radius: var(--radius-sm);
-    font-family: var(--font-heading);
-    font-size: 1.25rem;
-    font-weight: 600;
+.primaryButton,
+.secondaryButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 11rem;
+    padding: 0.6rem 1.9rem;
+    border-radius: var(--radius-full);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
     text-decoration: none;
@@ -75,66 +225,114 @@
 
 .primaryButton {
     background-color: var(--color-primary);
-    color: var(--text-on-primary);
-    border: 1px solid var(--color-primary);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    border: 2px solid var(--color-primary);
+    box-shadow: 0 4px 12px rgba(226, 0, 26, 0.35);
 }
 
 .primaryButton:hover {
     background-color: var(--color-primary-hover);
-    color: var(--text-on-primary);
+    border-color: var(--color-primary-hover);
+    color: #ffffff;
     box-shadow: var(--shadow-glow);
     transform: translateY(-2px);
 }
 
 .secondaryButton {
-    background: rgba(18, 18, 18, 0.6);
-    color: var(--text-primary);
-    border: 1px solid var(--text-primary);
-    backdrop-filter: blur(4px);
+    background-color: #121212;
+    color: #ffffff;
+    border: 2px solid var(--color-primary);
 }
 
 .secondaryButton:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+    background-color: rgba(226, 0, 26, 0.15);
+    border-color: var(--color-primary-hover);
+    color: #ffffff;
     transform: translateY(-2px);
 }
 
-/* --- SCROLL INDICATOR --- */
+/* Indicatore di scroll
+   ========================================================================== */
 .scrollIndicator {
     position: absolute;
-    bottom: 2rem;
+    bottom: 4.3rem;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 0.3rem;
+    z-index: 3;
     animation: bounce 2s infinite;
+}
+
+.scrollLabel {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
 }
 
 .scrollArrow {
     display: block;
-    width: 20px;
-    height: 20px;
-    border-bottom: 3px solid var(--color-primary);
-    border-right: 3px solid var(--color-primary);
+    width: 12px;
+    height: 12px;
+    border-bottom: 2px solid var(--color-primary);
+    border-right: 2px solid var(--color-primary);
     transform: rotate(45deg);
 }
 
 @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
         transform: translateX(-50%) translateY(0);
     }
+
     40% {
-        transform: translateX(-50%) translateY(-15px);
+        transform: translateX(-50%) translateY(-10px);
     }
+
     60% {
-        transform: translateX(-50%) translateY(-7px);
+        transform: translateX(-50%) translateY(-5px);
     }
 }
 
-/* --- FEATURES SECTION --- */
+/* Social links
+   ========================================================================== */
+.socialLinks {
+    position: absolute;
+    bottom: 5rem;
+    right: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.socialLinks a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    transition: color var(--transition-fast);
+}
+
+.socialLinks a:hover {
+    color: var(--color-primary);
+}
+
+.socialLinks .icon {
+    width: 20px;
+    height: 20px;
+}
+
+/* Sezione funzionalità
+   ========================================================================== */
 .featuresSection {
     background-color: var(--bg-base);
     padding: 6rem 1.5rem;
@@ -200,7 +398,7 @@
     margin-bottom: 1.5rem;
     display: inline-block;
     padding: 1rem;
-    background: rgba(255, 102, 0, 0.1);
+    background: rgba(226, 0, 26, 0.15);
     border-radius: var(--radius-full);
 }
 
@@ -219,7 +417,8 @@
     margin: 0;
 }
 
-/* --- FOOTER --- */
+/* Footer
+   ========================================================================== */
 .footer {
     background: var(--bg-surface);
     border-top: 1px solid var(--border-color);
@@ -229,11 +428,22 @@
     font-size: 0.9rem;
 }
 
+/* Responsive
+   ========================================================================== */
 @media (max-width: 768px) {
+    .navLinks {
+        display: none;
+    }
+
+    .iconButton,
+    .avatar {
+        display: none;
+    }
+
     .featuresSection {
         padding: 4rem 1.5rem;
     }
-    
+
     .sectionTitle {
         font-size: 2.5rem;
         margin-bottom: 2.5rem;
@@ -241,23 +451,40 @@
 }
 
 @media (max-width: 480px) {
-    .heroSection {
+    .navbar {
+        padding: 1rem 1.25rem;
+    }
+
+    .navLogo {
+        height: 32px;
+    }
+
+    .socialLinks {
+        right: 1.25rem;
+        bottom: 1.25rem;
+        gap: 0.9rem;
+    }
+
+    .heroImage {
         background-position: center 20%;
-        padding: 3rem 1.5rem;
+    }
+
+    .heroBottom {
+        padding: 3rem 1.5rem 6rem;
     }
 
     .heroContent {
         gap: 1.25rem;
-        align-items: flex-start;
     }
-    
+
     .actions {
         flex-direction: column;
         width: 100%;
         align-items: stretch;
     }
-    
-    .primaryButton, .secondaryButton {
+
+    .primaryButton,
+    .secondaryButton {
         width: 100%;
         box-sizing: border-box;
         text-align: center;
