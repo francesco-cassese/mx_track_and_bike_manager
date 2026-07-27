@@ -18,7 +18,7 @@ Applicazione per la gestione di moto da cross/enduro, sessioni in pista e manute
 | Manutenzioni programmate (maintenance) | ✅ Implementato |
 | Alert di manutenzione (ore rimanenti, stato ok / in scadenza / scaduta) | ✅ Implementato |
 | Middleware di autorizzazione sulle rotte protette | ✅ Implementato |
-| Validazione input | 🚧 Solo presenza dei campi obbligatori, nessun controllo di formato/robustezza |
+| Validazione input (login, moto, sessioni, manutenzioni), normalizzazione email | ✅ Implementato |
 
 ### Frontend
 
@@ -38,6 +38,8 @@ Applicazione per la gestione di moto da cross/enduro, sessioni in pista e manute
 | Interfaccia manutenzioni programmate: form di creazione, storico con badge di stato (ok/in scadenza/scaduta), modifica ed eliminazione | ✅ Implementato |
 | Landing page pubblica con CTA verso login/registrazione | ✅ Implementato |
 | Tema grafico dark motocross (CSS custom properties) e transizioni di pagina animate | ✅ Implementato |
+| Pagine login/registrazione con navbar, icone e toggle "Ricordami" (persistenza token in `localStorage` o `sessionStorage`) | ✅ Implementato |
+| Classi utility Bootstrap per gli spaziamenti nell'UI | ✅ Implementato |
 
 ## Screenshot
 
@@ -52,12 +54,6 @@ Applicazione per la gestione di moto da cross/enduro, sessioni in pista e manute
 | **404** | |
 | ![Pagina 404](docs/screenshots/not-found.png) | |
 
-## Roadmap
-
-Sviluppi previsti, in ordine di priorità:
-
-- **Validazione e gestione errori centralizzata sul backend** — validazione di formato/robustezza degli input su tutti gli endpoint (oggi presente solo lato frontend), gestione uniforme degli errori via middleware Express.
-
 ## Stack tecnologico
 
 **Backend**
@@ -70,7 +66,7 @@ Sviluppi previsti, in ordine di priorità:
 - **Libreria UI:** React 19
 - **Build tool:** Vite
 - **Routing:** `react-router-dom`
-- **Styling:** CSS Modules (tema dark motocross basato su CSS custom properties)
+- **Styling:** CSS Modules (tema dark motocross basato su CSS custom properties) + utility class di Bootstrap 5 per gli spaziamenti
 - **Animazioni:** `framer-motion` (transizioni tra le pagine)
 
 **Package manager:** pnpm (monorepo con workspaces)
