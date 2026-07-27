@@ -50,6 +50,7 @@ function LoginPage() {
 
     return (
         <div className={styles.authPage}>
+            <Link to="/" className={styles.backLink}>&larr; Torna alla home</Link>
             <div className={styles.authCard}>
                 <h1>Accedi</h1>
                 <div aria-live="polite">
@@ -79,7 +80,7 @@ function LoginPage() {
                     <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
                         {isSubmitting ? "Accesso in corso..." : "Accedi"}
                     </button>
-                    <Link to="/register">Non hai un account? Registrati</Link>
+                    <Link to="/register" className={styles.switchLink}>Non hai un account? Registrati</Link>
                 </form>
             </div>
         </div>

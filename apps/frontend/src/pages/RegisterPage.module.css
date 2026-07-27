@@ -1,8 +1,12 @@
+/* Layout pagina
+   ========================================================================== */
 .authPage {
     min-height: 100vh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 1.25rem;
     padding: 1.5rem;
     box-sizing: border-box;
     background-image: linear-gradient(rgba(18, 18, 18, 0.3), rgba(18, 18, 18, 0.8)), url('/bg-auth.jpg');
@@ -11,6 +15,29 @@
     background-attachment: fixed;
 }
 
+/* Link di ritorno alla landing page
+   ========================================================================== */
+.backLink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+    transition: all var(--transition-fast);
+}
+
+.backLink:hover {
+    color: var(--color-primary);
+    transform: translateX(-4px);
+}
+
+/* Card autenticazione
+   ========================================================================== */
 .authCard {
     width: 100%;
     max-width: 400px;
@@ -43,6 +70,8 @@
     letter-spacing: 0.05em;
 }
 
+/* Banner errori
+   ========================================================================== */
 .errorBanner {
     color: var(--text-on-primary);
     background-color: var(--color-danger);
@@ -53,6 +82,8 @@
     font-weight: 500;
 }
 
+/* Pulsante di invio
+   ========================================================================== */
 .submitButton {
     width: 100%;
     padding: 0.8rem;
@@ -85,11 +116,28 @@
     box-shadow: none;
 }
 
+/* Link di cambio pagina
+   ========================================================================== */
+.switchLink {
+    display: block;
+    margin-top: 24px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* Responsive
+   ========================================================================== */
 @media (max-width: 480px) {
     .authPage {
         padding: 0;
+        gap: 0;
         align-items: flex-start;
         background: var(--bg-base);
+    }
+
+    .backLink {
+        margin: 1rem 0 -0.5rem 1.25rem;
     }
 
     .authCard {
@@ -100,7 +148,7 @@
         box-shadow: none;
         padding: 2rem 1.5rem;
     }
-    
+
     .authCard::before {
         display: none;
     }

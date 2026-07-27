@@ -67,6 +67,7 @@ function RegisterPage() {
 
     return (
         <div className={styles.authPage}>
+            <Link to="/" className={styles.backLink}>&larr; Torna alla home</Link>
             <div className={styles.authCard}>
                 <h1>Registrati</h1>
                 <div aria-live="polite">
@@ -118,7 +119,7 @@ function RegisterPage() {
                     <button type="submit" className={styles.submitButton} disabled={isSubmitting}>
                         {isSubmitting ? "Registrazione in corso..." : "Registrati"}
                     </button>
-                    <Link to="/login">Hai già un account? Accedi</Link>
+                    <Link to="/login" className={styles.switchLink}>Hai già un account? Accedi</Link>
                 </form>
             </div>
         </div>
