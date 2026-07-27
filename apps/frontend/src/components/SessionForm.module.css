@@ -1,7 +1,11 @@
+/* Contenitore form
+   ========================================================================== */
 .form {
     max-width: 100%;
 }
 
+/* Banner errori
+   ========================================================================== */
 .errorBanner {
     color: var(--text-on-primary);
     background-color: var(--color-danger);
@@ -12,6 +16,8 @@
     font-weight: 500;
 }
 
+/* Gruppo input
+   ========================================================================== */
 .inputGroup {
     display: flex;
     flex-direction: column;
@@ -50,6 +56,8 @@
     background-color: var(--bg-surface-elevated);
 }
 
+/* Azioni
+   ========================================================================== */
 .actions {
     display: flex;
     align-items: center;
@@ -57,6 +65,8 @@
     margin-top: 1.5rem;
 }
 
+/* Pulsante di invio
+   ========================================================================== */
 .submitButton {
     padding: 0.8rem 1.5rem;
     border: 1px solid var(--color-primary);

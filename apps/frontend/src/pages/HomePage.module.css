@@ -1,3 +1,5 @@
+/* Layout pagina
+   ========================================================================== */
 .page {
     max-width: 1000px;
     margin: 0 auto;
@@ -5,6 +7,8 @@
     box-sizing: border-box;
 }
 
+/* Header e azioni
+   ========================================================================== */
 .header {
     display: flex;
     align-items: center;
@@ -71,6 +75,8 @@
     border-color: var(--text-muted);
 }
 
+/* Banner errori
+   ========================================================================== */
 .errorBanner {
     color: var(--text-on-primary);
     background-color: var(--color-danger);
@@ -81,6 +87,8 @@
     font-weight: 500;
 }
 
+/* Stato di caricamento
+   ========================================================================== */
 .loadingState {
     display: flex;
     align-items: center;
@@ -109,16 +117,18 @@
     }
 }
 
+/* Responsive
+   ========================================================================== */
 @media (max-width: 480px) {
     .page {
         padding: 1.5rem 1.25rem;
     }
-    
+
     .header {
         flex-direction: column;
         align-items: flex-start;
     }
-    
+
     .headerActions {
         width: 100%;
         justify-content: space-between;

@@ -1,3 +1,5 @@
+/* Gruppo input
+   ========================================================================== */
 .inputGroup {
     display: flex;
     flex-direction: column;
@@ -42,6 +44,8 @@
     background-color: var(--bg-surface-elevated);
 }
 
+/* Pulsante mostra/nascondi password
+   ========================================================================== */
 .togglePasswordButton {
     position: absolute;
     top: 50%;
@@ -68,6 +72,8 @@
     outline-offset: 1px;
 }
 
+/* Stato di errore
+   ========================================================================== */
 .hasError input {
     border-color: var(--color-danger);
 }

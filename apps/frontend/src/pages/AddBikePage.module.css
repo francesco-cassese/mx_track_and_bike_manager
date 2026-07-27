@@ -1,3 +1,5 @@
+/* Layout pagina
+   ========================================================================== */
 .page {
     max-width: 1000px;
     margin: 0 auto;
@@ -13,6 +15,8 @@
     padding-bottom: 1rem;
 }
 
+/* Banner errori
+   ========================================================================== */
 .errorBanner {
     color: var(--text-on-primary);
     background-color: var(--color-danger);

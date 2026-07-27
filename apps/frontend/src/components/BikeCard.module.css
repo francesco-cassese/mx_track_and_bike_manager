@@ -1,3 +1,5 @@
+/* Card contenitore
+   ========================================================================== */
 .card {
     display: flex;
     flex-direction: column;
@@ -38,6 +40,8 @@
     transform: scaleY(1);
 }
 
+/* Icona
+   ========================================================================== */
 .icon {
     color: var(--color-primary);
     margin-bottom: 0.75rem;
@@ -48,6 +52,8 @@
     transform: scale(1.08) translateX(2px);
 }
 
+/* Testo
+   ========================================================================== */
 .card h2 {
     margin: 0 0 0.5rem;
     font-size: 1.5rem;
@@ -60,6 +66,8 @@
     font-size: 0.95rem;
 }
 
+/* Badge di stato
+   ========================================================================== */
 .badge {
     display: inline-block;
     margin-top: 1rem;

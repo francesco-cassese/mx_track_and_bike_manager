@@ -1,3 +1,5 @@
+/* Layout pagina
+   ========================================================================== */
 .page {
     min-height: 100vh;
     display: flex;
@@ -10,6 +12,8 @@
     gap: 0.5rem;
 }
 
+/* Icona
+   ========================================================================== */
 .icon {
     color: var(--color-primary);
     filter: drop-shadow(0 0 12px var(--color-primary-glow));
@@ -17,6 +21,8 @@
     animation: bounce 2.4s ease-in-out infinite;
 }
 
+/* Testo
+   ========================================================================== */
 .page h1 {
     font-size: 4rem;
     color: var(--color-primary);
@@ -29,6 +35,8 @@
     margin: 0 0 1.5rem;
 }
 
+/* Link home
+   ========================================================================== */
 .homeLink {
     padding: 0.8rem 1.5rem;
     border: 1px solid var(--color-primary);
@@ -51,6 +59,8 @@
     transform: translateY(-1px);
 }
 
+/* Animazioni
+   ========================================================================== */
 @keyframes bounce {
     0%, 100% {
         transform: translateY(0);
