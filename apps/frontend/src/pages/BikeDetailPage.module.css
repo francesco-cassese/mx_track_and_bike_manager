@@ -235,3 +235,41 @@
     color: var(--text-muted);
     flex-shrink: 0;
 }
+
+/* Badge di stato manutenzione
+   ========================================================================== */
+.statusBadge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    align-self: flex-start;
+    width: fit-content;
+}
+
+.statusBadge.ok {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--color-success);
+    border: 1px solid var(--color-success);
+}
+
+.statusBadge.in_scadenza {
+    background: rgba(245, 158, 11, 0.2);
+    color: var(--color-warning);
+    border: 1px solid var(--color-warning);
+}
+
+.statusBadge.scaduta {
+    background: rgba(239, 68, 68, 0.2);
+    color: var(--color-danger);
+    border: 1px solid var(--color-danger);
+}
+
+.statusBadge.unknown {
+    background: rgba(148, 163, 184, 0.15);
+    color: var(--text-muted);
+    border: 1px solid var(--border-color);
+}

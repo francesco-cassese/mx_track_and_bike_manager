@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { getBike, deleteBike } from "../services/bikeApi";
 import { getSessions, deleteSession } from "../services/sessionApi";
+import { getMaintenances, deleteMaintenance } from "../services/maintenanceApi";
 import { getRequestErrorMessage } from "../services/api";
+import { getMaintenanceStatus, MAINTENANCE_STATUS_LABELS } from "../utils/maintenance";
 import styles from "./BikeDetailPage.module.css";
 
 /**
@@ -11,6 +13,16 @@ import styles from "./BikeDetailPage.module.css";
  * conversione UTC/fuso orario sposti il giorno visualizzato.
  */
 const formatSessionDate = (rawDate) => {
+    const [year, month, day] = String(rawDate).slice(0, 10).split("-");
+    return `${day}/${month}/${year}`;
+};
+
+/**
+ * Stessa logica di formattazione delle sessioni, ma tollerante a un valore
+ * nullo perché service_date è un campo opzionale della manutenzione.
+ */
+const formatMaintenanceDate = (rawDate) => {
+    if (!rawDate) return null;
     const [year, month, day] = String(rawDate).slice(0, 10).split("-");
     return `${day}/${month}/${year}`;
 };
@@ -35,6 +47,13 @@ function BikeDetailPage() {
     const [confirmingDeleteSessionId, setConfirmingDeleteSessionId] = useState(null);
     const [deletingSessionId, setDeletingSessionId] = useState(null);
     const [sessionDeleteError, setSessionDeleteError] = useState("");
+
+    const [maintenances, setMaintenances] = useState([]);
+    const [isMaintenancesLoading, setIsMaintenancesLoading] = useState(true);
+    const [maintenancesError, setMaintenancesError] = useState("");
+    const [confirmingDeleteMaintenanceId, setConfirmingDeleteMaintenanceId] = useState(null);
+    const [deletingMaintenanceId, setDeletingMaintenanceId] = useState(null);
+    const [maintenanceDeleteError, setMaintenanceDeleteError] = useState("");
 
     useEffect(() => {
         let isMounted = true;
@@ -70,6 +89,25 @@ function BikeDetailPage() {
         return () => { isMounted = false; };
     }, [id]);
 
+    useEffect(() => {
+        let isMounted = true;
+
+        const loadMaintenances = async () => {
+            try {
+                const data = await getMaintenances(id);
+                if (isMounted) setMaintenances(data);
+            } catch (err) {
+                if (isMounted) setMaintenancesError(getRequestErrorMessage(err));
+            } finally {
+                if (isMounted) setIsMaintenancesLoading(false);
+            }
+        };
+
+        loadMaintenances();
+
+        return () => { isMounted = false; };
+    }, [id]);
+
     const handleConfirmDelete = async () => {
         setIsDeleting(true);
         setDeleteError("");
@@ -95,6 +133,21 @@ function BikeDetailPage() {
             setSessionDeleteError(getRequestErrorMessage(err));
         } finally {
             setDeletingSessionId(null);
+        }
+    };
+
+    const handleConfirmDeleteMaintenance = async (maintenanceId) => {
+        setDeletingMaintenanceId(maintenanceId);
+        setMaintenanceDeleteError("");
+
+        try {
+            await deleteMaintenance(id, maintenanceId);
+            setMaintenances((current) => current.filter((maintenance) => maintenance.id !== maintenanceId));
+            setConfirmingDeleteMaintenanceId(null);
+        } catch (err) {
+            setMaintenanceDeleteError(getRequestErrorMessage(err));
+        } finally {
+            setDeletingMaintenanceId(null);
         }
     };
 
@@ -207,6 +260,89 @@ function BikeDetailPage() {
                                     )}
                                 </li>
                             ))}
+                        </ul>
+                    )}
+
+                    <div className={styles.sessionsHeader}>
+                        <h2>Manutenzioni</h2>
+                        <Link to={`/bikes/${bike.id}/maintenance/new`} className={styles.editButton}>Aggiungi manutenzione</Link>
+                    </div>
+                    <div aria-live="polite">
+                        {maintenancesError && <p className={styles.errorBanner}>{maintenancesError}</p>}
+                        {maintenanceDeleteError && <p className={styles.errorBanner}>{maintenanceDeleteError}</p>}
+                    </div>
+                    {isMaintenancesLoading && <p>Caricamento manutenzioni in corso...</p>}
+                    {!isMaintenancesLoading && !maintenancesError && maintenances.length === 0 && (
+                        <p>Nessuna scadenza di manutenzione registrata per questa moto.</p>
+                    )}
+                    {!isMaintenancesLoading && !maintenancesError && maintenances.length > 0 && (
+                        <ul className={styles.sessionsList}>
+                            {maintenances.map((maintenance) => {
+                                const status = getMaintenanceStatus(maintenance.hour_threshold, bike.totalHours, maintenance.last_service_hours);
+                                const formattedDate = formatMaintenanceDate(maintenance.service_date);
+
+                                return (
+                                    <li key={maintenance.id} className={styles.sessionItem}>
+                                        <div className={styles.sessionInfo}>
+                                            <strong className={styles.sessionTrack}>
+                                                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76Z" />
+                                                </svg>
+                                                {maintenance.task_description}
+                                            </strong>
+                                            {formattedDate && (
+                                                <span className={styles.sessionMeta}>
+                                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                                                        <path d="M16 2v4M8 2v4M3 10h18" />
+                                                    </svg>
+                                                    {formattedDate}
+                                                </span>
+                                            )}
+                                            {maintenance.hour_threshold != null && (
+                                                <span className={styles.sessionMeta}>
+                                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                                        <circle cx="12" cy="12" r="9" />
+                                                        <path d="M12 7v5l3 3" />
+                                                    </svg>
+                                                    Ogni {maintenance.hour_threshold} h
+                                                </span>
+                                            )}
+                                            <span className={`${styles.statusBadge} ${status ? styles[status] : styles.unknown}`}>
+                                                {status ? MAINTENANCE_STATUS_LABELS[status] : "N/D"}
+                                            </span>
+                                        </div>
+                                        {confirmingDeleteMaintenanceId !== maintenance.id && (
+                                            <div className={styles.actions}>
+                                                <Link to={`/bikes/${bike.id}/maintenance/${maintenance.id}/edit`} className={styles.editButton}>Modifica</Link>
+                                                <button type="button" className={styles.deleteButton} onClick={() => setConfirmingDeleteMaintenanceId(maintenance.id)}>Elimina</button>
+                                            </div>
+                                        )}
+                                        {confirmingDeleteMaintenanceId === maintenance.id && (
+                                            <div className={styles.confirmDelete}>
+                                                <p>Eliminare questa scadenza di manutenzione? L'azione non è reversibile.</p>
+                                                <div className={styles.actions}>
+                                                    <button
+                                                        type="button"
+                                                        className={styles.deleteButton}
+                                                        onClick={() => handleConfirmDeleteMaintenance(maintenance.id)}
+                                                        disabled={deletingMaintenanceId === maintenance.id}
+                                                    >
+                                                        {deletingMaintenanceId === maintenance.id ? "Eliminazione in corso..." : "Conferma eliminazione"}
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => setConfirmingDeleteMaintenanceId(null)}
+                                                        disabled={deletingMaintenanceId === maintenance.id}
+                                                    >
+                                                        Annulla
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </li>
+                                );
+                            })}
                         </ul>
                     )}
                 </>
