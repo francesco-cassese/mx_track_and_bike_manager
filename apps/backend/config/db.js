@@ -12,7 +12,9 @@ const pool = createPool({
     password: process.env.DB_PASSWORD,
     database: process.env.DB_DATABASE,
     waitForConnections: true,
-    connectionLimit: 10
+    connectionLimit: 10,
+    // Restituisco le colonne DATE come stringa per evitare lo shift di un giorno dato dalla conversione UTC
+    dateStrings: ['DATE']
 })
 
 export default pool;
