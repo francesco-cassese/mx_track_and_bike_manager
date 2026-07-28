@@ -5,6 +5,7 @@ import { getSessions, deleteSession } from "../services/sessionApi";
 import { getMaintenances, deleteMaintenance } from "../services/maintenanceApi";
 import { getRequestErrorMessage } from "../services/api";
 import { getMaintenanceStatus, MAINTENANCE_STATUS_LABELS } from "../utils/maintenance";
+import { getBikeImage } from "../utils/bikeImages";
 import styles from "./BikeDetailPage.module.css";
 
 /**
@@ -35,6 +36,7 @@ function BikeDetailPage() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [bike, setBike] = useState(null);
+    const imageSrc = getBikeImage(bike);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState("");
     const [isConfirmingDelete, setIsConfirmingDelete] = useState(false);
@@ -160,7 +162,20 @@ function BikeDetailPage() {
             {isLoading && <p>Caricamento moto in corso...</p>}
             {!isLoading && !error && bike && (
                 <>
-                    <h1>{bike.brand} {bike.model}</h1>
+                    <div className={styles.header}>
+                        {imageSrc ? (
+                            <img className={styles.image} src={imageSrc} alt={`${bike.brand} ${bike.model}`} />
+                        ) : (
+                            <svg className={styles.icon} viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                                <circle cx="5.5" cy="17.5" r="3.5" />
+                                <circle cx="18.5" cy="17.5" r="3.5" />
+                                <path d="M5.5 17.5 9 10h5l3.5 7.5" />
+                                <path d="M9 10 7.5 6h-2" />
+                                <path d="M12 10l2-3h2.5" />
+                            </svg>
+                        )}
+                        <h1>{bike.brand} {bike.model}</h1>
+                    </div>
                     <dl className={styles.details}>
                         <dt>Anno</dt>
                         <dd className="mt-1 mb-4">{bike.year}</dd>

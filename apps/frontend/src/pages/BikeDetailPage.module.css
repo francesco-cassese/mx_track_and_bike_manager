@@ -39,6 +39,40 @@
     font-weight: 500;
 }
 
+/* Intestazione (immagine + titolo)
+   ========================================================================== */
+.header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.header h1 {
+    margin: 0;
+}
+
+.image {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
+}
+
+.icon {
+    width: 96px;
+    height: 96px;
+    padding: 1rem;
+    box-sizing: border-box;
+    color: var(--color-primary);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    flex-shrink: 0;
+}
+
 /* Dettagli moto
    ========================================================================== */
 .details {

@@ -51,6 +51,16 @@
     transform: scale(1.08) translateX(2px);
 }
 
+/* Immagine moto
+   ========================================================================== */
+.image {
+    width: 100%;
+    height: 140px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    margin-bottom: 0.75rem;
+}
+
 /* Testo
    ========================================================================== */
 .card h2 {

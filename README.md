@@ -41,6 +41,8 @@ Applicazione per la gestione di moto da cross/enduro, sessioni in pista e manute
 | Pagine login/registrazione con navbar, icone e toggle "Ricordami" (persistenza token in `localStorage` o `sessionStorage`) | ✅ Implementato |
 | Classi utility Bootstrap per gli spaziamenti nell'UI | ✅ Implementato |
 | Grafico storico ore cumulate per moto (`/bikes/:id/history`) | ✅ Implementato |
+| Selezione marca/modello da catalogo predefinito nel form moto (con opzione "altra marca/modello" per valori custom) | ✅ Implementato |
+| Immagine della moto in base a marca/modello (card dashboard e dettaglio moto), con icona generica di fallback | ✅ Implementato |
 
 ## Screenshot
 
@@ -89,14 +91,15 @@ Monorepo gestito con pnpm workspaces: backend in `apps/backend`, frontend in `ap
 │   │   ├── server.js          # Entry point dell'applicazione
 │   │   └── .env.example       # Esempio di variabili d'ambiente richieste
 │   └── frontend/
-│       ├── public/            # Asset statici (immagini di sfondo, favicon)
+│       ├── public/            # Asset statici (immagini di sfondo, foto moto per marca, favicon)
 │       └── src/
-│           ├── components/    # Componenti riusabili (FormField, BikeCard, BikeList, BikeForm, SessionForm, MaintenanceForm, ProtectedRoute, RootRoute, PageTransition)
+│           ├── components/    # Componenti riusabili (FormField, SelectField, BikeCard, BikeList, BikeForm, SessionForm, MaintenanceForm, ProtectedRoute, RootRoute, PageTransition)
 │           ├── context/       # Contesto di autenticazione (AuthContext)
+│           ├── data/          # Cataloghi statici (marche/modelli moto)
 │           ├── hooks/         # Hook riusabili (useAuth, useFocusFirstError)
 │           ├── pages/         # Pagine/route (LandingPage, RegisterPage, LoginPage, HomePage, AddBikePage, BikeDetailPage, EditBikePage, AddSessionPage, EditSessionPage, AddMaintenancePage, EditMaintenancePage, NotFoundPage)
 │           ├── services/      # Client HTTP verso il backend (apiFetch, authApi, bikeApi, sessionApi, maintenanceApi, tokenStorage)
-│           ├── utils/         # Funzioni pure riusabili (validatori dei form, calcolo stato manutenzione)
+│           ├── utils/         # Funzioni pure riusabili (validatori dei form, calcolo stato manutenzione, immagine moto per marca/modello)
 │           ├── App.jsx        # Definizione delle rotte
 │           └── main.jsx       # Entry point dell'applicazione
 ├── package.json        # Root del workspace (script di orchestrazione)

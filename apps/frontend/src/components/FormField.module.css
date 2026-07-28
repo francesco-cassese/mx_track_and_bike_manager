@@ -88,11 +88,13 @@
 
 /* Stato di errore
    ========================================================================== */
-.hasError input {
+.hasError input,
+.hasError select {
     border-color: var(--color-danger);
 }
 
-.hasError input:focus {
+.hasError input:focus,
+.hasError select:focus {
     box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
 }
 
