@@ -7,6 +7,7 @@
  */
 const MODEL_IMAGES = [
     { match: "beta", src: "/bike-beta.jpg" },
+    { match: "ducati", src: "/bike-ducati.jpg" },
     { match: "fantic", src: "/bike-fantic.jpg" },
     { match: "honda", src: "/bike-honda.jpg" },
     { match: "husqvarna", src: "/bike-husquarna.jpg" },
