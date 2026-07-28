@@ -8,11 +8,11 @@
     box-shadow: var(--shadow-sm);
     box-sizing: border-box;
     color: var(--text-primary);
-    text-decoration: none;
     transition: all var(--transition-normal);
     border: 1px solid var(--border-color);
     position: relative;
     overflow: hidden;
+    height: 100%;
 }
 
 .card::before {
@@ -39,6 +39,16 @@
     transform: scaleY(1);
 }
 
+/* Link principale (immagine + info): occupa lo spazio sopra le azioni
+   ========================================================================== */
+.mainLink {
+    display: flex;
+    flex-direction: column;
+    color: inherit;
+    text-decoration: none;
+    flex: 1;
+}
+
 /* Icona
    ========================================================================== */
 .icon {
@@ -63,9 +73,21 @@
 
 /* Testo
    ========================================================================== */
-.card h2 {
+.headerRow {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.headerRow h2 {
     font-size: 1.5rem;
-    color: var(--text-primary);
+}
+
+.bikeId {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    white-space: nowrap;
 }
 
 .card p {
@@ -74,12 +96,14 @@
     font-size: 0.95rem;
 }
 
-/* Badge di stato
+/* Badge di stato operativo
    ========================================================================== */
-.badge {
+.statusBadge {
     display: inline-block;
     padding-left: 0.75rem;
     padding-right: 0.75rem;
+    padding-top: 0.15rem;
+    padding-bottom: 0.15rem;
     border-radius: var(--radius-full);
     font-size: 0.75rem;
     font-weight: 700;
@@ -88,14 +112,130 @@
     align-self: flex-start;
 }
 
-.overdue {
-    background: rgba(239, 68, 68, 0.2);
-    color: var(--color-danger);
-    border: 1px solid var(--color-danger);
+.active {
+    background: rgba(226, 0, 26, 0.15);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
 }
 
-.due {
-    background: rgba(245, 158, 11, 0.2);
+.ready {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--color-success);
+    border: 1px solid var(--color-success);
+}
+
+.maintenance {
+    background: rgba(245, 158, 11, 0.15);
     color: var(--color-warning);
     border: 1px solid var(--color-warning);
+}
+
+/* Ore totali
+   ========================================================================== */
+.hoursLabel {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+}
+
+.hoursValue {
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    color: var(--text-primary);
+    line-height: 1;
+}
+
+/* Barra allerta manutenzione
+   ========================================================================== */
+.alertBlock {
+    margin-top: auto;
+}
+
+.alertRow {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    margin-bottom: 0.4rem;
+}
+
+.alertLabel {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.overdueText {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-danger);
+    text-align: right;
+}
+
+.dueText {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--color-warning);
+    text-align: right;
+}
+
+.progressTrack {
+    width: 100%;
+    height: 6px;
+    border-radius: var(--radius-full);
+    background: var(--bg-input);
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    border-radius: var(--radius-full);
+    transition: width var(--transition-normal);
+}
+
+.barOk {
+    background: var(--border-color-hover);
+}
+
+.barDue {
+    background: var(--color-warning);
+}
+
+.barOverdue {
+    background: var(--color-danger);
+}
+
+/* Azioni rapide
+   ========================================================================== */
+.actions {
+    display: flex;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+}
+
+.actionButton {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-left: 1px solid var(--border-color);
+    transition: color var(--transition-fast);
+}
+
+.actionButton:first-child {
+    border-left: none;
+}
+
+.actionButton:hover {
+    color: var(--color-primary);
 }
