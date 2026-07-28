@@ -40,6 +40,7 @@ Applicazione per la gestione di moto da cross/enduro, sessioni in pista e manute
 | Tema grafico dark motocross (CSS custom properties) e transizioni di pagina animate | ✅ Implementato |
 | Pagine login/registrazione con navbar, icone e toggle "Ricordami" (persistenza token in `localStorage` o `sessionStorage`) | ✅ Implementato |
 | Classi utility Bootstrap per gli spaziamenti nell'UI | ✅ Implementato |
+| Grafico storico ore cumulate per moto (`/bikes/:id/history`) | ✅ Implementato |
 
 ## Screenshot
 
@@ -51,8 +52,8 @@ Applicazione per la gestione di moto da cross/enduro, sessioni in pista e manute
 | ![Dashboard](docs/screenshots/dashboard.png) | ![Dettaglio moto](docs/screenshots/bike-detail.png) |
 | **Aggiungi moto** | **Aggiungi manutenzione** |
 | ![Aggiungi moto](docs/screenshots/add-bike.png) | ![Aggiungi manutenzione](docs/screenshots/add-maintenance.png) |
-| **404** | |
-| ![Pagina 404](docs/screenshots/not-found.png) | |
+| **Storico ore** | **404** |
+| ![Storico ore](docs/screenshots/hours-history.png) | ![Pagina 404](docs/screenshots/not-found.png) |
 
 ## Stack tecnologico
 
