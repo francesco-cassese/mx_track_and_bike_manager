@@ -43,6 +43,9 @@ Applicazione per la gestione di moto da cross/enduro, sessioni in pista e manute
 | Grafico storico ore cumulate per moto (`/bikes/:id/history`) | ✅ Implementato |
 | Selezione marca/modello da catalogo predefinito nel form moto (con opzione "altra marca/modello" per valori custom) | ✅ Implementato |
 | Immagine della moto in base a marca/modello (card dashboard e dettaglio moto), con icona generica di fallback | ✅ Implementato |
+| Campi VIN e stato operativo (attiva/pronta/in manutenzione) nel form moto | ✅ Implementato |
+| Card moto in dashboard con badge di stato, VIN, ore totali, barra di allerta manutenzione e azioni rapide (modifica/dettaglio/log) | ✅ Implementato |
+| Selezione tipo di intervento da catalogo predefinito nel form manutenzione, con soglia ore suggerita (opzione "altro" per interventi custom) | ✅ Implementato |
 
 ## Screenshot
 
@@ -83,7 +86,7 @@ Monorepo gestito con pnpm workspaces: backend in `apps/backend`, frontend in `ap
 │   ├── backend/
 │   │   ├── config/            # Configurazione connessione al database
 │   │   ├── controllers/       # Logica di business delle rotte
-│   │   ├── database/          # Schema SQL del database
+│   │   ├── database/          # Schema SQL del database e migrazioni incrementali
 │   │   ├── middlewares/       # Middleware Express (auth, autorizzazione, validazione id)
 │   │   ├── repositories/      # Query al database, isolate per risorsa
 │   │   ├── routes/            # Definizione degli endpoint
@@ -95,7 +98,7 @@ Monorepo gestito con pnpm workspaces: backend in `apps/backend`, frontend in `ap
 │       └── src/
 │           ├── components/    # Componenti riusabili (FormField, SelectField, BikeCard, BikeList, BikeForm, SessionForm, MaintenanceForm, ProtectedRoute, RootRoute, PageTransition)
 │           ├── context/       # Contesto di autenticazione (AuthContext)
-│           ├── data/          # Cataloghi statici (marche/modelli moto)
+│           ├── data/          # Cataloghi statici (marche/modelli moto, tipi di manutenzione)
 │           ├── hooks/         # Hook riusabili (useAuth, useFocusFirstError)
 │           ├── pages/         # Pagine/route (LandingPage, RegisterPage, LoginPage, HomePage, AddBikePage, BikeDetailPage, EditBikePage, AddSessionPage, EditSessionPage, AddMaintenancePage, EditMaintenancePage, NotFoundPage)
 │           ├── services/      # Client HTTP verso il backend (apiFetch, authApi, bikeApi, sessionApi, maintenanceApi, tokenStorage)
@@ -133,6 +136,8 @@ Monorepo gestito con pnpm workspaces: backend in `apps/backend`, frontend in `ap
    ```bash
    mysql -u root -p < apps/backend/database/schema.sql
    ```
+
+   Se il database esiste già da una versione precedente, applica in ordine le migrazioni incrementali in `apps/backend/database/migrations/` invece di ricreare lo schema da zero.
 
 4. Avvia il server (dalla root):
 
@@ -195,8 +200,8 @@ Tutte le rotte richiedono autenticazione (`Authorization: Bearer <token>`). Le r
 | `GET` | `/bike/:id` | Recupera il dettaglio di una moto (incluso il totale ore) |
 | `GET` | `/bike/:id/total-hours` | Totale ore di utilizzo, calcolato sommando le sessioni registrate |
 | `GET` | `/bike/:id/alert` | Manutenzioni scadute o in scadenza (entro 10 ore) per la moto |
-| `POST` | `/bike` | Crea una nuova moto (`brand`, `model`, `year`) |
-| `PUT` | `/bike/:id` | Aggiorna i dati di una moto (`brand`, `model`, `year`) |
+| `POST` | `/bike` | Crea una nuova moto (`brand`, `model`, `year`, `vin`, `status`) |
+| `PUT` | `/bike/:id` | Aggiorna i dati di una moto (`brand`, `model`, `year`, `vin`, `status`) |
 | `DELETE` | `/bike/:id` | Elimina una moto |
 
 ### Sessioni in pista (`/bike/:id/sessions`)
