@@ -20,7 +20,7 @@ const findAllByUserId = async (userId) => {
  */
 const findView = async (id) => {
     const query = `
-         SELECT id, brand, model, year
+         SELECT id, brand, model, year, vin, status
          FROM bikes
          WHERE id = ?
         `;
@@ -32,36 +32,40 @@ const findView = async (id) => {
 /**
  * Inserisco una nuova moto associata all'utente loggato
  */
-const insert = async ({ userId, brand, model, year }) => {
+const insert = async ({ userId, brand, model, year, vin, status }) => {
     const query = `
         INSERT INTO bikes (
         user_id,
         brand,
         model,
-        year
+        year,
+        vin,
+        status
     )
-    VALUES (?,?,?,?);
+    VALUES (?,?,?,?,?,?);
     `;
 
     // Eseguo la query per inserire la nuova bike
-    const [result] = await connection.execute(query, [userId, brand, model, year]);
+    const [result] = await connection.execute(query, [userId, brand, model, year, vin, status]);
     return result;
 };
 
 /**
  * Aggiorno i dati di una singola moto tramite id
  */
-const update = async (id, { brand, model, year }) => {
+const update = async (id, { brand, model, year, vin, status }) => {
     const query = `
         UPDATE bikes
         SET brand = ?,
             model = ?,
-            year = ?
+            year = ?,
+            vin = ?,
+            status = ?
         WHERE id = ?;
     `
 
     // Eseguo la query per aggiornare la bike richiesta
-    const [result] = await connection.execute(query, [brand, model, year, id]);
+    const [result] = await connection.execute(query, [brand, model, year, vin, status, id]);
     return result;
 };
 

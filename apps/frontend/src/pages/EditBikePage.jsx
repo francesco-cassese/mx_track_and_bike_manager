@@ -47,7 +47,7 @@ function EditBikePage() {
             {isLoading && <p>Caricamento moto in corso...</p>}
             {!isLoading && !error && bike && (
                 <BikeForm
-                    initialValues={{ brand: bike.brand, model: bike.model, year: bike.year }}
+                    initialValues={{ brand: bike.brand, model: bike.model, year: bike.year, vin: bike.vin, status: bike.status }}
                     onSubmit={handleSubmit}
                     submitLabel="Salva modifiche"
                     cancelHref={`/bikes/${id}`}

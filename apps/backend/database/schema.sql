@@ -14,6 +14,8 @@ CREATE TABLE bikes (
     brand VARCHAR(255),
     model VARCHAR(255),
     year YEAR,
+    vin VARCHAR(17),
+    status ENUM('active', 'ready', 'maintenance') NOT NULL DEFAULT 'active',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

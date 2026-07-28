@@ -13,12 +13,12 @@ const getBike = (id) => getJson(`/bike/${id}`);
 /**
  * Creo una nuova moto per l'utente loggato.
  */
-const createBike = ({ brand, model, year }) => postJson('/bike', { brand, model, year });
+const createBike = ({ brand, model, year, vin, status }) => postJson('/bike', { brand, model, year, vin, status });
 
 /**
  * Aggiorno i dati di una moto esistente.
  */
-const updateBike = (id, { brand, model, year }) => putJson(`/bike/${id}`, { brand, model, year });
+const updateBike = (id, { brand, model, year, vin, status }) => putJson(`/bike/${id}`, { brand, model, year, vin, status });
 
 /**
  * Elimino una moto esistente.

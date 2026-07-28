@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import FormField from "./FormField";
 import SelectField from "./SelectField";
-import { validateBikeForm } from "../utils/validators";
+import { validateBikeForm, BIKE_STATUSES } from "../utils/validators";
 import { getRequestErrorMessage } from "../services/api";
 import { useFocusFirstError } from "../hooks/useFocusFirstError";
 import { MOTORCYCLE_BRANDS, CUSTOM_BRAND, findBrandKey, findModelForBrand } from "../data/motorcycleBrands";
@@ -12,6 +12,13 @@ const BRAND_OPTIONS = [
     ...Object.keys(MOTORCYCLE_BRANDS).map((name) => ({ value: name, label: name })),
     { value: CUSTOM_BRAND, label: "Altra marca..." },
 ];
+
+const STATUS_LABELS = {
+    active: "Attiva",
+    ready: "Pronta",
+    maintenance: "In manutenzione",
+};
+const STATUS_OPTIONS = BIKE_STATUSES.map((value) => ({ value, label: STATUS_LABELS[value] }));
 
 /**
  * Ricostruisco lo stato iniziale delle select a partire da marca/modello
@@ -50,6 +57,8 @@ function BikeForm({ initialValues, onSubmit, submitLabel, cancelHref }) {
         buildInitialBikeState(initialValues.brand, initialValues.model)
     );
     const [year, setYear] = useState(initialValues.year ?? "");
+    const [vin, setVin] = useState(initialValues.vin ?? "");
+    const [status, setStatus] = useState(initialValues.status ?? "active");
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [serverError, setServerError] = useState("");
@@ -66,12 +75,16 @@ function BikeForm({ initialValues, onSubmit, submitLabel, cancelHref }) {
     const modelSelectRef = useRef(null);
     const customModelRef = useRef(null);
     const yearRef = useRef(null);
+    const vinRef = useRef(null);
+    const statusRef = useRef(null);
     const fieldRefs = {
         brand: isCustomBrand ? customBrandRef : brandSelectRef,
         model: isCustomModel ? customModelRef : modelSelectRef,
         year: yearRef,
+        vin: vinRef,
+        status: statusRef,
     };
-    const { focusFirstError } = useFocusFirstError(fieldRefs, ["brand", "model", "year"]);
+    const { focusFirstError } = useFocusFirstError(fieldRefs, ["brand", "model", "year", "vin", "status"]);
 
     const handleBrandChange = (e) => {
         const value = e.target.value;
@@ -94,7 +107,7 @@ function BikeForm({ initialValues, onSubmit, submitLabel, cancelHref }) {
         const finalBrand = isCustomBrand ? customBrand.trim() : brand;
         const finalModel = isCustomModel ? customModel.trim() : model;
 
-        const validationErrors = validateBikeForm({ brand: finalBrand, model: finalModel, year });
+        const validationErrors = validateBikeForm({ brand: finalBrand, model: finalModel, year, vin, status });
         setErrors(validationErrors);
 
         if (Object.keys(validationErrors).length > 0) {
@@ -106,7 +119,7 @@ function BikeForm({ initialValues, onSubmit, submitLabel, cancelHref }) {
         setServerError("");
 
         try {
-            await onSubmit({ brand: finalBrand, model: finalModel, year: Number(year) });
+            await onSubmit({ brand: finalBrand, model: finalModel, year: Number(year), vin: vin.trim(), status });
             // In caso di successo il chiamante naviga altrove: il componente
             // sta per smontarsi, quindi non serve resettare isSubmitting qui.
         } catch (error) {
@@ -175,6 +188,24 @@ function BikeForm({ initialValues, onSubmit, submitLabel, cancelHref }) {
                 onChange={(e) => setYear(e.target.value)}
                 error={errors.year}
                 autoComplete="off"
+            />
+            <FormField
+                ref={vinRef}
+                id="vin"
+                label="Telaio (VIN)"
+                value={vin}
+                onChange={(e) => setVin(e.target.value)}
+                error={errors.vin}
+                autoComplete="off"
+            />
+            <SelectField
+                ref={statusRef}
+                id="status"
+                label="Stato"
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                options={STATUS_OPTIONS}
+                error={errors.status}
             />
             <div className={`${styles.actions} gap-3 mt-4`}>
                 <button type="submit" className={`${styles.submitButton} px-4`} disabled={isSubmitting}>

@@ -1,13 +1,16 @@
-// ATTENZIONE: queste costanti sono duplicate in apps/frontend/src/utils/validators.js
-// (stessi nomi/valori). Il monorepo non ha un package condiviso tra le due app,
-// quindi se cambi uno di questi valori qui aggiornalo anche lì, altrimenti
-// frontend e backend finiscono per validare con limiti diversi.
+// ATTENZIONE: queste costanti (incluse MAX_VIN_LENGTH e BIKE_STATUSES) sono
+// duplicate in apps/frontend/src/utils/validators.js (stessi nomi/valori).
+// Il monorepo non ha un package condiviso tra le due app, quindi se cambi
+// uno di questi valori qui aggiornalo anche lì, altrimenti frontend e
+// backend finiscono per validare con limiti diversi.
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_BIKE_YEAR = 1901;
 const MAX_TRACK_LENGTH = 100;
 const MIN_FEELING = 1;
 const MAX_FEELING = 5;
 const MAX_TASK_DESCRIPTION_LENGTH = 150;
+const MAX_VIN_LENGTH = 17;
+const BIKE_STATUSES = ['active', 'ready', 'maintenance'];
 
 /**
  * Verifico il formato email lato server, senza fidarmi della sola validazione frontend.
@@ -37,7 +40,7 @@ const validateLoginInput = ({ email, password }) => {
  * Valido i campi di creazione/modifica moto. Stesso vincolo di anno usato dal
  * frontend (validateBikeForm), oltre al range della colonna YEAR di MySQL.
  */
-const validateBikeInput = ({ brand, model, year }) => {
+const validateBikeInput = ({ brand, model, year, vin, status }) => {
     if (!brand?.trim() || !model?.trim() || !year) {
         return 'Marca, modello e anno sono obbligatori';
     }
@@ -46,6 +49,14 @@ const validateBikeInput = ({ brand, model, year }) => {
     const currentYear = new Date().getFullYear();
     if (!Number.isInteger(yearNumber) || yearNumber < MIN_BIKE_YEAR || yearNumber > currentYear + 1) {
         return `L'anno deve essere compreso tra ${MIN_BIKE_YEAR} e ${currentYear + 1}`;
+    }
+
+    if (vin && vin.trim().length > MAX_VIN_LENGTH) {
+        return `Il telaio (VIN) non può superare ${MAX_VIN_LENGTH} caratteri`;
+    }
+
+    if (status !== undefined && !BIKE_STATUSES.includes(status)) {
+        return 'Stato moto non valido';
     }
 
     return null;

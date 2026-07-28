@@ -19,7 +19,7 @@ function AddBikePage() {
         <div className={`${styles.page} px-4 mx-auto`}>
             <h1 className="pb-3">Aggiungi moto</h1>
             <BikeForm
-                initialValues={{ brand: "", model: "", year: "" }}
+                initialValues={{ brand: "", model: "", year: "", vin: "", status: "active" }}
                 onSubmit={handleSubmit}
                 submitLabel="Aggiungi moto"
                 cancelHref="/"

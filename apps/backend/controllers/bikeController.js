@@ -52,15 +52,15 @@ const show = asyncHandler(async (req, res) => {
  */
 const store = asyncHandler(async (req, res) => {
     const userId = req.user.id
-    const { brand, model, year } = req.body;
+    const { brand, model, year, vin, status = 'active' } = req.body;
 
-    const validationError = validateBikeInput({ brand, model, year });
+    const validationError = validateBikeInput({ brand, model, year, vin, status });
     if (validationError) {
         return sendError(res, 400, validationError);
     }
 
     // Eseguo la query per inserire la nuova bike
-    const result = await insert({ userId, brand, model, year });
+    const result = await insert({ userId, brand, model, year, vin: vin?.trim() || null, status });
 
     // Recupero la bike appena creata per restituirla nella risposta
     const newBikeView = await findView(result.insertId);
@@ -76,15 +76,15 @@ const store = asyncHandler(async (req, res) => {
  */
 const update = asyncHandler(async (req, res) => {
     const id = req.resourceId;
-    const { brand, model, year } = req.body;
+    const { brand, model, year, vin, status = 'active' } = req.body;
 
-    const validationError = validateBikeInput({ brand, model, year });
+    const validationError = validateBikeInput({ brand, model, year, vin, status });
     if (validationError) {
         return sendError(res, 400, validationError);
     }
 
     // Eseguo la query per aggiornare la bike richiesta
-    const result = await updateBike(id, { brand, model, year });
+    const result = await updateBike(id, { brand, model, year, vin: vin?.trim() || null, status });
 
     // Non ho trovato nessuna moto con questo id: rispondo con 404
     if (result.affectedRows === 0) {

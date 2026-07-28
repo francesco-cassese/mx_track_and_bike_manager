@@ -68,6 +68,10 @@ const validateLoginForm = ({ email, password }) => {
 
 // ATTENZIONE: duplicata in apps/backend/utils/validation.js (stesso nome/valore).
 const MIN_BIKE_YEAR = 1901;
+// ATTENZIONE: MAX_VIN_LENGTH e BIKE_STATUSES sono duplicate in
+// apps/backend/utils/validation.js (stessi nomi/valori).
+const MAX_VIN_LENGTH = 17;
+const BIKE_STATUSES = ['active', 'ready', 'maintenance'];
 
 /**
  * Valido i campi del form di creazione/modifica moto. Il backend accetta
@@ -75,7 +79,7 @@ const MIN_BIKE_YEAR = 1901;
  * 1901-2155: qui applico lo stesso vincolo, così il form lo segnala prima
  * di arrivare a un errore SQL.
  */
-const validateBikeForm = ({ brand, model, year }) => {
+const validateBikeForm = ({ brand, model, year, vin, status }) => {
     const errors = {};
 
     if (!brand?.trim()) {
@@ -92,6 +96,14 @@ const validateBikeForm = ({ brand, model, year }) => {
         errors.year = "L'anno è obbligatorio";
     } else if (!Number.isInteger(yearNumber) || yearNumber < MIN_BIKE_YEAR || yearNumber > currentYear + 1) {
         errors.year = `Inserisci un anno tra ${MIN_BIKE_YEAR} e ${currentYear + 1}`;
+    }
+
+    if (vin && vin.trim().length > MAX_VIN_LENGTH) {
+        errors.vin = `Il telaio (VIN) non può superare ${MAX_VIN_LENGTH} caratteri`;
+    }
+
+    if (status && !BIKE_STATUSES.includes(status)) {
+        errors.status = "Stato moto non valido";
     }
 
     return errors;
@@ -176,4 +188,4 @@ const validateMaintenanceForm = ({ taskDescription, hourThreshold, lastServiceHo
     return errors;
 };
 
-export { validateRegisterForm, validateLoginForm, validateBikeForm, validateSessionForm, validateMaintenanceForm };
+export { validateRegisterForm, validateLoginForm, validateBikeForm, validateSessionForm, validateMaintenanceForm, BIKE_STATUSES };
