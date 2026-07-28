@@ -4,6 +4,7 @@ import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import AddBikePage from "./pages/AddBikePage";
 import BikeDetailPage from "./pages/BikeDetailPage";
+import BikeHistoryPage from "./pages/BikeHistoryPage";
 import EditBikePage from "./pages/EditBikePage";
 import AddSessionPage from "./pages/AddSessionPage";
 import EditSessionPage from "./pages/EditSessionPage";
@@ -31,6 +32,7 @@ function App() {
         <Route path="/" element={<PageTransition><RootRoute /></PageTransition>} />
         <Route path="/bikes/new" element={<ProtectedRoute><PageTransition><AddBikePage /></PageTransition></ProtectedRoute>} />
         <Route path="/bikes/:id" element={<ProtectedRoute><PageTransition><BikeDetailPage /></PageTransition></ProtectedRoute>} />
+        <Route path="/bikes/:id/history" element={<ProtectedRoute><PageTransition><BikeHistoryPage /></PageTransition></ProtectedRoute>} />
         <Route path="/bikes/:id/edit" element={<ProtectedRoute><PageTransition><EditBikePage /></PageTransition></ProtectedRoute>} />
         <Route path="/bikes/:id/sessions/new" element={<ProtectedRoute><PageTransition><AddSessionPage /></PageTransition></ProtectedRoute>} />
         <Route path="/bikes/:id/sessions/:sessionId/edit" element={<ProtectedRoute><PageTransition><EditSessionPage /></PageTransition></ProtectedRoute>} />

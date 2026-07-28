@@ -167,6 +167,9 @@ function BikeDetailPage() {
                         <dt>Ore totali</dt>
                         <dd className="mt-1 mb-4">{bike.totalHours}</dd>
                     </dl>
+                    <div className={`${styles.actions} gap-3 mb-4`}>
+                        <Link to={`/bikes/${bike.id}/history`} className={`${styles.editButton} px-4`}>Grafico storico ore</Link>
+                    </div>
                     <div aria-live="polite">
                         {deleteError && <p className={`${styles.errorBanner} mb-4 px-3`}>{deleteError}</p>}
                     </div>
